@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/test_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        tools:layout_editor_absoluteX="165dp"
+        tools:layout_editor_absoluteY="233dp">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:background="@drawable/window_design"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Learn or repeat the words, \nthen you will have a test." />
+
+        <LinearLayout
+            android:id="@+id/wordsLayout"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/word1"
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="armchair [ ˈɑːmˈʧɛə ] кресло" />
+            <TextView
+                android:id="@+id/word2"
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="bed [ bed ] кровать" />
+            <TextView
+                android:id="@+id/word3"
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="bench [ benʧ ] скамья" />
+            <TextView
+                android:id="@+id/word4"
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="blanket [ ˈblæŋkɪt ] одеяло" />
+            <TextView
+                android:id="@+id/word5"
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="bookshelf	[ ˈbʊkʃelf ] книжная полка" />
+            <TextView
+                android:id="@+id/word6"
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="bookcase [ ˈbʊkkeɪs ] книжный шкаф" />
+            <TextView
+                android:id="@+id/word7"
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="cabinet [ ˈkæbɪnɪt ] шкаф" />
+            <TextView
+                android:id="@+id/word8"
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="carpet [ ˈkɑːpɪt ] ковер" />
+            <TextView
+                android:id="@+id/word9"
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="chair	[ ʧɛə ]	стул" />
+            <TextView
+                android:id="@+id/word10"
+                android:layout_width="match_parent"
+                android:textSize="18sp"
+                android:layout_height="wrap_content"
+                android:text="lamp [ læmp ] лампа" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

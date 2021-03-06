@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/courses_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TextViewHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/window_design"
+                android:padding="5dp"
+                android:text="Courses"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:id="@+id/test1Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Words: furniture"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/test2Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Words: school supplies"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/test3Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Words: food"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/test4Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Tenses: Present Simple"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/test5Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Tenses: Past Simple"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/test6Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Tenses: Future Simple"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/test7Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Test 7"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/test8Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Test 8"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/test9Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Test 9"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/test10Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Test 10"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/test11Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Test 11"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/test12Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Test 12"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/test13Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Test 13"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/test14Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Test 14"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/test15Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Test 15"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/test16Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/window_design"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewCourse16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="11"
+                    android:padding="5dp"
+                    android:text="Test 16"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/textViewCompletedInterest16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:gravity="end"
+                    android:text="0%"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/btnCnt16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="20"
+                    android:onClick="onClickBtnCnt"
+                    android:padding="5dp"
+                    android:text="Begin" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

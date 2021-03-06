@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "906021175465",
+    "project_id": "helleng",
+    "storage_bucket": "helleng.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:906021175465:android:e0af4ce057118e21b3a9b8",
+        "android_client_info": {
+          "package_name": "com.hg39.helleng"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "906021175465-a7nle5pn1gefdfiur4ce3i5qfpenu2et.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClAQCyaPf_76mlTHn8y2J50InIVmc6Rk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "906021175465-a7nle5pn1gefdfiur4ce3i5qfpenu2et.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
