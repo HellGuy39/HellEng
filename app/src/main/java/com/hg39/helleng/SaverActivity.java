@@ -124,6 +124,7 @@ public class SaverActivity extends AppCompatActivity {
 
         Intent intent = new Intent(SaverActivity.this,MainActivity.class);
         startActivity(intent);
+        finish();
 
     }
 }

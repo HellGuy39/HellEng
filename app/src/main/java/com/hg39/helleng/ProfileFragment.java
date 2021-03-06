@@ -1,5 +1,6 @@
 package com.hg39.helleng;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -35,6 +36,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     String firstNStr,lastNStr,statusStr,regDate;
 
     User user = new User();
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

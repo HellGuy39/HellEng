@@ -7,22 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.hg39.helleng.Models.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,13 +42,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     private SharedPreferences userData;
-    private SharedPreferences.Editor prefEditor;
-    private int inf1,inf2,inf3,inf4,inf5,inf6,inf7,inf8,inf9,inf10,inf11,inf12,inf13,inf14,inf15,inf16;
+    //private SharedPreferences.Editor prefEditor;
+    //private int inf1,inf2,inf3,inf4,inf5,inf6,inf7,inf8,inf9,inf10,inf11,inf12,inf13,inf14,inf15,inf16;
     private String userName,strFName,strLName,strStatus;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
+
+    Fragment fragHome;
+    Fragment fragChat;
+    Fragment fragCourses;
+    Fragment fragProfile;
 
     User user = new User();
 
@@ -74,9 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(user.getWebStatus());
 
-        //userDB.setOnline("Online");
-        //users.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(userDB.getOnline());
-
         /*myRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -91,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         userData = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
         userName = userData.getString(PREFS_USER_FIRST_NAME,"user");
-        inf1 = userData.getInt(PREFS_TEST1,0);
+        /*inf1 = userData.getInt(PREFS_TEST1,0);
         inf2 = userData.getInt(PREFS_TEST2,0);
         inf3 = userData.getInt(PREFS_TEST3,0);
         inf4 = userData.getInt(PREFS_TEST4,0);
@@ -106,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         inf13 = userData.getInt(PREFS_TEST13,0);
         inf14 = userData.getInt(PREFS_TEST14,0);
         inf15 = userData.getInt(PREFS_TEST15,0);
-        inf16 = userData.getInt(PREFS_TEST16,0);
+        inf16 = userData.getInt(PREFS_TEST16,0);*/
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -129,8 +122,14 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         user.setWebStatus("Online");
-
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(user.getWebStatus());
+
+        fragHome = new HomeFragment();
+        fragChat = new ChatFragment();
+        fragCourses = new CoursesFragment();
+        fragProfile = new ProfileFragment();
+
+
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -138,12 +137,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment selectedFragment = null;
-                    Fragment fragHome = new HomeFragment();
-                    Fragment fragChat = new ChatFragment();
-                    Fragment fragCourses = new CoursesFragment();
-                    Fragment fragProfile = new ProfileFragment();
 
-                    Bundle argsTestsInfo = new Bundle();
+                    Bundle argsTestsInfo = new Bundle();/*
                     argsTestsInfo.putInt("inf1", inf1);
                     argsTestsInfo.putInt("inf2", inf2);
                     argsTestsInfo.putInt("inf3", inf3);
@@ -159,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     argsTestsInfo.putInt("inf13", inf13);
                     argsTestsInfo.putInt("inf14", inf14);
                     argsTestsInfo.putInt("inf15", inf15);
-                    argsTestsInfo.putInt("inf16", inf16);
+                    argsTestsInfo.putInt("inf16", inf16);*/
 
                     strFName = userData.getString(PREFS_USER_FIRST_NAME,"First Name");
                     strLName = userData.getString(PREFS_USER_LAST_NAME, "Last Name");
@@ -233,13 +228,13 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, fragProfile)
                 .commit();
     }
-    protected void saveProfileInfo(String status, String firstName, String lastName) {
+    /*protected void saveProfileInfo(String status, String firstName, String lastName) {
         prefEditor = userData.edit();
         prefEditor.putString(PREFS_USER_STATUS,status);
         prefEditor.putString(PREFS_USER_FIRST_NAME,firstName);
         prefEditor.putString(PREFS_USER_LAST_NAME,lastName);
         prefEditor.apply();
-    }
+    }*/
 
     public void signOut() {
         FirebaseAuth.getInstance().signOut();

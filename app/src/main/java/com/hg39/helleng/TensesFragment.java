@@ -55,7 +55,8 @@ public class TensesFragment extends Fragment {
     }
 
     private void setRuleForPresentSimple() {
-        ruleTextView.setText("Употребление Present Simple Tense\n" +
+                String rule =
+                "Употребление Present Simple Tense\n" +
                 "\n" +
                 "Простое настоящее время мы используем, в следующих случаях:\n" +
                 "\n" +
@@ -141,7 +142,7 @@ public class TensesFragment extends Fragment {
                 "don’t = do not\n" +
                 "doesn’t = does not\n" +
                 "\n" +
-                "Чаще используются короткие формы (don’t, doesn’t)."
-        );
+                "Чаще используются короткие формы (don’t, doesn’t).";
+                ruleTextView.setText(rule);
     }
 }

@@ -1,5 +1,6 @@
 package com.hg39.helleng;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,8 +15,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hg39.helleng.Models.User;
 
 public class TensesTestFragment extends Fragment {
@@ -24,9 +29,10 @@ public class TensesTestFragment extends Fragment {
     private Button btn1,btn2,btn3,btnEnd;
     private int currentAnswer = 1;
     private int completed,testType;
+    private int testsStarted;
     private String completedString;
 
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseDatabase database;
     DatabaseReference users;
 
@@ -39,6 +45,12 @@ public class TensesTestFragment extends Fragment {
 
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,6 +58,20 @@ public class TensesTestFragment extends Fragment {
 
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
+        FirebaseUser userF = mAuth.getCurrentUser();
+
+        users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                testsStarted = snapshot.child("testsStarted").getValue(Integer.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("testsStarted").setValue(testsStarted + 1);
 
         View rootView =
                 inflater.inflate(R.layout.fragment_tenses_test,container,false);
@@ -140,17 +166,17 @@ public class TensesTestFragment extends Fragment {
         switch (testType) {
             case 4:
                 user.setTest4Interest(completed);
-                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test4Interest").setValue(user.getTest1Interest());
+                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test4Interest").setValue(user.getTest4Interest());
                 intent.putExtra("result4", completed);
                 break;
             case 5:
                 user.setTest5Interest(completed);
-                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test5Interest").setValue(user.getTest1Interest());
+                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test5Interest").setValue(user.getTest5Interest());
                 intent.putExtra("result5", completed);
                 break;
             case 6:
                 user.setTest6Interest(completed);
-                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test6Interest").setValue(user.getTest1Interest());
+                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test6Interest").setValue(user.getTest6Interest());
                 intent.putExtra("result6", completed);
                 break;
             default:
@@ -160,14 +186,109 @@ public class TensesTestFragment extends Fragment {
         }
         intent.putExtra("testType",testType);
         startActivity(intent);
+        getActivity().finish();
     }
 
     private void pastSimpleTest() {
+        switch (currentAnswer) {
+            case 1:
+                //textViewHint.setText("Вставьте глагол to be в Present Simple.");
+                //questionTextView.setText("I ___ Andrey");
+                break;
+            case 2:
+                //questionTextView.setText("He ___ happy");
+                break;
+            case 3:
+                //questionTextView.setText("We ___ friends");
+                break;
+            case 4:
+                //questionTextView.setText("It ___ broken");
+                break;
+            case 5:
+                //questionTextView.setText("What ___ your name?");
+                break;
+            case 6:
+                //questionTextView.setText("How ___ you?");
+                break;
+            case 7:
+                //questionTextView.setText("___ you sure?");
+                break;
+            case 8:
+                //btn1.setText("Do");
+                //btn2.setText("Does");
+                //btn3.setVisibility(View.GONE);
+                //textViewHint.setText("Вставьте DO / DOES в вопросительное предложение.");
+                //questionTextView.setText("_____ you go to school on Sundays?");
+                break;
+            case 9:
+                //questionTextView.setText("_____ Tom drive his car well?");
+                break;
+            case 10:
+                //questionTextView.setText("_____ they go to play football?");
+                break;
+            case 11:
+                /*completedString = Integer.toString(completed);
+                resultView.setText("You completed\n" + completedString + "%");
+                questionTextView.setText(" ");
+                btn1.setVisibility(View.GONE);btn2.setVisibility(View.GONE);
+                btnEnd.setVisibility(View.VISIBLE);*/
 
+                break;
+            default:
+
+                break;
+        }
     }
 
     private void futureSimpleTest() {
+        switch (currentAnswer) {
+            case 1:
+                //textViewHint.setText("Вставьте глагол to be в Present Simple.");
+                //questionTextView.setText("I ___ Andrey");
+                break;
+            case 2:
+                //questionTextView.setText("He ___ happy");
+                break;
+            case 3:
+                //questionTextView.setText("We ___ friends");
+                break;
+            case 4:
+                //questionTextView.setText("It ___ broken");
+                break;
+            case 5:
+                //questionTextView.setText("What ___ your name?");
+                break;
+            case 6:
+                //questionTextView.setText("How ___ you?");
+                break;
+            case 7:
+                //questionTextView.setText("___ you sure?");
+                break;
+            case 8:
+                //btn1.setText("Do");
+                //btn2.setText("Does");
+                //btn3.setVisibility(View.GONE);
+                //textViewHint.setText("Вставьте DO / DOES в вопросительное предложение.");
+                //questionTextView.setText("_____ you go to school on Sundays?");
+                break;
+            case 9:
+                //questionTextView.setText("_____ Tom drive his car well?");
+                break;
+            case 10:
+                //questionTextView.setText("_____ they go to play football?");
+                break;
+            case 11:
+                /*completedString = Integer.toString(completed);
+                resultView.setText("You completed\n" + completedString + "%");
+                questionTextView.setText(" ");
+                btn1.setVisibility(View.GONE);btn2.setVisibility(View.GONE);
+                btnEnd.setVisibility(View.VISIBLE);*/
 
+                break;
+            default:
+
+                break;
+        }
     }
 
     private void onClickAnswerButtons(View view) {
