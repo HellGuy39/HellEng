@@ -46,12 +46,16 @@
 
                 <Button
                     android:id="@+id/btnEdit"
-                    android:elevation="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:layout_height="wrap_content"
-                    android:text="Edit" />
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    app:strokeColor="@color/white"
+                    app:iconTint="@color/white"
+                    app:icon="@drawable/ic_baseline_mode_edit_24"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -62,12 +66,12 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/profileImage"
                 android:scaleType="centerCrop"
                 android:background="@color/blue"
                 android:layout_width="140dp"
                 android:layout_height="140dp"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/ic_baseline_image_24" />
 
             <LinearLayout
                 android:layout_marginStart="10dp"
@@ -79,9 +83,8 @@
                     android:id="@+id/textViewFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="~First Name~"
+                    android:text=" "
                     android:padding="5dp"
-                    android:background="@drawable/window_design"
                     android:textSize="20sp"/>
 
                 <TextView
@@ -89,9 +92,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="~Last Name~"
+                    android:text=" "
                     android:padding="5dp"
-                    android:background="@drawable/window_design"
                     android:textSize="20sp"/>
 
                 <TextView
@@ -100,7 +102,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:text="~User Status~" />
+                    android:text=" " />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -118,7 +121,7 @@
                 android:padding="5dp"
                 android:background="@drawable/window_design"
                 android:layout_marginTop="10dp"
-                android:textSize="24sp"/>
+                android:textSize="24sp" />
 
             <LinearLayout
                 android:layout_marginStart="5dp"
@@ -149,6 +152,14 @@
                     android:layout_marginTop="10dp"
                     android:text="Tests completed 100%: ~num~"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textViewUserId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="16sp"
+                    android:text=" " />
             </LinearLayout>
 
         </LinearLayout>
@@ -166,7 +177,12 @@
                 android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign out" />
+                android:text="Sign out"
+                android:textColor="@color/white"
+                app:strokeColor="@color/white"
+                app:iconTint="@color/white"
+                app:icon="@drawable/ic_baseline_logout_24"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
         </RelativeLayout>
     </LinearLayout>

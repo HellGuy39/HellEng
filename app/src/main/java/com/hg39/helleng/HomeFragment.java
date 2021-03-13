@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
                 // Failed to read value
                 //Log.w(TAG, "Failed to read value.", error.toException());
             }

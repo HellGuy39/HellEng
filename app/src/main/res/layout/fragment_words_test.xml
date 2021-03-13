@@ -37,7 +37,6 @@
         <TextView
             android:layout_marginTop="10dp"
             android:textSize="24sp"
-            android:textColor="@color/black"
             android:id="@+id/wordView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

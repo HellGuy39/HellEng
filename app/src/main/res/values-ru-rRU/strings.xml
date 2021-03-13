@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HellEng</string>
+    <string name="app_home">Главная</string>
+    <string name="app_chat">Чат</string>
+    <string name="app_courses">Курсы</string>
+    <string name="app_profile">Профиль</string>
+    <string name="start">Начать</string>
+    <string name="vocabulary">Словарь</string>
+    <string name="grammar">Грамматика</string>
+    <string name="second_text_vocabulary">Расширяйте свою речь новыми словами</string>
+    <string name="second_text_grammar">Изучайте грамматику для правильного построения предложений</string>
+    <string name="more">Ещё...</string>
+    <string name="audition">Аудирование</string>
+    <string name="settings">Настройки</string>
+    <string name="reference">Справка</string>
+    <string name="about_the_app">О приложении</string>
+</resources>

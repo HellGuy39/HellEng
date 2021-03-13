@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     //private int inf1,inf2,inf3,inf4,inf5,inf6,inf7,inf8,inf9,inf10,inf11,inf12,inf13,inf14,inf15,inf16;
     private String userName,strFName,strLName,strStatus;
 
+    boolean userOnMainMenu,userOnCoursesSelection,userOnEditProfile;
+
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
@@ -54,21 +56,26 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragChat;
     Fragment fragCourses;
     Fragment fragProfile;
+    Fragment fragEditProfile;
+    Fragment fragSelectedVocabulary;
+    Fragment fragSelectedGrammar;
 
-    User user = new User();
+    User userDB = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
+
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
 
-        user.setWebStatus("Online");
+        userDB.setWebStatus("Online");
 
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(user.getWebStatus());
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(userDB.getWebStatus());
 
         /*myRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -82,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        userData = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
-        userName = userData.getString(PREFS_USER_FIRST_NAME,"user");
+        //userData = getSharedPreferences(PREFS_FILE, MODE_PRIVATE);
+        //userName = userData.getString(PREFS_USER_FIRST_NAME,"user");
         /*inf1 = userData.getInt(PREFS_TEST1,0);
         inf2 = userData.getInt(PREFS_TEST2,0);
         inf3 = userData.getInt(PREFS_TEST3,0);
@@ -121,14 +128,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        user.setWebStatus("Online");
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(user.getWebStatus());
+        userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
 
+        userDB.setWebStatus("Online");
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(userDB.getWebStatus());
+
+        fragEditProfile = new EditProfileFragment();
         fragHome = new HomeFragment();
         fragChat = new ChatFragment();
         fragCourses = new CoursesFragment();
         fragProfile = new ProfileFragment();
-
+        fragSelectedVocabulary = new VocabularySelectedFragment();
+        fragSelectedGrammar = new GrammarSelectedFragment();
 
     }
 
@@ -138,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment selectedFragment = null;
 
-                    Bundle argsTestsInfo = new Bundle();/*
+                    /*Bundle argsTestsInfo = new Bundle();
                     argsTestsInfo.putInt("inf1", inf1);
                     argsTestsInfo.putInt("inf2", inf2);
                     argsTestsInfo.putInt("inf3", inf3);
@@ -156,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                     argsTestsInfo.putInt("inf15", inf15);
                     argsTestsInfo.putInt("inf16", inf16);*/
 
-                    strFName = userData.getString(PREFS_USER_FIRST_NAME,"First Name");
+                    /*strFName = userData.getString(PREFS_USER_FIRST_NAME,"First Name");
                     strLName = userData.getString(PREFS_USER_LAST_NAME, "Last Name");
                     strStatus = userData.getString(PREFS_USER_STATUS,"Status");
 
@@ -166,22 +177,24 @@ public class MainActivity extends AppCompatActivity {
                     argsUserInf.putString("userStatus", strStatus);
 
                     Bundle userData = new Bundle();
-                    userData.putString("userData", userName);
+                    userData.putString("userData", userName);*/
+
+                    userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
 
                     switch (item.getItemId()) {
                         case R.id.nav_home:
-                            fragHome.setArguments(userData);
+                            //fragHome.setArguments(userData);
                             selectedFragment = fragHome;
                             break;
                         case R.id.nav_chat:
                             selectedFragment = fragChat;
                             break;
                         case R.id.nav_courses:
-                            fragCourses.setArguments(argsTestsInfo);
+                            //fragCourses.setArguments(argsTestsInfo);
                             selectedFragment = fragCourses;
                             break;
                         case R.id.nav_profile:
-                            fragProfile.setArguments(argsUserInf);
+                            //fragProfile.setArguments(argsUserInf);
                             selectedFragment = fragProfile;
                             break;
                     }
@@ -194,47 +207,59 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    protected void setFragCourses() {
+        userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,fragCourses)
+                .commit();
+    }
+
+    protected void setFragSelectedVocabulary() {
+        userOnMainMenu = false; userOnCoursesSelection = true; userOnEditProfile = false;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,fragSelectedVocabulary)
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (userOnMainMenu) {
+            finish();
+        } else if (userOnEditProfile) {
+            outEditProfileFragment();
+        } else if (userOnCoursesSelection) {
+            setFragCourses();
+        } else {
+            super.onBackPressed();
+        }
+
+    }
+
+    protected void setFragSelectedGrammar() {
+        userOnMainMenu = false; userOnCoursesSelection = true; userOnEditProfile = false;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragSelectedGrammar)
+                .commit();
+    }
+
     protected void setEditProfileFragment() {
-
-        Bundle argsUserInf = new Bundle();
-        argsUserInf.putString("userFName", strFName);
-        argsUserInf.putString("userLName", strLName);
-        argsUserInf.putString("userStatus", strStatus);
-
-        Fragment fragEditProfile = new EditProfileFragment();
-        fragEditProfile.setArguments(argsUserInf);
-
+        userOnMainMenu = false; userOnCoursesSelection = false; userOnEditProfile = true;
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragEditProfile)
                 .commit();
     }
     protected void outEditProfileFragment() {
-
-        strFName = userData.getString(PREFS_USER_FIRST_NAME,"First Name");
-        strLName = userData.getString(PREFS_USER_LAST_NAME, "Last Name");
-        strStatus = userData.getString(PREFS_USER_STATUS,"Status");
-
-        Bundle argsUserInf = new Bundle();
-        argsUserInf.putString("userFName", strFName);
-        argsUserInf.putString("userLName", strLName);
-        argsUserInf.putString("userStatus", strStatus);
-
-        Fragment fragProfile = new ProfileFragment();
-        fragProfile.setArguments(argsUserInf);
-
+        userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragProfile)
                 .commit();
     }
-    /*protected void saveProfileInfo(String status, String firstName, String lastName) {
-        prefEditor = userData.edit();
-        prefEditor.putString(PREFS_USER_STATUS,status);
-        prefEditor.putString(PREFS_USER_FIRST_NAME,firstName);
-        prefEditor.putString(PREFS_USER_LAST_NAME,lastName);
-        prefEditor.apply();
-    }*/
 
     public void signOut() {
         FirebaseAuth.getInstance().signOut();
@@ -256,10 +281,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
-        user.setWebStatus("Offline");
-
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(user.getWebStatus());
-
+        if (mAuth.getCurrentUser() != null) {
+            userDB.setWebStatus("Offline");
+            users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(userDB.getWebStatus());
+        }
     }
 }

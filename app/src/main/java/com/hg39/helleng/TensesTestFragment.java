@@ -27,14 +27,20 @@ public class TensesTestFragment extends Fragment {
 
     private TextView ruleTextView,textViewHint,questionTextView,resultView;
     private Button btn1,btn2,btn3,btnEnd;
+
+    String questions1,questions2,questions3,questions4,questions5,questions6,questions7,questions8,questions9,questions10;
+    int answers1,answers2,answers3,answers4,answers5,answers6,answers7,answers8,answers9,answers10;
+    //String rule;
+
     private int currentAnswer = 1;
     private int completed,testType;
     private int testsStarted;
     private String completedString;
 
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
+    DatabaseReference tests;
 
     User user = new User();
 
@@ -43,35 +49,31 @@ public class TensesTestFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-    }
+        database = FirebaseDatabase.getInstance();
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
+        tests = database.getReference("Tests");
+        users = database.getReference("Users");
+        FirebaseUser userF = mAuth.getInstance().getCurrentUser();
 
+        users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                user.setTestsStarted(snapshot.child("testsStarted").getValue(int.class));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
-
-        database = FirebaseDatabase.getInstance();
-        users = database.getReference("Users");
-        FirebaseUser userF = mAuth.getCurrentUser();
-
-        users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                testsStarted = snapshot.child("testsStarted").getValue(Integer.class);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("testsStarted").setValue(testsStarted + 1);
+        user.setTestsStarted(user.getTestsStarted() + 1);
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("testsStarted").setValue(user.getTestsStarted());
 
         View rootView =
                 inflater.inflate(R.layout.fragment_tenses_test,container,false);
@@ -94,54 +96,124 @@ public class TensesTestFragment extends Fragment {
 
         switch (testType) {
             case 4:
+
+                tests.child("Tenses").child("Present Simple").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        questions1 = snapshot.child("Questions").child("0").getValue(String.class);
+                        questions2 = snapshot.child("Questions").child("1").getValue(String.class);
+                        questions3 = snapshot.child("Questions").child("2").getValue(String.class);
+                        questions4 = snapshot.child("Questions").child("3").getValue(String.class);
+                        questions5 = snapshot.child("Questions").child("4").getValue(String.class);
+                        questions6 = snapshot.child("Questions").child("5").getValue(String.class);
+                        questions7 = snapshot.child("Questions").child("6").getValue(String.class);
+                        questions8 = snapshot.child("Questions").child("7").getValue(String.class);
+                        questions9 = snapshot.child("Questions").child("8").getValue(String.class);
+                        questions10 = snapshot.child("Questions").child("9").getValue(String.class);
+
+                        answers1 = snapshot.child("Answers").child("0").getValue(int.class);
+                        answers2 = snapshot.child("Answers").child("1").getValue(int.class);
+                        answers3 = snapshot.child("Answers").child("2").getValue(int.class);
+                        answers4 = snapshot.child("Answers").child("3").getValue(int.class);
+                        answers5 = snapshot.child("Answers").child("4").getValue(int.class);
+                        answers6 = snapshot.child("Answers").child("5").getValue(int.class);
+                        answers7 = snapshot.child("Answers").child("6").getValue(int.class);
+                        answers8 = snapshot.child("Answers").child("7").getValue(int.class);
+                        answers9 = snapshot.child("Answers").child("8").getValue(int.class);
+                        answers10 = snapshot.child("Answers").child("9").getValue(int.class);
+
+                        //rule = snapshot.child("Rules").child("rule1").getValue(String.class);
+                        updateUI();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
                 presentSimpleTest();
                 break;
             case 5:
+
+                tests.child("Tenses").child("Past Simple").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
                 pastSimpleTest();
                 break;
             case 6:
+
+                tests.child("Tenses").child("Future Simple").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
                 futureSimpleTest();
                 break;
         }
         return rootView;
     }
 
+    private void updateUI() {
+
+    }
+
     private void presentSimpleTest() {
         switch (currentAnswer) {
             case 1:
                 textViewHint.setText("Вставьте глагол to be в Present Simple.");
-                questionTextView.setText("I ___ Andrey");
+                questionTextView.setText(questions1);
                 break;
             case 2:
-                questionTextView.setText("He ___ happy");
+                questionTextView.setText(questions2);
                 break;
             case 3:
-                questionTextView.setText("We ___ friends");
+                questionTextView.setText(questions3);
                 break;
             case 4:
-                questionTextView.setText("It ___ broken");
+                questionTextView.setText(questions4);
                 break;
             case 5:
-                questionTextView.setText("What ___ your name?");
+                questionTextView.setText(questions5);
                 break;
             case 6:
-                questionTextView.setText("How ___ you?");
+                questionTextView.setText(questions6);
                 break;
             case 7:
-                questionTextView.setText("___ you sure?");
+                questionTextView.setText(questions7);
                 break;
             case 8:
                 btn1.setText("Do");
                 btn2.setText("Does");
                 btn3.setVisibility(View.GONE);
                 textViewHint.setText("Вставьте DO / DOES в вопросительное предложение.");
-                questionTextView.setText("_____ you go to school on Sundays?");
+                questionTextView.setText(questions8);
                 break;
             case 9:
-                questionTextView.setText("_____ Tom drive his car well?");
+                questionTextView.setText(questions9);
                 break;
             case 10:
-                questionTextView.setText("_____ they go to play football?");
+                questionTextView.setText(questions10);
                 break;
             case 11:
                 completedString = Integer.toString(completed);
@@ -162,30 +234,31 @@ public class TensesTestFragment extends Fragment {
     }
 
     private void saver() {
-        Intent intent = new Intent(getActivity(),SaverActivity.class);
+        //Intent intent = new Intent(getActivity(),SaverActivity.class);
         switch (testType) {
             case 4:
                 user.setTest4Interest(completed);
                 users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test4Interest").setValue(user.getTest4Interest());
-                intent.putExtra("result4", completed);
+                //intent.putExtra("result4", completed);
                 break;
             case 5:
                 user.setTest5Interest(completed);
                 users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test5Interest").setValue(user.getTest5Interest());
-                intent.putExtra("result5", completed);
+                //intent.putExtra("result5", completed);
                 break;
             case 6:
                 user.setTest6Interest(completed);
                 users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test6Interest").setValue(user.getTest6Interest());
-                intent.putExtra("result6", completed);
+                //intent.putExtra("result6", completed);
                 break;
             default:
                 Toast.makeText(getActivity(), "Error",
                         Toast.LENGTH_SHORT).show();
                 break;
         }
-        intent.putExtra("testType",testType);
-        startActivity(intent);
+        //intent.putExtra("testType",testType);
+        //startActivity(intent);
+        startActivity(new Intent(getContext(),MainActivity.class));
         getActivity().finish();
     }
 

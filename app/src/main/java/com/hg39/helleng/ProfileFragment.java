@@ -2,11 +2,13 @@ package com.hg39.helleng;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,19 +24,25 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.hg39.helleng.Models.User;
+import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener{
 
     private Button btnEdit,btnSignOut;
-    private TextView textViewFirstName,textViewLastName,textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted;
+    private TextView textViewFirstName,textViewLastName,textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted,textViewUserId;
+    ImageView profileImage;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
+    StorageReference storageReference;
+    StorageReference profileRef;
 
     int testsStarted,testsFullCompleted;
-    String firstNStr,lastNStr,statusStr,regDate;
+    String firstNStr,lastNStr,statusStr,regDate,userId;
 
     User user = new User();
 
@@ -47,10 +56,19 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
+
+        mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
 
-        FirebaseUser userF = mAuth.getInstance().getCurrentUser();
+        if (mAuth != null) {
+            userId = mAuth.getCurrentUser().getUid();
+        }
+
+        FirebaseUser userF = mAuth.getCurrentUser();
 
         users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -69,7 +87,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
                 // Failed to read value
                 //Log.w(TAG, "Failed to read value.", error.toException());
             }
@@ -85,18 +103,28 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         View rootView =
                 inflater.inflate(R.layout.fragment_profile,container,false);
 
+        textViewUserId = rootView.findViewById(R.id.textViewUserId);
         textViewReg = rootView.findViewById(R.id.textViewReg);
         textViewTestsFullCompleted = rootView.findViewById(R.id.textViewTestFullCompleted);
         textViewTestsStarted = rootView.findViewById(R.id.textViewTestStarted);
         textViewFirstName = rootView.findViewById(R.id.textViewFirstName);
         textViewLastName = rootView.findViewById(R.id.textViewLastName);
         textViewUserStatus = rootView.findViewById(R.id.textViewUserStatus);
+        profileImage = rootView.findViewById(R.id.profileImage);
 
         btnEdit = rootView.findViewById(R.id.btnEdit);
         btnSignOut = rootView.findViewById(R.id.btnSingOut);
 
         btnSignOut.setOnClickListener(this::onClick);
         btnEdit.setOnClickListener(this::onClick);
+
+        profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profileImage);
+            }
+        });
 
         //textViewUserStatus.setText(getArguments().getString("userStatus"));
         //textViewFirstName.setText(getArguments().getString("userFName"));
@@ -114,6 +142,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         textViewFirstName.setText(firstNStr);
         textViewLastName.setText(lastNStr);
         textViewUserStatus.setText(statusStr);
+        textViewUserId.setText("Id: " + userId);
+
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profileImage);
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateUI();
     }
 
     @Override
@@ -124,10 +166,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         } else if (v.getId() == R.id.btnSingOut) {
             ((MainActivity)getActivity())
                     .signOut();
-            /*FirebaseAuth.getInstance().signOut();
-            if (mAuth.getCurrentUser() == null) {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-                finish();*/
             } else {
                 Toast.makeText(v.getContext(),"Error",Toast.LENGTH_SHORT).show();
             }

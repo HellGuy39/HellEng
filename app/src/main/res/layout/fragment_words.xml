@@ -38,61 +38,61 @@
                 android:layout_width="match_parent"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
-                android:text="armchair [ ˈɑːmˈʧɛə ] кресло" />
+                android:text=" " />
             <TextView
                 android:id="@+id/word2"
                 android:layout_width="match_parent"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
-                android:text="bed [ bed ] кровать" />
+                android:text=" " />
             <TextView
                 android:id="@+id/word3"
                 android:layout_width="match_parent"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
-                android:text="bench [ benʧ ] скамья" />
+                android:text=" " />
             <TextView
                 android:id="@+id/word4"
                 android:layout_width="match_parent"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
-                android:text="blanket [ ˈblæŋkɪt ] одеяло" />
+                android:text=" " />
             <TextView
                 android:id="@+id/word5"
                 android:layout_width="match_parent"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
-                android:text="bookshelf	[ ˈbʊkʃelf ] книжная полка" />
+                android:text=" " />
             <TextView
                 android:id="@+id/word6"
                 android:layout_width="match_parent"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
-                android:text="bookcase [ ˈbʊkkeɪs ] книжный шкаф" />
+                android:text=" " />
             <TextView
                 android:id="@+id/word7"
                 android:layout_width="match_parent"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
-                android:text="cabinet [ ˈkæbɪnɪt ] шкаф" />
+                android:text=" " />
             <TextView
                 android:id="@+id/word8"
                 android:layout_width="match_parent"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
-                android:text="carpet [ ˈkɑːpɪt ] ковер" />
+                android:text=" " />
             <TextView
                 android:id="@+id/word9"
                 android:layout_width="match_parent"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
-                android:text="chair	[ ʧɛə ]	стул" />
+                android:text=" " />
             <TextView
                 android:id="@+id/word10"
                 android:layout_width="match_parent"
                 android:textSize="18sp"
                 android:layout_height="wrap_content"
-                android:text="lamp [ læmp ] лампа" />
+                android:text=" " />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

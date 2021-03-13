@@ -1,13 +1,17 @@
 package com.hg39.helleng;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,18 +28,43 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.hg39.helleng.Models.User;
+import com.squareup.picasso.Picasso;
 
 public class EditProfileFragment extends Fragment {
 
     private Button btnBack,btnSave;
     private EditText editTextFirstName,editTextLastName,editTextUserStatus;
+    ImageView profileImage;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
+    StorageReference storageReference;
+    StorageReference profileRef;
+
     User user = new User();
     String firstNStr,lastNStr,statusStr;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profileImage);
+            }
+        });
+    }
 
     @Nullable
     @Override
@@ -44,8 +73,9 @@ public class EditProfileFragment extends Fragment {
 
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
+        mAuth = FirebaseAuth.getInstance();
 
-        FirebaseUser userF = mAuth.getInstance().getCurrentUser();
+        FirebaseUser userF = mAuth.getCurrentUser();
 
         users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -72,11 +102,14 @@ public class EditProfileFragment extends Fragment {
         View rootView =
                 inflater.inflate(R.layout.fragment_edit_profile,container,false);
 
+        profileImage = rootView.findViewById(R.id.profileImage);
+
         btnBack = rootView.findViewById(R.id.btnEdit);
         btnSave = rootView.findViewById(R.id.btnSave);
 
         btnBack.setOnClickListener(this::onClickBtnBack);
         btnSave.setOnClickListener(this::onClickBtnSave);
+        profileImage.setOnClickListener(this::onClickChangeProfileImage);
 
         editTextFirstName = rootView.findViewById(R.id.editTextFirstName);
         editTextLastName = rootView.findViewById(R.id.editTExtLastName);
@@ -91,18 +124,78 @@ public class EditProfileFragment extends Fragment {
         //editTextLastName.setText(getArguments().getString("userLName"));
         //editTextUserStatus.setText(getArguments().getString("userStatus"));
 
+        updateUI();
+
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        updateUI();
     }
 
     private void updateUI() {
         editTextFirstName.setText(firstNStr);
         editTextLastName.setText(lastNStr);
         editTextUserStatus.setText(statusStr);
+
+        profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profileImage);
+            }
+        });
+
     }
 
     protected void onClickBtnBack(View view) {
         ((MainActivity)getActivity())
                 .outEditProfileFragment();
+    }
+
+    protected void onClickChangeProfileImage(View view) {
+        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(openGalleryIntent,1000);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri imageUri = data.getData();
+                //profileImage.setImageURI(imageUri);
+
+                uploadImageToFirebase(imageUri);
+            }
+        }
+    }
+
+    private void uploadImageToFirebase(Uri imageUri) {
+        //upload image to firebase storage
+        final StorageReference fileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() + "/profile.jpg");
+        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(getContext(),"Image Uploaded.", Toast.LENGTH_SHORT).show();
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(profileImage);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     protected void onClickBtnSave(View view) {

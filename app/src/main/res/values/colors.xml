@@ -9,7 +9,23 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="gray">#818181</color>
+    <color name="light_gray">#BCBCBC</color>
+    <color name="extreme_light_gray">#DFDFDF</color>
+    <color name="extreme_light_gray_night">#202020</color>
     <color name="blue">#2196F3</color>
     <color name="light_blue">#03A9F4</color>
     <color name="extreme_light_blue">#00BCD4</color>
+
+    <color name="light_black">#1E1E1E</color>
+
+    <color name="L">#FF0000</color>
+    <color name="G">#FF5722</color>
+    <color name="B">#FFEB3B</color>
+    <color name="T">#4CAF50</color>
+    <color name="Q">#001BB3</color>
+    <color name="+">#5F00BC</color>
+
+
+
+
 </resources>
