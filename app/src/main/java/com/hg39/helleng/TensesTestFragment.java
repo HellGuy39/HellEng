@@ -3,6 +3,7 @@ package com.hg39.helleng;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -148,41 +149,10 @@ public class TensesTestFragment extends Fragment {
             adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             dropDownMenu3.setAdapter(adapter3);
 
-            dropDownMenu1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    slot1Res = (String)parent.getItemAtPosition(position);
-                }
+            dropDownMenu1.setOnItemClickListener((parent, view, position, id) -> slot1Res = (String)parent.getItemAtPosition(position));
+            dropDownMenu2.setOnItemClickListener((parent, view, position, id) -> slot2Res = (String)parent.getItemAtPosition(position));
+            dropDownMenu3.setOnItemClickListener((parent, view, position, id) -> slot3Res = (String)parent.getItemAtPosition(position));
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            dropDownMenu2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    slot2Res = (String)parent.getItemAtPosition(position);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-
-            dropDownMenu3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    slot3Res = (String)parent.getItemAtPosition(position);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
         }
 
         switch (testType) {
@@ -366,13 +336,13 @@ public class TensesTestFragment extends Fragment {
     }
 
     private void onClickEnd(View view) {
-        if (slot1Res.equals(slot1[1])) {
+        if (slot1Res.equals(slot1[0])) {
             completed+=10;
         }
-        if (slot2Res.equals(slot1[2])) {
+        if (slot2Res.equals(slot2[1])) {
             completed+=10;
         }
-        if (slot3Res.equals(slot1[2])) {
+        if (slot3Res.equals(slot3[1])) {
             completed+=10;
         }
         textViewResult.setText(Integer.toString(completed));
