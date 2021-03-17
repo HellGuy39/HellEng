@@ -18,5 +18,6 @@
         <item name="titleTextColor">@color/white</item>
         <item name="navigationIconTint">@color/white</item>
         <item name="android:navigationBarColor">@color/white</item>
+        
     </style>
 </resources>

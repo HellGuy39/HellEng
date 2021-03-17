@@ -17,96 +17,204 @@
         tools:layout_editor_absoluteX="165dp"
         tools:layout_editor_absoluteY="233dp">
 
-        <TextView
-            android:id="@+id/textView"
-            android:textSize="20sp"
-            android:padding="10dp"
-            android:background="@drawable/window_design"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TestPad" />
-
-        <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/textViewHint"
-            android:layout_width="match_parent"
+            android:checkable="true"
+            android:focusable="true"
+            app:cardElevation="10dp"
+            app:strokeWidth="1dp">
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="TestPad"
+                android:textSize="20sp" />
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="You will see the question in Russian, you must answer by clicking on one of the buttons" />
-
-        <LinearLayout
-                android:layout_marginTop="10dp"
-                android:id="@+id/testLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/questionTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=" "
-                    android:textSize="24sp" />
-            </LinearLayout>
-
-        <LinearLayout
+            android:checkable="true"
+            android:focusable="true"
+            app:cardElevation="10dp"
             android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_marginEnd="10dp"
-                android:id="@+id/btn1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAllCaps="false"
-                android:text="Am" />
-
-            <Button
-                android:id="@+id/btn2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAllCaps="false"
-                android:text="Is" />
-
-            <Button
-                android:id="@+id/btn3"
-                android:layout_marginStart="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAllCaps="false"
-                android:text="Are" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            app:strokeWidth="1dp">
 
             <TextView
-                android:id="@+id/resultView"
-                android:gravity="center"
-                android:textSize="34sp"
+                android:id="@+id/textViewHint"
+                android:padding="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:textColor="?android:attr/textColorSecondary"
+                android:text="Secondary text" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:checkable="true"
+            android:focusable="true"
+            app:cardElevation="10dp"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/questionTextView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text=" "
+                    android:textSize="24sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/dropdown_menu1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="8"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/questionTextViewAfter1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text=" "
+                    android:textSize="24sp" />
+
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:checkable="true"
+            android:focusable="true"
+            app:cardElevation="10dp"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btnEnd"
+                <TextView
+                    android:id="@+id/questionTextView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Leave test" />
+                    android:padding="5dp"
+                    android:text=" "
+                    android:textSize="24sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/dropdown_menu2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="8"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/questionTextViewAfter2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text=" "
+                    android:textSize="24sp" />
+
+
             </LinearLayout>
-        </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:checkable="true"
+            android:focusable="true"
+            app:cardElevation="10dp"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/questionTextView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text=" "
+                    android:textSize="24sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/dropdown_menu3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="8"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/questionTextViewAfter3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text=" "
+                    android:textSize="24sp" />
+
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <Button
+            android:id="@+id/btnEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="End" />
+
+        <TextView
+            android:id="@+id/textViewCompleted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" "
+            android:textSize="16sp"/>
 
     </LinearLayout>
 

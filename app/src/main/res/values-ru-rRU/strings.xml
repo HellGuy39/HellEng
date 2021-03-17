@@ -15,4 +15,5 @@
     <string name="settings">Настройки</string>
     <string name="reference">Справка</string>
     <string name="about_the_app">О приложении</string>
+    <string name="sign_out">Выйти</string>
 </resources>

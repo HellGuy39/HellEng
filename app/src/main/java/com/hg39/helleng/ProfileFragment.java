@@ -1,10 +1,10 @@
 package com.hg39.helleng;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,12 +30,12 @@ import com.google.firebase.storage.StorageReference;
 import com.hg39.helleng.Models.User;
 import com.squareup.picasso.Picasso;
 
-public class ProfileFragment extends Fragment implements View.OnClickListener{
+public class ProfileFragment extends Fragment {
 
     private Button btnEdit,btnSignOut;
     private TextView textViewFirstName,textViewLastName,textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted,textViewUserId;
     ImageView profileImage;
-
+    com.google.android.material.appbar.MaterialToolbar topAppBar;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
@@ -103,6 +104,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         View rootView =
                 inflater.inflate(R.layout.fragment_profile,container,false);
 
+        topAppBar = rootView.findViewById(R.id.topAppBar);
         textViewUserId = rootView.findViewById(R.id.textViewUserId);
         textViewReg = rootView.findViewById(R.id.textViewReg);
         textViewTestsFullCompleted = rootView.findViewById(R.id.textViewTestFullCompleted);
@@ -112,11 +114,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         textViewUserStatus = rootView.findViewById(R.id.textViewUserStatus);
         profileImage = rootView.findViewById(R.id.profileImage);
 
-        btnEdit = rootView.findViewById(R.id.btnEdit);
-        btnSignOut = rootView.findViewById(R.id.btnSingOut);
 
-        btnSignOut.setOnClickListener(this::onClick);
-        btnEdit.setOnClickListener(this::onClick);
+        //btnEdit = rootView.findViewById(R.id.btnEdit);
+        //btnSignOut = rootView.findViewById(R.id.btnSingOut);
+
+        //btnSignOut.setOnClickListener(this::onClick);
+        //btnEdit.setOnClickListener(this::onClick);
 
         profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -125,10 +128,43 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 Picasso.get().load(uri).into(profileImage);
             }
         });
+        topAppBar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_baseline_settings_24));
+        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Хз для чего это нужно
+            }
+        });
 
-        //textViewUserStatus.setText(getArguments().getString("userStatus"));
-        //textViewFirstName.setText(getArguments().getString("userFName"));
-        //textViewLastName.setText(getArguments().getString("userLName"));
+        topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+
+                    case R.id.editProfile:
+                        ((MainActivity)getActivity())
+                                .setEditProfileFragment();
+                        break;
+
+                    case R.id.settings:
+                        break;
+
+                    case R.id.reference:
+                        break;
+
+                    case R.id.aboutTheApp:
+                        break;
+
+                    case R.id.signOut:
+                        ((MainActivity)getActivity())
+                                .signOut();
+                        break;
+                }
+
+                return false;
+            }
+        });
 
         updateUI();
 
@@ -158,9 +194,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         updateUI();
     }
 
-    @Override
+    /*@Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnEdit) {
+        /*if (v.getId() == R.id.btnEdit) {
             ((MainActivity)getActivity())
                     .setEditProfileFragment();
         } else if (v.getId() == R.id.btnSingOut) {
@@ -170,6 +206,5 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 Toast.makeText(v.getContext(),"Error",Toast.LENGTH_SHORT).show();
             }
 
-        }
+        }*/
     }
-

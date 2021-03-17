@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <!--<item
         android:id="@+id/favorite"
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title=" "
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />-->
     <item
-        android:id="@+id/editProfle"
+        android:id="@+id/editProfile"
         android:icon="@drawable/ic_baseline_mode_edit_24"
         android:title="Edit"
         app:showAsAction="ifRoom" />
@@ -31,6 +30,6 @@
     <item
         android:id="@+id/signOut"
         android:title="@string/sign_out"
-        app:showAsAction="never" />-->
+        app:showAsAction="never" />
 
 </menu>

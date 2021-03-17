@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="HellEng"
+            android:textStyle="bold"
             android:textSize="48sp" />
 
         <TextView
@@ -29,7 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Push your English limits."
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="italic"
+            android:text="Push your English limits"
             android:textSize="16sp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -78,7 +81,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Login"
+                android:textColor="?attr/colorPrimary"
                 android:textAllCaps="false"
+                style="?attr/materialButtonOutlinedStyle"
                 android:textSize="16sp" />
 
             <Button
@@ -86,7 +91,9 @@
                 android:text="Register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/colorPrimary"
                 android:textAllCaps="false"
+                style="?attr/materialButtonOutlinedStyle"
                 android:textSize="16sp" />
         </LinearLayout>
 

@@ -5,23 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TensesActivity">
-
-    <TextView
-        android:id="@+id/textLabel"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/window_design"
-        android:elevation="20dp"
-        android:padding="10dp"
-        android:text="Tenses"
-        android:textSize="24sp" />
+        android:checkable="true"
+        android:focusable="true"
+        app:cardElevation="10dp"
+        app:strokeWidth="1dp">
+
+        <TextView
+            android:id="@+id/textLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="20dp"
+            android:padding="10dp"
+            android:text="Tenses"
+            android:textSize="24sp" />
+    </com.google.android.material.card.MaterialCardView>
 
     <FrameLayout
         android:id="@+id/fragment_container_tn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/textLabel"
+        android:layout_below="@id/card1"
         android:layout_above="@id/layout_with_buttons">
 
     </FrameLayout>

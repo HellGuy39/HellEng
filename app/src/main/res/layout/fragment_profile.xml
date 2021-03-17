@@ -1,190 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="10dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:menu="@menu/top_app_bar_profile"
+            app:navigationIcon="@drawable/ic_baseline_account_box_24"
+            app:navigationIconTint="?attr/navigationIconTint"
+            app:title="@string/app_profile"
+            app:titleTextColor="?attr/titleTextColor" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Note: A RecyclerView can also be used -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="10dp">
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="10dp">
 
-            <TextView
-                android:id="@+id/TextViewProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/window_design"
-                android:padding="5dp"
-                android:text="Profile"
-                android:textSize="24sp" />
-
-            <RelativeLayout
-                android:layout_marginStart="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/window_design">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="View mode"
-                    android:padding="5dp"
-                    android:textSize="24sp"
-                    android:layout_alignParentStart="true" />
-
-                <Button
-                    android:id="@+id/btnEdit"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_height="wrap_content"
-                    android:text="Edit"
-                    android:textColor="@color/white"
-                    app:strokeColor="@color/white"
-                    app:iconTint="@color/white"
-                    app:icon="@drawable/ic_baseline_mode_edit_24"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/profileImage"
-                android:scaleType="centerCrop"
-                android:background="@color/blue"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:src="@drawable/ic_baseline_image_24" />
-
-            <LinearLayout
-                android:layout_marginStart="10dp"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textViewFirstName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=" "
-                    android:padding="5dp"
-                    android:textSize="20sp"/>
-
-                <TextView
-                    android:id="@+id/textViewLastName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text=" "
-                    android:padding="5dp"
-                    android:textSize="20sp"/>
-
-                <TextView
-                    android:id="@+id/textViewUserStatus"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:text=" " />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textViewStat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Statistics"
-                android:padding="5dp"
-                android:background="@drawable/window_design"
+                android:layout_margin="10dp"
                 android:layout_marginTop="10dp"
-                android:textSize="24sp" />
+                android:checkable="true"
+                android:focusable="true"
+                app:cardElevation="10dp"
+                app:strokeWidth="1dp">
 
-            <LinearLayout
-                android:layout_marginStart="5dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/profileImage"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_baseline_image_24" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textViewFirstName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="~Adam~"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/textViewLastName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:padding="5dp"
+                            android:text="~Semenov~"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/textViewUserStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:padding="5dp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:text="~Love fat Cocks~"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_margin="10dp"
+                android:checkable="true"
+                android:focusable="true"
+                app:cardElevation="10dp"
+                app:strokeWidth="1dp">
 
-                <TextView
-                    android:id="@+id/textViewReg"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Registered since ~date~"
-                    android:textSize="16sp" />
+                    android:padding="5dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textViewTestStarted"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Tests started: ~num~"
-                    android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/textViewStat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Statistics"
+                        android:textSize="24sp" />
 
-                <TextView
-                    android:id="@+id/textViewTestFullCompleted"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Tests completed 100%: ~num~"
-                    android:textSize="16sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textViewUserId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textSize="16sp"
-                    android:text=" " />
-            </LinearLayout>
+                        <TextView
+                            android:id="@+id/textViewReg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Registered since ~date~"
+                            android:textSize="16sp" />
 
+                        <TextView
+                            android:id="@+id/textViewTestStarted"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Tests started: ~num~"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/textViewTestFullCompleted"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Tests completed 100%: ~num~"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/textViewUserId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Id: ~id~"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
-
-        <RelativeLayout
-            android:layout_marginTop="10dp"
-            android:background="@drawable/window_design"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:id="@+id/btnSingOut"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sign out"
-                android:textColor="@color/white"
-                app:strokeColor="@color/white"
-                app:iconTint="@color/white"
-                app:icon="@drawable/ic_baseline_logout_24"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-
-        </RelativeLayout>
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

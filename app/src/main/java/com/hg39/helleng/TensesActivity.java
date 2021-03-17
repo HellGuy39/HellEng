@@ -78,18 +78,37 @@ public class TensesActivity extends AppCompatActivity {
     }
 
     public void onClickNext(View view) {
-        new AlertDialog.Builder(this)
-                .setTitle("Подтверждение продолжения.")
-                .setMessage("Вы уверены что хотите продолжить?")
-                .setNegativeButton(android.R.string.no,null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startTensesTest();
-                        btnContinue.setClickable(false); btnContinue.setVisibility(View.INVISIBLE);
-                        wasOnTest = true;
-                    }
-                }).create().show();
+
+        if (!wasOnTest) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Подтверждение продолжения.")
+                    .setMessage("Вы уверены что хотите продолжить?")
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startTensesTest();
+                            btnContinue.setClickable(false);
+                            btnContinue.setVisibility(View.INVISIBLE);
+                            wasOnTest = true;
+                        }
+                    }).create().show();
+        } else if (wasOnTest) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Подтверждение продолжения.")
+                    .setMessage("Вы уверены что хотите продолжить?")
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startTensesTest();
+                            //btnContinue.setClickable(false);
+                            //btnContinue.setVisibility(View.INVISIBLE);
+                            //wasOnTest = true;
+
+                        }
+                    }).create().show();
+        }
 
     }
 

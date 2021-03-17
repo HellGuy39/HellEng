@@ -19,6 +19,7 @@
             app:menu="@menu/top_app_bar"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:titleTextColor="?attr/titleTextColor"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -45,8 +46,7 @@
                     android:checkable="true"
                     android:layout_margin="10dp"
                     app:cardElevation="10dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="@color/extreme_light_gray">
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:id="@+id/test1Layout"
@@ -84,8 +84,7 @@
                             android:layout_marginEnd="5dp"
                             android:layout_weight="20"
                             android:padding="5dp"
-                            android:text="@string/start"
-                            app:strokeColor="@color/extreme_light_gray" />
+                            android:text="@string/start" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
                 <com.google.android.material.card.MaterialCardView
@@ -94,8 +93,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     app:cardElevation="10dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="@color/extreme_light_gray">
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:id="@+id/test2Layout"
@@ -133,7 +131,6 @@
                             android:layout_weight="20"
                             android:padding="5dp"
                             android:text="@string/start"
-                            app:strokeColor="@color/extreme_light_gray"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -146,8 +143,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
                     app:cardElevation="10dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="@color/extreme_light_gray">
+                    app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:id="@+id/test3Layout"
@@ -185,8 +181,7 @@
                             android:layout_marginEnd="5dp"
                             android:layout_weight="20"
                             android:padding="5dp"
-                            android:text="@string/start"
-                            app:strokeColor="@color/extreme_light_gray"/>
+                            android:text="@string/start" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

@@ -142,13 +142,13 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
                 startActivity(intentTenses);
                 break;
 
-            case R.id.btnSchoolSuppliesTest:
-                intentTenses.putExtra("testType", 2);
+            case R.id.btnPsSimpleTest:
+                intentTenses.putExtra("testType", 5);
                 startActivity(intentTenses);
                 break;
 
-            case R.id.btnFoodTest:
-                intentTenses.putExtra("testType", 3);
+            case R.id.btnFtSimpleTest:
+                intentTenses.putExtra("testType", 6);
                 startActivity(intentTenses);
                 break;
 
