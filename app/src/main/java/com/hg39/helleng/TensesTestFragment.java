@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,11 +33,15 @@ public class TensesTestFragment extends Fragment {
     TextView ruleTextView,textViewHint,resultView;
     Button btnEnd;
     TextView textViewResult;
-    TextView questionTextView1,questionTextView2,questionTextView3,questionTextViewAfter1,questionTextViewAfter2,questionTextViewAfter3;
+    TextView questionTextView1,questionTextView2,questionTextView3,
+            questionTextViewAfter1,questionTextViewAfter2,questionTextViewAfter3;
+    TextView questionTextView4,questionTextView5;
+    EditText etAnswer4,etAnswer5;
 
     AutoCompleteTextView dropDownMenu1;
     AutoCompleteTextView dropDownMenu2;
     AutoCompleteTextView dropDownMenu3;
+
     String[] slot1;
     String[] slot2;
     String[] slot3;
@@ -44,9 +49,12 @@ public class TensesTestFragment extends Fragment {
     String slot1Res;
     String slot2Res;
     String slot3Res;
+    String slot4Res;
+    String slot5Res;
 
     String questions1,questions2,questions3,questions4,questions5,questions6,questions7,questions8,questions9,questions10;
-    int answers1,answers2,answers3,answers4,answers5,answers6,answers7,answers8,answers9,answers10;
+    String question1After,question2After,question3After;
+    String answers1,answers2,answers3,answers4,answers5,answers6,answers7,answers8,answers9,answers10;
     //String rule;
 
     private int currentAnswer = 1;
@@ -83,40 +91,6 @@ public class TensesTestFragment extends Fragment {
                 Toast.makeText(getContext(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
-        user.setTestsStarted(user.getTestsStarted() + 1);
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("testsStarted").setValue(user.getTestsStarted());
-
-        View rootView =
-                inflater.inflate(R.layout.fragment_tenses_test,container,false);
-        dropDownMenu1 = rootView.findViewById(R.id.dropdown_menu1);
-        dropDownMenu2 = rootView.findViewById(R.id.dropdown_menu2);
-        dropDownMenu3 = rootView.findViewById(R.id.dropdown_menu3);
-        btnEnd = rootView.findViewById(R.id.btnEnd);
-        btnEnd.setOnClickListener(this::onClickEnd);
-        textViewResult = rootView.findViewById(R.id.textViewCompleted);
-
-        //btnEnd = rootView.findViewById(R.id.btnEnd);
-        resultView = rootView.findViewById(R.id.resultView);
-
-        questionTextView1 = rootView.findViewById(R.id.questionTextView1);
-        questionTextView2 = rootView.findViewById(R.id.questionTextView2);
-        questionTextView3 = rootView.findViewById(R.id.questionTextView3);
-
-        questionTextViewAfter1 = rootView.findViewById(R.id.questionTextViewAfter1);
-        questionTextViewAfter2 = rootView.findViewById(R.id.questionTextViewAfter2);
-        questionTextViewAfter3 = rootView.findViewById(R.id.questionTextViewAfter3);
-
-        ruleTextView = rootView.findViewById(R.id.ruleTextView);
-        textViewHint = rootView.findViewById(R.id.textViewHint);
-        //btnEnd.setOnClickListener(this::onClickEnd);
-
-        //btnEnd.setVisibility(View.GONE);
 
         testType = getArguments().getInt("testType");
 
@@ -124,122 +98,10 @@ public class TensesTestFragment extends Fragment {
         slot2 = new String[2];
         slot3 = new String[2];
 
-        if (testType == 4) {
-            slot1 = new String[]{"item1", "item2"};
-            slot2 = new String[]{"item1", "item2"};
-            slot3 = new String[]{"item1", "item2"};
-        } else if (testType == 5) {
-            slot1 = new String[]{"item1", "item2"};
-            slot2 = new String[]{"item1", "item2"};
-            slot3 = new String[]{"item1", "item2"};
-        } else if (testType == 6) {
-            slot1[0] = "will buy"; slot1[1] = "will stay";//will buy
-            slot2[0] = "will start"; slot2[1] =  "will cook"; //will cook
-            slot3[0] = "will went"; slot3[1] =  "won't go"; //won't go
-
-            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, slot1);
-            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            dropDownMenu1.setAdapter(adapter1);
-
-            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, slot2);
-            adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            dropDownMenu2.setAdapter(adapter2);
-
-            ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, slot3);
-            adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            dropDownMenu3.setAdapter(adapter3);
-
-            dropDownMenu1.setOnItemClickListener((parent, view, position, id) -> slot1Res = (String)parent.getItemAtPosition(position));
-            dropDownMenu2.setOnItemClickListener((parent, view, position, id) -> slot2Res = (String)parent.getItemAtPosition(position));
-            dropDownMenu3.setOnItemClickListener((parent, view, position, id) -> slot3Res = (String)parent.getItemAtPosition(position));
-
-        }
-
         switch (testType) {
             case 4:
 
                 tests.child("Tenses").child("Present Simple").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        questions1 = snapshot.child("Questions").child("0").getValue(String.class);
-                        questions2 = snapshot.child("Questions").child("1").getValue(String.class);
-                        questions3 = snapshot.child("Questions").child("2").getValue(String.class);
-                        questions4 = snapshot.child("Questions").child("3").getValue(String.class);
-                        questions5 = snapshot.child("Questions").child("4").getValue(String.class);
-                        questions6 = snapshot.child("Questions").child("5").getValue(String.class);
-                        questions7 = snapshot.child("Questions").child("6").getValue(String.class);
-                        questions8 = snapshot.child("Questions").child("7").getValue(String.class);
-                        questions9 = snapshot.child("Questions").child("8").getValue(String.class);
-                        questions10 = snapshot.child("Questions").child("9").getValue(String.class);
-
-                        answers1 = snapshot.child("Answers").child("0").getValue(int.class);
-                        answers2 = snapshot.child("Answers").child("1").getValue(int.class);
-                        answers3 = snapshot.child("Answers").child("2").getValue(int.class);
-                        answers4 = snapshot.child("Answers").child("3").getValue(int.class);
-                        answers5 = snapshot.child("Answers").child("4").getValue(int.class);
-                        answers6 = snapshot.child("Answers").child("5").getValue(int.class);
-                        answers7 = snapshot.child("Answers").child("6").getValue(int.class);
-                        answers8 = snapshot.child("Answers").child("7").getValue(int.class);
-                        answers9 = snapshot.child("Answers").child("8").getValue(int.class);
-                        answers10 = snapshot.child("Answers").child("9").getValue(int.class);
-
-                        //rule = snapshot.child("Rules").child("rule1").getValue(String.class);
-                        updateUI();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-
-                presentSimpleTest();
-                break;
-            case 5:
-
-                tests.child("Tenses").child("Past Simple").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        questions1 = snapshot.child("Questions").child("0").getValue(String.class);
-                        questions2 = snapshot.child("Questions").child("1").getValue(String.class);
-                        questions3 = snapshot.child("Questions").child("2").getValue(String.class);
-                        questions4 = snapshot.child("Questions").child("3").getValue(String.class);
-                        questions5 = snapshot.child("Questions").child("4").getValue(String.class);
-                        questions6 = snapshot.child("Questions").child("5").getValue(String.class);
-                        questions7 = snapshot.child("Questions").child("6").getValue(String.class);
-                        questions8 = snapshot.child("Questions").child("7").getValue(String.class);
-                        questions9 = snapshot.child("Questions").child("8").getValue(String.class);
-                        questions10 = snapshot.child("Questions").child("9").getValue(String.class);
-
-                        answers1 = snapshot.child("Answers").child("0").getValue(int.class);
-                        answers2 = snapshot.child("Answers").child("1").getValue(int.class);
-                        answers3 = snapshot.child("Answers").child("2").getValue(int.class);
-                        answers4 = snapshot.child("Answers").child("3").getValue(int.class);
-                        answers5 = snapshot.child("Answers").child("4").getValue(int.class);
-                        answers6 = snapshot.child("Answers").child("5").getValue(int.class);
-                        answers7 = snapshot.child("Answers").child("6").getValue(int.class);
-                        answers8 = snapshot.child("Answers").child("7").getValue(int.class);
-                        answers9 = snapshot.child("Answers").child("8").getValue(int.class);
-                        answers10 = snapshot.child("Answers").child("9").getValue(int.class);
-
-                        updateUI();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-
-                pastSimpleTest();
-                break;
-            case 6:
-
-                tests.child("Tenses").child("Future Simple").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -252,9 +114,47 @@ public class TensesTestFragment extends Fragment {
                         questions7 = snapshot.child("Questions").child("6").getValue(String.class);
                         questions8 = snapshot.child("Questions").child("7").getValue(String.class);
                         questions9 = snapshot.child("Questions").child("8").getValue(String.class);
-                        questions10 = snapshot.child("Questions").child("9").getValue(String.class);*/
+                        questions10 = snapshot.child("Questions").child("9").getValue(String.class);
 
-                        /*answers1 = snapshot.child("Answers").child("0").getValue(int.class);
+                        answers1 = snapshot.child("Answers").child("0").getValue(int.class);
+                        answers2 = snapshot.child("Answers").child("1").getValue(int.class);
+                        answers3 = snapshot.child("Answers").child("2").getValue(int.class);
+                        answers4 = snapshot.child("Answers").child("3").getValue(int.class);
+                        answers5 = snapshot.child("Answers").child("4").getValue(int.class);
+                        answers6 = snapshot.child("Answers").child("5").getValue(int.class);
+                        answers7 = snapshot.child("Answers").child("6").getValue(int.class);
+                        answers8 = snapshot.child("Answers").child("7").getValue(int.class);
+                        answers9 = snapshot.child("Answers").child("8").getValue(int.class);
+                        answers10 = snapshot.child("Answers").child("9").getValue(int.class);*/
+
+                        //rule = snapshot.child("Rules").child("rule1").getValue(String.class);
+                        updateUI();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                break;
+
+            case 5:
+                tests.child("Tenses").child("Past Simple").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        /*questions1 = snapshot.child("Questions").child("0").getValue(String.class);
+                        questions2 = snapshot.child("Questions").child("1").getValue(String.class);
+                        questions3 = snapshot.child("Questions").child("2").getValue(String.class);
+                        questions4 = snapshot.child("Questions").child("3").getValue(String.class);
+                        questions5 = snapshot.child("Questions").child("4").getValue(String.class);
+                        questions6 = snapshot.child("Questions").child("5").getValue(String.class);
+                        questions7 = snapshot.child("Questions").child("6").getValue(String.class);
+                        questions8 = snapshot.child("Questions").child("7").getValue(String.class);
+                        questions9 = snapshot.child("Questions").child("8").getValue(String.class);
+                        questions10 = snapshot.child("Questions").child("9").getValue(String.class);
+
+                        answers1 = snapshot.child("Answers").child("0").getValue(int.class);
                         answers2 = snapshot.child("Answers").child("1").getValue(int.class);
                         answers3 = snapshot.child("Answers").child("2").getValue(int.class);
                         answers4 = snapshot.child("Answers").child("3").getValue(int.class);
@@ -273,79 +173,180 @@ public class TensesTestFragment extends Fragment {
 
                     }
                 });
+                break;
 
+            case 6:
+                tests.child("Tenses").child("Future Simple").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                futureSimpleTest();
+                        questions1 = snapshot.child("Questions").child("0").getValue(String.class);
+                        questions2 = snapshot.child("Questions").child("1").getValue(String.class);
+                        questions3 = snapshot.child("Questions").child("2").getValue(String.class);
+                        questions4 = snapshot.child("Questions").child("3").getValue(String.class);
+                        questions5 = snapshot.child("Questions").child("4").getValue(String.class);
+
+                        question1After = snapshot.child("Questions").child("After").child("0").getValue(String.class);
+                        question2After = snapshot.child("Questions").child("After").child("1").getValue(String.class);;
+                        question3After = snapshot.child("Questions").child("After").child("2").getValue(String.class);;
+
+                        answers1 = snapshot.child("Answers").child("0").child("0").getValue(String.class);
+                        answers2 = snapshot.child("Answers").child("1").child("0").getValue(String.class);
+                        answers3 = snapshot.child("Answers").child("2").child("1").getValue(String.class);
+                        answers4 = snapshot.child("Answers").child("3").getValue(String.class);
+                        answers5 = snapshot.child("Answers").child("4").getValue(String.class);
+
+                        slot1[0] = snapshot.child("Answers").child("0").child("0").getValue(String.class);
+                        slot1[1] = snapshot.child("Answers").child("0").child("1").getValue(String.class);
+
+                        slot2[0] = snapshot.child("Answers").child("1").child("0").getValue(String.class);
+                        slot2[1] = snapshot.child("Answers").child("1").child("1").getValue(String.class);
+
+                        slot3[0] = snapshot.child("Answers").child("2").child("0").getValue(String.class);
+                        slot3[1] = snapshot.child("Answers").child("2").child("1").getValue(String.class);
+
+                        setArrays();
+
+                        updateUI();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
                 break;
         }
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //return super.onCreateView(inflater, container, savedInstanceState);
+        user.setTestsStarted(user.getTestsStarted() + 1);
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("testsStarted").setValue(user.getTestsStarted());
+
+        View rootView =
+                inflater.inflate(R.layout.fragment_tenses_test,container,false);
+
+        dropDownMenu1 = rootView.findViewById(R.id.dropdown_menu1);
+        dropDownMenu2 = rootView.findViewById(R.id.dropdown_menu2);
+        dropDownMenu3 = rootView.findViewById(R.id.dropdown_menu3);
+
+        btnEnd = rootView.findViewById(R.id.btnEnd);
+        btnEnd.setOnClickListener(this::onClickEnd);
+
+        textViewResult = rootView.findViewById(R.id.textViewCompleted);
+
+        resultView = rootView.findViewById(R.id.resultView);
+
+        etAnswer4 = rootView.findViewById(R.id.etAnswer4);
+        etAnswer5 = rootView.findViewById(R.id.etAnswer5);
+
+        questionTextView1 = rootView.findViewById(R.id.questionTextView1);
+        questionTextView2 = rootView.findViewById(R.id.questionTextView2);
+        questionTextView3 = rootView.findViewById(R.id.questionTextView3);
+        questionTextView4 = rootView.findViewById(R.id.questionTextView4);
+        questionTextView5 = rootView.findViewById(R.id.questionTextView5);
+
+        questionTextViewAfter1 = rootView.findViewById(R.id.questionTextViewAfter1);
+        questionTextViewAfter2 = rootView.findViewById(R.id.questionTextViewAfter2);
+        questionTextViewAfter3 = rootView.findViewById(R.id.questionTextViewAfter3);
+
+        ruleTextView = rootView.findViewById(R.id.ruleTextView);
+        textViewHint = rootView.findViewById(R.id.textViewHint);
+
+        //Слушатели для первых для трёх полей
+        dropDownMenu1.setOnItemClickListener((parent, view, position, id) -> slot1Res = (String)parent.getItemAtPosition(position));
+        dropDownMenu2.setOnItemClickListener((parent, view, position, id) -> slot2Res = (String)parent.getItemAtPosition(position));
+        dropDownMenu3.setOnItemClickListener((parent, view, position, id) -> slot3Res = (String)parent.getItemAtPosition(position));
+
+        if (testType == 4) {
+            presentSimpleTest();
+        } else if (testType == 5) {
+            pastSimpleTest();
+        } else if (testType == 6) {
+            futureSimpleTest();
+        }
+
         return rootView;
+    }
+
+    private void setArrays() {
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, slot1);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropDownMenu1.setAdapter(adapter1);
+        //dropDownMenu1.setSelection(2);
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, slot2);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropDownMenu2.setAdapter(adapter2);
+        //dropDownMenu2.setSelection(2);
+
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, slot3);
+        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropDownMenu3.setAdapter(adapter3);
+
     }
 
     private void updateUI() {
 
+        questionTextView1.setText(questions1);questionTextViewAfter1.setText(question1After);
+        questionTextView2.setText(questions2);questionTextViewAfter2.setText(question2After);
+        questionTextView3.setText(questions3);questionTextViewAfter3.setText(question3After);
+        questionTextView4.setText(questions4);
+        questionTextView5.setText(questions5);
+
     }
 
     private void presentSimpleTest() {
-        switch (currentAnswer) {
-            case 1:
-                textViewHint.setText("Вставьте глагол to be в Present Simple.");
-                //questionTextView.setText(questions1);
-                break;
-            case 2:
-                //questionTextView.setText(questions2);
-                break;
-            case 3:
-                //questionTextView.setText(questions3);
-                break;
-            case 4:
-                //questionTextView.setText(questions4);
-                break;
-            case 5:
-                //questionTextView.setText(questions5);
-                break;
-            case 6:
-                //questionTextView.setText(questions6);
-                break;
-            case 7:
-                //questionTextView.setText(questions7);
-                break;
-            case 8:
-                //btn1.setText("Do");
-                //btn2.setText("Does");
-                //btn3.setVisibility(View.GONE);
-                textViewHint.setText("Вставьте DO / DOES в вопросительное предложение.");
-                //questionTextView.setText(questions8);
-                break;
-            case 9:
-                //questionTextView.setText(questions9);
-                break;
-            case 10:
-                //questionTextView.setText(questions10);
-                break;
-            case 11:
-                completedString = Integer.toString(completed);
-                resultView.setText("You completed\n" + completedString + "%");
-                //questionTextView.setText(" ");
-                //btn1.setVisibility(View.GONE);btn2.setVisibility(View.GONE);
-
-                break;
-            default:
-
-                break;
-        }
+        updateUI();
     }
 
+
     private void onClickEnd(View view) {
-        if (slot1Res.equals(slot1[0])) {
+
+        slot4Res = etAnswer4.getText().toString();
+        slot5Res = etAnswer5.getText().toString();
+
+        //КостыльTechnologies
+        if (slot1Res == null) {
+            slot1Res = " ";
+        }
+        if (slot2Res == null) {
+            slot2Res = " ";
+        }
+        if (slot3Res == null) {
+            slot3Res = " ";
+        }
+        if (slot4Res == null) {
+            slot4Res = " ";
+        }
+        if (slot5Res == null) {
+            slot5Res = " ";
+        }
+        //Cringe
+
+        if (slot1Res.equals(answers1)) {
             completed+=10;
         }
-        if (slot2Res.equals(slot2[1])) {
+        if (slot2Res.equals(answers2)) {
             completed+=10;
         }
-        if (slot3Res.equals(slot3[1])) {
+        if (slot3Res.equals(answers3)) {
             completed+=10;
         }
-        textViewResult.setText(Integer.toString(completed));
+        if (slot4Res.equals(answers4)) {
+            completed+=10;
+        }
+        if (slot5Res.equals(answers5)) {
+            completed+=10;
+        }
+
+        ((TensesActivity)getContext()).setFragResult(slot1Res,slot2Res,slot3Res,slot4Res,slot5Res,
+                                                        answers1,answers2,answers3,answers4,answers5,
+                                                        completed);
 
     }
 
@@ -379,105 +380,11 @@ public class TensesTestFragment extends Fragment {
     }
 
     private void pastSimpleTest() {
-        switch (currentAnswer) {
-            case 1:
-                textViewHint.setText("Choose the right variant:");
-                //questionTextView.setText(answers1);
-                break;
-            case 2:
-                //questionTextView.setText("He ___ happy");
-                break;
-            case 3:
-                //questionTextView.setText("We ___ friends");
-                break;
-            case 4:
-                //questionTextView.setText("It ___ broken");
-                break;
-            case 5:
-                //questionTextView.setText("What ___ your name?");
-                break;
-            case 6:
-                //questionTextView.setText("How ___ you?");
-                break;
-            case 7:
-                //questionTextView.setText("___ you sure?");
-                break;
-            case 8:
-                //btn1.setText("Do");
-                //btn2.setText("Does");
-                //btn3.setVisibility(View.GONE);
-                //textViewHint.setText("Вставьте DO / DOES в вопросительное предложение.");
-                //questionTextView.setText("_____ you go to school on Sundays?");
-                break;
-            case 9:
-                //questionTextView.setText("_____ Tom drive his car well?");
-                break;
-            case 10:
-                //questionTextView.setText("_____ they go to play football?");
-                break;
-            case 11:
-                /*completedString = Integer.toString(completed);
-                resultView.setText("You completed\n" + completedString + "%");
-                questionTextView.setText(" ");
-                btn1.setVisibility(View.GONE);btn2.setVisibility(View.GONE);
-                btnEnd.setVisibility(View.VISIBLE);*/
-
-                break;
-            default:
-
-                break;
-        }
+        updateUI();
     }
 
     private void futureSimpleTest() {
-        switch (currentAnswer) {
-            case 1:
-                //textViewHint.setText("Вставьте глагол to be в Present Simple.");
-                //questionTextView.setText("I ___ Andrey");
-                break;
-            case 2:
-                //questionTextView.setText("He ___ happy");
-                break;
-            case 3:
-                //questionTextView.setText("We ___ friends");
-                break;
-            case 4:
-                //questionTextView.setText("It ___ broken");
-                break;
-            case 5:
-                //questionTextView.setText("What ___ your name?");
-                break;
-            case 6:
-                //questionTextView.setText("How ___ you?");
-                break;
-            case 7:
-                //questionTextView.setText("___ you sure?");
-                break;
-            case 8:
-                //btn1.setText("Do");
-                //btn2.setText("Does");
-                //btn3.setVisibility(View.GONE);
-                //textViewHint.setText("Вставьте DO / DOES в вопросительное предложение.");
-                //questionTextView.setText("_____ you go to school on Sundays?");
-                break;
-            case 9:
-                //questionTextView.setText("_____ Tom drive his car well?");
-                break;
-            case 10:
-                //questionTextView.setText("_____ they go to play football?");
-                break;
-            case 11:
-                /*completedString = Integer.toString(completed);
-                resultView.setText("You completed\n" + completedString + "%");
-                questionTextView.setText(" ");
-                btn1.setVisibility(View.GONE);btn2.setVisibility(View.GONE);
-                btnEnd.setVisibility(View.VISIBLE);*/
-
-                break;
-            default:
-
-                break;
-        }
+        updateUI();
     }
 
     private void onClickAnswerButtons(View view) {
