@@ -73,7 +73,7 @@ public class TensesActivity extends AppCompatActivity {
 
     protected void setFragResult(String task1UserRes, String task2UserRes, String task3UserRes, String task4UserRes, String task5UserRes,
                                  String task1TrueRes, String task2TrueRes, String task3TrueRes, String task4TrueRes, String task5TrueRes,
-                                 int completed) {
+                                 int completed, int countOfTasks) {
 
         fragResult = new TestResultFragment();
 
@@ -92,6 +92,7 @@ public class TensesActivity extends AppCompatActivity {
         testArguments.putString("task5TrueAnswer", task5TrueRes);
 
         testArguments.putInt("completedInt", completed);
+        testArguments.putInt("countOfTasks", countOfTasks);
 
         fragResult.setArguments(testArguments);
 

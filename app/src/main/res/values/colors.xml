@@ -18,4 +18,8 @@
     <color name="extreme_light_blue">#00BCD4</color>
 
     <color name="light_black">#1E1E1E</color>
+
+    <color name="light_red">#CCFF1744</color>
+    <color name="light_green">#CC76FF03</color>
+
 </resources>

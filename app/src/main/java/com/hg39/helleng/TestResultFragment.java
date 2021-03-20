@@ -39,7 +39,7 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
     String trueAnswer1,trueAnswer2,trueAnswer3,trueAnswer4,trueAnswer5,trueAnswer6,
             trueAnswer7,trueAnswer8,trueAnswer9,trueAnswer10,trueAnswer11,trueAnswer12;
 
-    int completed;
+    int completed,countOfTasks;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,8 +74,9 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
         trueAnswer11 = getArguments().getString("task11TrueAnswer"," ");
         trueAnswer12 = getArguments().getString("task12TrueAnswer"," ");
 
-        completed = getArguments().getInt("completedInt", 0);
 
+        completed = getArguments().getInt("completedInt", 0);
+        countOfTasks = getArguments().getInt("countOfTasks", 0);
     }
 
     @Nullable
@@ -84,6 +85,19 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
         //return super.onCreateView(inflater, container, savedInstanceState);
         View rootView
                 = inflater.inflate(R.layout.fragment_test_result,container,false);
+
+        container1 = rootView.findViewById(R.id.container1);
+        container2 = rootView.findViewById(R.id.container2);
+        container3 = rootView.findViewById(R.id.container3);
+        container4 = rootView.findViewById(R.id.container4);
+        container5 = rootView.findViewById(R.id.container5);
+        container6 = rootView.findViewById(R.id.container6);
+        container7 = rootView.findViewById(R.id.container7);
+        container8 = rootView.findViewById(R.id.container8);
+        container9 = rootView.findViewById(R.id.container9);
+        container10 = rootView.findViewById(R.id.container10);
+        container11 = rootView.findViewById(R.id.container11);
+        container12 = rootView.findViewById(R.id.container12);
 
         tvUserAnswer1 = rootView.findViewById(R.id.tvUserAnswer1);
         tvUserAnswer2 = rootView.findViewById(R.id.tvUserAnswer2);
@@ -116,9 +130,29 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
 
         tvCompleted = rootView.findViewById(R.id.tvCompleted);
 
+        disableUselessContainers();
+        colorSetter();
         updateUI();
 
         return rootView;
+    }
+
+    private void disableUselessContainers() {
+
+        if (countOfTasks == 5) {
+            container6.setVisibility(View.GONE);
+            container7.setVisibility(View.GONE);
+            container8.setVisibility(View.GONE);
+            container9.setVisibility(View.GONE);
+            container10.setVisibility(View.GONE);
+            container11.setVisibility(View.GONE);
+            container12.setVisibility(View.GONE);
+        }
+
+        if (countOfTasks == 10) {
+            container11.setVisibility(View.GONE);
+            container12.setVisibility(View.GONE);
+        }
     }
 
     private void updateUI() {
@@ -149,7 +183,7 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
         tvTrueAnswer11.setText(trueAnswer11);
         tvTrueAnswer12.setText(trueAnswer12);
 
-        tvCompleted.setText(Integer.toString(completed) + "");
+        tvCompleted.setText(Integer.toString(completed) + "%");
 
     }
 
@@ -158,6 +192,94 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
         if (v.getId() == R.id.btnOk) {
             startActivity(new Intent(getContext(),MainActivity.class));
             ((TensesActivity)getContext()).finishActivity();
+        }
+    }
+
+    private void colorSetter() {
+
+        tvTrueAnswer1.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer2.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer3.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer4.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer5.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer6.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer7.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer8.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer9.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer10.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer11.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer12.setBackgroundColor(getResources().getColor(R.color.light_green));
+
+        if (userAnswer1.equalsIgnoreCase(trueAnswer1)) {
+            tvUserAnswer1.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer1.setBackgroundColor(getResources().getColor(R.color.light_red));
+        }
+
+        if (userAnswer2.equalsIgnoreCase(trueAnswer2)) {
+            tvUserAnswer2.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer2.setBackgroundColor(getResources().getColor(R.color.light_red));
+        }
+
+        if (userAnswer3.equalsIgnoreCase(trueAnswer3)) {
+            tvUserAnswer3.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer3.setBackgroundColor(getResources().getColor(R.color.light_red));
+        }
+
+        if (userAnswer4.equalsIgnoreCase(trueAnswer4)) {
+            tvUserAnswer4.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer4.setBackgroundColor(getResources().getColor(R.color.light_red));
+        }
+
+        if (userAnswer5.equalsIgnoreCase(trueAnswer5)) {
+            tvUserAnswer5.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer5.setBackgroundColor(getResources().getColor(R.color.light_red));
+        }
+
+        if (userAnswer6.equalsIgnoreCase(trueAnswer6)) {
+            tvUserAnswer6.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer6.setBackgroundColor(getResources().getColor(R.color.light_red));
+        }
+
+        if (userAnswer7.equalsIgnoreCase(trueAnswer7)) {
+            tvUserAnswer7.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer7.setBackgroundColor(getResources().getColor(R.color.light_red));
+        }
+
+        if (userAnswer8.equalsIgnoreCase(trueAnswer8)) {
+            tvUserAnswer8.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer8.setBackgroundColor(getResources().getColor(R.color.light_red));
+        }
+
+        if (userAnswer9.equalsIgnoreCase(trueAnswer9)) {
+            tvUserAnswer9.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer9.setBackgroundColor(getResources().getColor(R.color.light_red));
+        }
+
+        if (userAnswer10.equalsIgnoreCase(trueAnswer10)) {
+            tvUserAnswer10.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer10.setBackgroundColor(getResources().getColor(R.color.light_red));
+        }
+
+        if (userAnswer11.equalsIgnoreCase(trueAnswer11)) {
+            tvUserAnswer11.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer11.setBackgroundColor(getResources().getColor(R.color.light_red));
+        }
+
+        if (userAnswer12.equalsIgnoreCase(trueAnswer12)) {
+            tvUserAnswer12.setBackgroundColor(getResources().getColor(R.color.light_green));
+        } else {
+            tvUserAnswer12.setBackgroundColor(getResources().getColor(R.color.light_red));
         }
     }
 }

@@ -328,25 +328,25 @@ public class TensesTestFragment extends Fragment {
         }
         //Cringe
 
-        if (slot1Res.equals(answers1)) {
+        if (slot1Res.equalsIgnoreCase(answers1)) {
             completed+=10;
         }
-        if (slot2Res.equals(answers2)) {
+        if (slot2Res.equalsIgnoreCase(answers2)) {
             completed+=10;
         }
-        if (slot3Res.equals(answers3)) {
+        if (slot3Res.equalsIgnoreCase(answers3)) {
             completed+=10;
         }
-        if (slot4Res.equals(answers4)) {
+        if (slot4Res.equalsIgnoreCase(answers4)) {
             completed+=10;
         }
-        if (slot5Res.equals(answers5)) {
+        if (slot5Res.equalsIgnoreCase(answers5)) {
             completed+=10;
         }
 
         ((TensesActivity)getContext()).setFragResult(slot1Res,slot2Res,slot3Res,slot4Res,slot5Res,
                                                         answers1,answers2,answers3,answers4,answers5,
-                                                        completed);
+                                                        completed, 5);
 
     }
 
