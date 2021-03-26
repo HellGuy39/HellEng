@@ -42,6 +42,10 @@ public class WordsFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         tests = database.getReference("Tests");
 
+        int testType = getArguments().getInt("testType");
+
+        setWordsArr(testType);
+
     }
 
     @Nullable
@@ -64,10 +68,6 @@ public class WordsFragment extends Fragment {
         word8 = rootView.findViewById(R.id.word8);
         word9 = rootView.findViewById(R.id.word9);
         word10 = rootView.findViewById(R.id.word10);
-
-        int testType = getArguments().getInt("testType");
-
-        setWordsArr(testType);
 
         return rootView;
     }
@@ -200,6 +200,5 @@ public class WordsFragment extends Fragment {
             wordsArr[8] = "Sandwich [ ˈsanˌ(d)wiCH ] сэндвич";
             wordsArr[9] = "Potato [ pəˈtātō ] картофель";*/
         }
-        updateUI();
     }
 }

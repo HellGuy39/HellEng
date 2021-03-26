@@ -32,8 +32,9 @@ import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
 
-    private Button btnEdit,btnSignOut;
-    private TextView textViewFirstName,textViewLastName,textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted,textViewUserId;
+    Button btnEdit,btnSignOut;
+    TextView textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted,textViewUserId;
+    TextView textViewFullName;
     ImageView profileImage;
     com.google.android.material.appbar.MaterialToolbar topAppBar;
     FirebaseAuth mAuth;
@@ -94,6 +95,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profileImage);
+            }
+        });
+
     }
 
     @Nullable
@@ -109,8 +118,7 @@ public class ProfileFragment extends Fragment {
         textViewReg = rootView.findViewById(R.id.textViewReg);
         textViewTestsFullCompleted = rootView.findViewById(R.id.textViewTestFullCompleted);
         textViewTestsStarted = rootView.findViewById(R.id.textViewTestStarted);
-        textViewFirstName = rootView.findViewById(R.id.textViewFirstName);
-        textViewLastName = rootView.findViewById(R.id.textViewLastName);
+        textViewFullName = rootView.findViewById(R.id.textViewFullName);
         textViewUserStatus = rootView.findViewById(R.id.textViewUserStatus);
         profileImage = rootView.findViewById(R.id.profileImage);
 
@@ -121,13 +129,6 @@ public class ProfileFragment extends Fragment {
         //btnSignOut.setOnClickListener(this::onClick);
         //btnEdit.setOnClickListener(this::onClick);
 
-        profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(profileImage);
-            }
-        });
         topAppBar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_baseline_settings_24));
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,8 +176,7 @@ public class ProfileFragment extends Fragment {
         textViewReg.setText("Registered since " + regDate);
         textViewTestsStarted.setText("Tests started: " + testsStarted);
         textViewTestsFullCompleted.setText("Tests completed 100%: " + testsFullCompleted);
-        textViewFirstName.setText(firstNStr);
-        textViewLastName.setText(lastNStr);
+        textViewFullName.setText(firstNStr + " " + lastNStr);
         textViewUserStatus.setText(statusStr);
         textViewUserId.setText("Id: " + userId);
 
@@ -191,7 +191,12 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        updateUI();
+        //updateUI();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     /*@Override

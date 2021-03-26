@@ -77,6 +77,15 @@ public class MainActivity extends AppCompatActivity {
 
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(userDB.getWebStatus());
 
+        //Фрагментики
+        fragEditProfile = new EditProfileFragment();
+        fragHome = new HomeFragment();
+        fragChat = new ChatFragment();
+        fragCourses = new CoursesFragment();
+        fragProfile = new ProfileFragment();
+        fragSelectedVocabulary = new VocabularySelectedFragment();
+        fragSelectedGrammar = new GrammarSelectedFragment();
+
         /*myRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -133,13 +142,6 @@ public class MainActivity extends AppCompatActivity {
         userDB.setWebStatus("Online");
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(userDB.getWebStatus());
 
-        fragEditProfile = new EditProfileFragment();
-        fragHome = new HomeFragment();
-        fragChat = new ChatFragment();
-        fragCourses = new CoursesFragment();
-        fragProfile = new ProfileFragment();
-        fragSelectedVocabulary = new VocabularySelectedFragment();
-        fragSelectedGrammar = new GrammarSelectedFragment();
 
     }
 

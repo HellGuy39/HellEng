@@ -97,20 +97,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        /*if(currentUser != null){
             reload();
-        }
+        }*/
 
-    }
-
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
     }
 
     @Override
     public void onClick(View view) {
 
+        //Проверка на вшивость
         if (TextUtils.isEmpty(etEmail.getText().toString())) {
             Snackbar.make(root,"Enter your email please",Snackbar.LENGTH_LONG).show();
             return;
@@ -125,6 +121,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Snackbar.make(root,"Password must be more than 5 characters", Snackbar.LENGTH_LONG).show();
             return;
         }
+        //
+
 
         if (view.getId() == R.id.btnSignIn) {
             singing(etEmail.getText().toString(),etPassword.getText().toString());

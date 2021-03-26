@@ -24,16 +24,16 @@ import com.hg39.helleng.Models.User;
 
 public class WordsTestFragment extends Fragment {
 
-    private Button btnNext;
-    private TextView wordView,resultView;
-    private EditText editTextField;
-    private int words;
-    private int completed;
-    private String completedString;
-    private boolean res1,res2,res3,res4,res5,res6,res7,res8,res9,res10;
-    private String currentAnswer;
-    private String word1,word2,word3,word4,word5,word6,word7,word8,word9,word10;
-    private String word1Ru,word2Ru,word3Ru,word4Ru,word5Ru,word6Ru,word7Ru,word8Ru,word9Ru,word10Ru;
+    Button btnNext;
+    TextView wordView,resultView;
+    EditText editTextField;
+    int words;
+    int completed;
+    String completedString;
+    String userRes1,userRes2,userRes3,userRes4,userRes5,userRes6,userRes7,userRes8,userRes9,userRes10;
+    String currentAnswer;
+    String word1,word2,word3,word4,word5,word6,word7,word8,word9,word10;
+    String word1Ru,word2Ru,word3Ru,word4Ru,word5Ru,word6Ru,word7Ru,word8Ru,word9Ru,word10Ru;
     private int testType;
 
     FirebaseAuth mAuth;
@@ -82,9 +82,9 @@ public class WordsTestFragment extends Fragment {
 
     protected void onClickBtnNext(View view) {
         editTextField.setEnabled(true);
-        currentAnswer = editTextField.getText().toString();
+        //currentAnswer = editTextField.getText().toString();
         //currentAnswer.replaceAll("\\s","");
-        currentAnswer.trim();
+        //currentAnswer.trim();
 
         switch (words) {
             case 0:
@@ -92,98 +92,107 @@ public class WordsTestFragment extends Fragment {
                 wordView.setText(word1Ru);
                 break;
             case 1:
-                if (word1.equalsIgnoreCase(currentAnswer)) {
-                    res1 = true;
+                userRes1 = editTextField.getText().toString();
+                userRes1.trim();
+
+                if (word1.equalsIgnoreCase(userRes1)) {
                     completed += 10;
-                } else {
-                    res1 = false;
                 }
+
                 wordView.setText(word2Ru);
                 break;
             case 2:
-                if (word2.equalsIgnoreCase(currentAnswer)) {
-                    res2 = true;
+                userRes2 = editTextField.getText().toString();
+                userRes2.trim();
+
+                if (word2.equalsIgnoreCase(userRes2)) {
                     completed += 10;
-                } else {
-                    res2 = false;
                 }
+
                 wordView.setText(word3Ru);
                 break;
             case 3:
-                if (word3.equalsIgnoreCase(currentAnswer)) {
-                    res3 = true;
+                userRes3 = editTextField.getText().toString();
+                userRes3.trim();
+
+                if (word3.equalsIgnoreCase(userRes3)) {
                     completed += 10;
-                } else {
-                    res3 = false;
                 }
+
                 wordView.setText(word4Ru);
                 break;
             case 4:
-                if (word4.equalsIgnoreCase(currentAnswer)) {
-                    res4 = true;
+                userRes4 = editTextField.getText().toString();
+                userRes4.trim();
+
+                if (word4.equalsIgnoreCase(userRes4)) {
                     completed += 10;
-                } else {
-                    res4 = false;
                 }
+
                 wordView.setText(word5Ru);
                 break;
             case 5:
-                if (word5.equalsIgnoreCase(currentAnswer)) {
-                    res5 = true;
+                userRes5 = editTextField.getText().toString();
+                userRes5.trim();
+
+                if (word5.equalsIgnoreCase(userRes5)) {
                     completed += 10;
-                } else {
-                    res5 = false;
                 }
+
                 wordView.setText(word6Ru);
                 break;
             case 6:
-                if (word6.equalsIgnoreCase(currentAnswer)) {
-                    res6 = true;
+                userRes6 = editTextField.getText().toString();
+                userRes6.trim();
+
+                if (word6.equalsIgnoreCase(userRes6)) {
                     completed += 10;
-                } else {
-                    res6 = false;
                 }
+
                 wordView.setText(word7Ru);
                 break;
             case 7:
-                if (word7.equalsIgnoreCase(currentAnswer)) {
-                    res7 = true;
+                userRes7 = editTextField.getText().toString();
+                userRes7.trim();
+
+                if (word7.equalsIgnoreCase(userRes7)) {
                     completed += 10;
-                } else {
-                    res7 = false;
                 }
+
                 wordView.setText(word8Ru);
                 break;
             case 8:
-                if (word8.equalsIgnoreCase(currentAnswer)) {
-                    res8 = true;
+                userRes8 = editTextField.getText().toString();
+                userRes8.trim();
+
+                if (word8.equalsIgnoreCase(userRes8)) {
                     completed += 10;
-                } else {
-                    res8 = false;
                 }
+
                 wordView.setText(word9Ru);
                 break;
             case 9:
-                if (word9.equalsIgnoreCase(currentAnswer)) {
-                    res9 = true;
+                userRes9 = editTextField.getText().toString();
+                userRes9.trim();
+
+                if (word9.equalsIgnoreCase(userRes9)) {
                     completed += 10;
-                } else {
-                    res9 = false;
                 }
+
                 wordView.setText(word10Ru);
                 break;
             case 10:
-                if (word10.equalsIgnoreCase(currentAnswer)) {
-                    res10 = true;
+                userRes10 = editTextField.getText().toString();
+                userRes10.trim();
+
+                if (word10.equalsIgnoreCase(userRes10)) {
                     completed += 10;
-                } else {
-                    res10 = false;
                 }
+
                 wordView.setText("Test is end.");
                 completedString = Integer.toString(completed);
                 btnNext.setText("Exit");
                 editTextField.setEnabled(false);
-                resultView.setText("You completed\n" + completedString + "%");
                 break;
             case 11:
                 //Intent intent = new Intent(getActivity(),SaverActivity.class);
@@ -208,10 +217,10 @@ public class WordsTestFragment extends Fragment {
                                 Toast.LENGTH_SHORT).show();
                         break;
                 }
-                //intent.putExtra("testType",testType);
-                //startActivity(intent);
-                startActivity(new Intent(getContext(),MainActivity.class));
-                break;
+
+                ((WordsActivity)getContext()).setFragResult(userRes1,userRes2,userRes3,userRes4,userRes5,userRes6,userRes7,userRes8,userRes9,userRes10,
+                                                            word1,word2,word3,word4,word5,word6,word7,word8,word9,word10,completed,10);
+
         }
         editTextField.setText(null);
         words++;

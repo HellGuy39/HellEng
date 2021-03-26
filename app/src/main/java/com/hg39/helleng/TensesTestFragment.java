@@ -344,6 +344,8 @@ public class TensesTestFragment extends Fragment {
             completed+=10;
         }
 
+        saver();
+
         ((TensesActivity)getContext()).setFragResult(slot1Res,slot2Res,slot3Res,slot4Res,slot5Res,
                                                         answers1,answers2,answers3,answers4,answers5,
                                                         completed, 5);
@@ -373,10 +375,6 @@ public class TensesTestFragment extends Fragment {
                         Toast.LENGTH_SHORT).show();
                 break;
         }
-        //intent.putExtra("testType",testType);
-        //startActivity(intent);
-        startActivity(new Intent(getContext(),MainActivity.class));
-        getActivity().finish();
     }
 
     private void pastSimpleTest() {
