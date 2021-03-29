@@ -30,12 +30,13 @@ import com.hg39.helleng.Models.User;
 
 public class TensesTestFragment extends Fragment {
 
-    TextView ruleTextView,textViewHint,resultView;
+    TextView ruleTextView,textViewHint1,textViewHint2,resultView;
     Button btnEnd;
     TextView textViewResult;
     TextView questionTextView1,questionTextView2,questionTextView3,
             questionTextViewAfter1,questionTextViewAfter2,questionTextViewAfter3;
     TextView questionTextView4,questionTextView5;
+
     EditText etAnswer4,etAnswer5;
 
     AutoCompleteTextView dropDownMenu1;
@@ -55,7 +56,8 @@ public class TensesTestFragment extends Fragment {
     String questions1,questions2,questions3,questions4,questions5,questions6,questions7,questions8,questions9,questions10;
     String question1After,question2After,question3After;
     String answers1,answers2,answers3,answers4,answers5,answers6,answers7,answers8,answers9,answers10;
-    //String rule;
+    String hint1,hint2;
+    String rule;
 
     private int currentAnswer = 1;
     private int completed,testType;
@@ -78,7 +80,7 @@ public class TensesTestFragment extends Fragment {
 
         tests = database.getReference("Tests");
         users = database.getReference("Users");
-        FirebaseUser userF = mAuth.getInstance().getCurrentUser();
+        FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
 
         users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -94,9 +96,9 @@ public class TensesTestFragment extends Fragment {
 
         testType = getArguments().getInt("testType");
 
-        slot1 = new String[2];
-        slot2 = new String[2];
-        slot3 = new String[2];
+        slot1 = new String[3];
+        slot2 = new String[3];
+        slot3 = new String[3];
 
         switch (testType) {
             case 4:
@@ -105,29 +107,8 @@ public class TensesTestFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        /*questions1 = snapshot.child("Questions").child("0").getValue(String.class);
-                        questions2 = snapshot.child("Questions").child("1").getValue(String.class);
-                        questions3 = snapshot.child("Questions").child("2").getValue(String.class);
-                        questions4 = snapshot.child("Questions").child("3").getValue(String.class);
-                        questions5 = snapshot.child("Questions").child("4").getValue(String.class);
-                        questions6 = snapshot.child("Questions").child("5").getValue(String.class);
-                        questions7 = snapshot.child("Questions").child("6").getValue(String.class);
-                        questions8 = snapshot.child("Questions").child("7").getValue(String.class);
-                        questions9 = snapshot.child("Questions").child("8").getValue(String.class);
-                        questions10 = snapshot.child("Questions").child("9").getValue(String.class);
 
-                        answers1 = snapshot.child("Answers").child("0").getValue(int.class);
-                        answers2 = snapshot.child("Answers").child("1").getValue(int.class);
-                        answers3 = snapshot.child("Answers").child("2").getValue(int.class);
-                        answers4 = snapshot.child("Answers").child("3").getValue(int.class);
-                        answers5 = snapshot.child("Answers").child("4").getValue(int.class);
-                        answers6 = snapshot.child("Answers").child("5").getValue(int.class);
-                        answers7 = snapshot.child("Answers").child("6").getValue(int.class);
-                        answers8 = snapshot.child("Answers").child("7").getValue(int.class);
-                        answers9 = snapshot.child("Answers").child("8").getValue(int.class);
-                        answers10 = snapshot.child("Answers").child("9").getValue(int.class);*/
 
-                        //rule = snapshot.child("Rules").child("rule1").getValue(String.class);
                         updateUI();
                     }
 
@@ -143,27 +124,39 @@ public class TensesTestFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        /*questions1 = snapshot.child("Questions").child("0").getValue(String.class);
+                        questions1 = snapshot.child("Questions").child("0").getValue(String.class);
                         questions2 = snapshot.child("Questions").child("1").getValue(String.class);
                         questions3 = snapshot.child("Questions").child("2").getValue(String.class);
                         questions4 = snapshot.child("Questions").child("3").getValue(String.class);
                         questions5 = snapshot.child("Questions").child("4").getValue(String.class);
-                        questions6 = snapshot.child("Questions").child("5").getValue(String.class);
-                        questions7 = snapshot.child("Questions").child("6").getValue(String.class);
-                        questions8 = snapshot.child("Questions").child("7").getValue(String.class);
-                        questions9 = snapshot.child("Questions").child("8").getValue(String.class);
-                        questions10 = snapshot.child("Questions").child("9").getValue(String.class);
 
-                        answers1 = snapshot.child("Answers").child("0").getValue(int.class);
-                        answers2 = snapshot.child("Answers").child("1").getValue(int.class);
-                        answers3 = snapshot.child("Answers").child("2").getValue(int.class);
-                        answers4 = snapshot.child("Answers").child("3").getValue(int.class);
-                        answers5 = snapshot.child("Answers").child("4").getValue(int.class);
-                        answers6 = snapshot.child("Answers").child("5").getValue(int.class);
-                        answers7 = snapshot.child("Answers").child("6").getValue(int.class);
-                        answers8 = snapshot.child("Answers").child("7").getValue(int.class);
-                        answers9 = snapshot.child("Answers").child("8").getValue(int.class);
-                        answers10 = snapshot.child("Answers").child("9").getValue(int.class);*/
+                        question1After = snapshot.child("Questions").child("After").child("0").getValue(String.class);
+                        question2After = snapshot.child("Questions").child("After").child("1").getValue(String.class);
+                        question3After = snapshot.child("Questions").child("After").child("2").getValue(String.class);
+
+                        //проверь ответы даун
+                        answers1 = snapshot.child("Answers").child("0").child("1").getValue(String.class);
+                        answers2 = snapshot.child("Answers").child("1").child("0").getValue(String.class);
+                        answers3 = snapshot.child("Answers").child("2").child("1").getValue(String.class);
+                        answers4 = snapshot.child("Answers").child("3").getValue(String.class);
+                        answers5 = snapshot.child("Answers").child("4").getValue(String.class);
+
+                        slot1[0] = snapshot.child("Answers").child("0").child("0").getValue(String.class);
+                        slot1[1] = snapshot.child("Answers").child("0").child("1").getValue(String.class);
+                        slot1[2] = " ";
+
+                        slot2[0] = snapshot.child("Answers").child("1").child("0").getValue(String.class);
+                        slot2[1] = snapshot.child("Answers").child("1").child("1").getValue(String.class);
+                        slot2[2] = snapshot.child("Answers").child("1").child("2").getValue(String.class);
+
+                        slot3[0] = snapshot.child("Answers").child("2").child("0").getValue(String.class);
+                        slot3[1] = snapshot.child("Answers").child("2").child("1").getValue(String.class);
+                        slot3[2] = snapshot.child("Answers").child("2").child("2").getValue(String.class);
+
+                        hint1 = snapshot.child("Hint").child("0").getValue(String.class);
+                        hint2 = snapshot.child("Hint").child("1").getValue(String.class);
+
+                        setArrays();
 
                         updateUI();
                     }
@@ -187,9 +180,10 @@ public class TensesTestFragment extends Fragment {
                         questions5 = snapshot.child("Questions").child("4").getValue(String.class);
 
                         question1After = snapshot.child("Questions").child("After").child("0").getValue(String.class);
-                        question2After = snapshot.child("Questions").child("After").child("1").getValue(String.class);;
-                        question3After = snapshot.child("Questions").child("After").child("2").getValue(String.class);;
+                        question2After = snapshot.child("Questions").child("After").child("1").getValue(String.class);
+                        question3After = snapshot.child("Questions").child("After").child("2").getValue(String.class);
 
+                        //Ответы!
                         answers1 = snapshot.child("Answers").child("0").child("0").getValue(String.class);
                         answers2 = snapshot.child("Answers").child("1").child("0").getValue(String.class);
                         answers3 = snapshot.child("Answers").child("2").child("1").getValue(String.class);
@@ -198,12 +192,18 @@ public class TensesTestFragment extends Fragment {
 
                         slot1[0] = snapshot.child("Answers").child("0").child("0").getValue(String.class);
                         slot1[1] = snapshot.child("Answers").child("0").child("1").getValue(String.class);
+                        slot1[2] = " ";
 
                         slot2[0] = snapshot.child("Answers").child("1").child("0").getValue(String.class);
                         slot2[1] = snapshot.child("Answers").child("1").child("1").getValue(String.class);
+                        slot2[2] = " ";
 
                         slot3[0] = snapshot.child("Answers").child("2").child("0").getValue(String.class);
                         slot3[1] = snapshot.child("Answers").child("2").child("1").getValue(String.class);
+                        slot3[2] = " ";
+
+                        hint1 = snapshot.child("Hint").child("0").getValue(String.class);
+                        hint2 = snapshot.child("Hint").child("1").getValue(String.class);
 
                         setArrays();
 
@@ -255,7 +255,8 @@ public class TensesTestFragment extends Fragment {
         questionTextViewAfter3 = rootView.findViewById(R.id.questionTextViewAfter3);
 
         ruleTextView = rootView.findViewById(R.id.ruleTextView);
-        textViewHint = rootView.findViewById(R.id.textViewHint);
+        textViewHint1 = rootView.findViewById(R.id.textViewHint1);
+        textViewHint2 = rootView.findViewById(R.id.textViewHint2);
 
         //Слушатели для первых для трёх полей
         dropDownMenu1.setOnItemClickListener((parent, view, position, id) -> slot1Res = (String)parent.getItemAtPosition(position));
@@ -298,6 +299,9 @@ public class TensesTestFragment extends Fragment {
         questionTextView4.setText(questions4);
         questionTextView5.setText(questions5);
 
+        textViewHint1.setText(hint1);
+        textViewHint2.setText(hint2);
+
     }
 
     private void presentSimpleTest() {
@@ -329,47 +333,47 @@ public class TensesTestFragment extends Fragment {
         //Cringe
 
         if (slot1Res.equalsIgnoreCase(answers1)) {
-            completed+=10;
+            completed+=20;
         }
         if (slot2Res.equalsIgnoreCase(answers2)) {
-            completed+=10;
+            completed+=20;
         }
         if (slot3Res.equalsIgnoreCase(answers3)) {
-            completed+=10;
+            completed+=20;
         }
         if (slot4Res.equalsIgnoreCase(answers4)) {
-            completed+=10;
+            completed+=20;
         }
         if (slot5Res.equalsIgnoreCase(answers5)) {
-            completed+=10;
+            completed+=20;
         }
 
         saver();
 
         ((TensesActivity)getContext()).setFragResult(slot1Res,slot2Res,slot3Res,slot4Res,slot5Res,
                                                         answers1,answers2,answers3,answers4,answers5,
-                                                        completed, 5);
+                                                        completed, 5,testType);
 
     }
 
     private void saver() {
-        //Intent intent = new Intent(getActivity(),SaverActivity.class);
+
         switch (testType) {
             case 4:
                 user.setTest4Interest(completed);
                 users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test4Interest").setValue(user.getTest4Interest());
-                //intent.putExtra("result4", completed);
                 break;
+
             case 5:
                 user.setTest5Interest(completed);
                 users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test5Interest").setValue(user.getTest5Interest());
-                //intent.putExtra("result5", completed);
                 break;
+
             case 6:
                 user.setTest6Interest(completed);
                 users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test6Interest").setValue(user.getTest6Interest());
-                //intent.putExtra("result6", completed);
                 break;
+
             default:
                 Toast.makeText(getActivity(), "Error",
                         Toast.LENGTH_SHORT).show();
@@ -385,46 +389,5 @@ public class TensesTestFragment extends Fragment {
         updateUI();
     }
 
-    private void onClickAnswerButtons(View view) {
-        switch (view.getId()) {
-            /*
-             * 1 - AM
-             * 2 - IS
-             * 3 - ARE
-             *
-             * 1 - DO
-             * 2 - DOES
-             *
-             */
-            /*case R.id.btn1:
-                if (currentAnswer == 1) { completed += 10;}
-                if (currentAnswer == 8) { completed += 10;}
-                if (currentAnswer == 10) { completed += 10;}
-                break;
-            case R.id.btn2:
-                if (currentAnswer == 2) { completed += 10;}
-                if (currentAnswer == 4) { completed += 10;}
-                if (currentAnswer == 5) { completed += 10;}
-                if (currentAnswer == 9) { completed += 10;}
-                break;
-            case R.id.btn3:
-                if (currentAnswer == 3) { completed += 10;}
-                if (currentAnswer == 6) { completed += 10;}
-                if (currentAnswer == 7) { completed += 10;}
-                break;*/
-        }
-        currentAnswer++;
-        switch (testType) {
-            case 4:
-                presentSimpleTest();
-                break;
-            case 5:
-                pastSimpleTest();
-                break;
-            case 6:
-                futureSimpleTest();
-                break;
-        }
 
-    }
 }

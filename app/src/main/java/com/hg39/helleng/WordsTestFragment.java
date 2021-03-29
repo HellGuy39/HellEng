@@ -219,7 +219,7 @@ public class WordsTestFragment extends Fragment {
                 }
 
                 ((WordsActivity)getContext()).setFragResult(userRes1,userRes2,userRes3,userRes4,userRes5,userRes6,userRes7,userRes8,userRes9,userRes10,
-                                                            word1,word2,word3,word4,word5,word6,word7,word8,word9,word10,completed,10);
+                                                            word1,word2,word3,word4,word5,word6,word7,word8,word9,word10,completed,10,testType);
 
         }
         editTextField.setText(null);

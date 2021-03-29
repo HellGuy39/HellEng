@@ -140,7 +140,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="Registered since ~date~"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textIsSelectable="true"/>
 
                             <TextView
                                 android:id="@+id/textViewTestStarted"
@@ -148,7 +149,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="Tests started: ~num~"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textIsSelectable="true"/>
 
                             <TextView
                                 android:id="@+id/textViewTestFullCompleted"
@@ -156,7 +158,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="Tests completed 100%: ~num~"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textIsSelectable="true"/>
 
                             <TextView
                                 android:id="@+id/textViewUserId"
@@ -164,7 +167,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="Id: ~id~"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textIsSelectable="true"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

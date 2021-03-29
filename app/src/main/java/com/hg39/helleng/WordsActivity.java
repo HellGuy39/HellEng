@@ -45,13 +45,13 @@ public class WordsActivity extends AppCompatActivity {
 
         switch (testType) {
             case 1:
-                textLabel.setText("Words: furniture");
+                textLabel.setText("Furniture");
                 break;
             case 2:
-                textLabel.setText("Words: school supplies");
+                textLabel.setText("School supplies");
                 break;
             case 3:
-                textLabel.setText("Words: food");
+                textLabel.setText("Food");
                 break;
         }
         //Bundle aFrg = new Bundle();
@@ -72,7 +72,7 @@ public class WordsActivity extends AppCompatActivity {
                                  String task6UserRes, String task7UserRes, String task8UserRes, String task9UserRes, String task10UserRes,
                                  String task1TrueRes, String task2TrueRes, String task3TrueRes, String task4TrueRes, String task5TrueRes,
                                  String task6TrueRes, String task7TrueRes, String task8TrueRes, String task9TrueRes, String task10TrueRes,
-                                 int completed, int countOfTasks) {
+                                 int completed, int countOfTasks, int testType) {
 
         fragResult = new TestResultFragment();
 
@@ -102,6 +102,7 @@ public class WordsActivity extends AppCompatActivity {
 
         testArguments.putInt("completedInt", completed);
         testArguments.putInt("countOfTasks", countOfTasks);
+        testArguments.putInt("testType", testType);
 
         fragResult.setArguments(testArguments);
 
@@ -153,5 +154,9 @@ public class WordsActivity extends AppCompatActivity {
                         WordsActivity.super.onBackPressed();
                     }
                 }).create().show();
+    }
+
+    protected void finishActivity() {
+        finish();
     }
 }

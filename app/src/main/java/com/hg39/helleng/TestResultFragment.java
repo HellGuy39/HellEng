@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,7 +40,7 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
     String trueAnswer1,trueAnswer2,trueAnswer3,trueAnswer4,trueAnswer5,trueAnswer6,
             trueAnswer7,trueAnswer8,trueAnswer9,trueAnswer10,trueAnswer11,trueAnswer12;
 
-    int completed,countOfTasks;
+    int completed,countOfTasks,testType;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,9 +75,10 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
         trueAnswer11 = getArguments().getString("task11TrueAnswer"," ");
         trueAnswer12 = getArguments().getString("task12TrueAnswer"," ");
 
-
         completed = getArguments().getInt("completedInt", 0);
         countOfTasks = getArguments().getInt("countOfTasks", 0);
+        testType = getArguments().getInt("testType", 0);
+
     }
 
     @Nullable
@@ -183,15 +185,26 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
         tvTrueAnswer11.setText(trueAnswer11);
         tvTrueAnswer12.setText(trueAnswer12);
 
-        tvCompleted.setText(Integer.toString(completed) + "%");
+        tvCompleted.setText(completed + "%");
 
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnOk) {
-            startActivity(new Intent(getContext(),MainActivity.class));
-            ((TensesActivity)getContext()).finishActivity();
+
+            if (testType == 0) {
+                Toast.makeText(getContext(),"Something wrong!",Toast.LENGTH_SHORT).show();
+            }
+
+            if (testType == 1 || testType == 2 || testType == 3) {
+                startActivity(new Intent(getContext(), MainActivity.class));
+                    ((WordsActivity)getContext()).finishActivity();
+            }
+            if (testType == 4 || testType == 5 || testType == 6) {
+                startActivity(new Intent(getContext(), MainActivity.class));
+                    ((TensesActivity)getContext()).finishActivity();
+            }
         }
     }
 

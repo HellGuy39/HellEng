@@ -1,187 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:elevation="10dp"
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Edit mode"
+            app:menu="@menu/top_app_bar"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:titleTextColor="?attr/titleTextColor"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="10dp">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/TextViewProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/window_design"
-                android:padding="5dp"
-                android:text="Profile"
-                android:textSize="24sp" />
-
-            <RelativeLayout
-                android:layout_marginStart="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/window_design">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Edit mode"
-                    android:padding="5dp"
-                    android:textSize="24sp"
-                    android:layout_alignParentStart="true" />
-
-                <Button
-                    android:id="@+id/btnEdit"
-                    android:elevation="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_height="wrap_content"
-                    android:text="Back"
-                    android:textColor="@color/white"
-                    app:strokeColor="@color/white"
-                    app:icon="@drawable/ic_baseline_arrow_back_24"
-                    app:iconTint="@color/white"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-            </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/profileImage"
-                android:scaleType="centerCrop"
-                android:background="@color/blue"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:src="@drawable/ic_baseline_image_24" />
-
-            <LinearLayout
-                android:layout_marginStart="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <EditText
-                    android:inputType="textPersonName"
-                    android:id="@+id/editTextFirstName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:hint="First Name"
-                    android:background="@drawable/window_design"
-                    android:textSize="20sp"/>
-
-                <EditText
-                    android:id="@+id/editTExtLastName"
-                    android:inputType="textPersonName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="Last Name"
-                    android:padding="5dp"
-                    android:background="@drawable/window_design"
-                    android:textSize="20sp"/>
-
-                <EditText
-                    android:inputType="textPersonName"
-                    android:id="@+id/editTextUserStatus"
-                    android:layout_marginTop="0dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:hint="Status" />
-            </LinearLayout>
-        </LinearLayout>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textViewStat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Statistics"
-                android:padding="5dp"
-                android:background="@drawable/window_design"
-                android:layout_marginTop="10dp"
-                android:textSize="24sp"/>
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textViewReg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Registered since ~date~"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/textViewTestStarted"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Tests started: ~num~"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/textViewTestFullCompleted"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Tests completed 100%: ~num~"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </LinearLayout>
-        <RelativeLayout
-            android:layout_marginTop="10dp"
-            android:background="@drawable/window_design"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:id="@+id/btnSave"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Save"
-                android:textColor="@color/white"
-                app:strokeColor="@color/white"
-                app:iconTint="@color/white"
-                app:icon="@drawable/ic_baseline_save_24"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                android:layout_margin="10dp"
+                android:checkable="true"
+                android:focusable="true"
+                app:cardElevation="1dp"
+                app:strokeWidth="1dp">
 
-        </RelativeLayout>
-    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/profileImage"
+                        android:layout_width="140dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_baseline_image_24" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textField1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextFirstName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="First name"
+                            android:inputType="textPersonName" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textField2"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextLastName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Last name"
+                            android:inputType="textPersonName" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textField3"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextUserStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Status"
+                            android:inputType="textPersonName"
+                            android:layout_marginBottom="10dp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingButtonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:tint="?attr/navigationIconTint"
+        android:backgroundTint="?attr/colorPrimary"
+        app:srcCompat="@drawable/ic_baseline_save_24" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

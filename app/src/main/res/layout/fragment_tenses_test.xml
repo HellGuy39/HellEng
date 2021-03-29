@@ -49,11 +49,11 @@
                 app:strokeWidth="1dp">
 
                 <TextView
-                    android:id="@+id/textViewHint"
+                    android:id="@+id/textViewHint1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="@string/second_text_grammar_fs_t1"
+                    android:text=" "
                     android:textColor="?android:attr/textColorSecondary" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -230,11 +230,11 @@
                 app:strokeWidth="1dp">
 
                 <TextView
-                    android:id="@+id/textViewHint1"
+                    android:id="@+id/textViewHint2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="@string/second_text_grammar_fs_t2"
+                    android:text=" "
                     android:textColor="?android:attr/textColorSecondary" />
             </com.google.android.material.card.MaterialCardView>
 

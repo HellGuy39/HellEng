@@ -11,9 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:padding="10dp"
         tools:layout_editor_absoluteX="165dp"
         tools:layout_editor_absoluteY="233dp">
 
@@ -22,7 +20,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:focusable="true"
-            app:cardElevation="10dp"
+            app:cardElevation="0dp"
             app:strokeWidth="1dp">
 
             <TextView
@@ -40,7 +38,7 @@
             android:layout_height="wrap_content"
             android:checkable="true"
             android:focusable="true"
-            app:cardElevation="10dp"
+            app:cardElevation="0dp"
             app:strokeWidth="1dp"
             android:layout_marginTop="10dp">
 

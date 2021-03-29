@@ -32,10 +32,10 @@ import static com.hg39.helleng.MainActivity.PREFS_USER_NAME;
 
 public class HomeFragment extends Fragment {
 
-    private TextView textViewGreeting,date;
-    private TextView dateMonth,dateDayOfWeek;
-    private TextView textViewUnfinishedTest1,textViewUnfinishedTest2,textViewUnfinishedTest3;
-    private String userName;
+    TextView textViewGreeting,date;
+    TextView dateMonth,dateDayOfWeek;
+    //TextView textViewUnfinishedTest1,textViewUnfinishedTest2,textViewUnfinishedTest3;
+    String userName;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
@@ -43,40 +43,13 @@ public class HomeFragment extends Fragment {
 
     User user = new User();
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
 
-        View rootView =
-                inflater.inflate(R.layout.fragment_home,container,false);
-        dateMonth = rootView.findViewById(R.id.dateMonth);
-        dateDayOfWeek = rootView.findViewById(R.id.dateDayOfWeek);
-        date = rootView.findViewById(R.id.date);
-        textViewGreeting = rootView.findViewById(R.id.textViewGreeting);
-        textViewUnfinishedTest1 = rootView.findViewById(R.id.textViewUnfinishedTest1);
-        textViewUnfinishedTest2 = rootView.findViewById(R.id.textViewUnfinishedTest2);
-        textViewUnfinishedTest3 = rootView.findViewById(R.id.textViewUnfinishedTest3);
-
-        Calendar calendar = Calendar.getInstance();
-        dateMonth.setText(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG_FORMAT, Locale.ENGLISH));
-        dateDayOfWeek.setText(calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG_FORMAT,Locale.ENGLISH));
-
-        // Текущее время
-        Date currentDate = new Date();
-        // Форматирование времени как "день.месяц.год"
-        DateFormat dateFormat = new SimpleDateFormat("dd"/*"dd.MM.yyyy"*/, Locale.getDefault());
-        String dateText = dateFormat.format(currentDate);
-        // Форматирование времени как "часы:минуты:секунды"
-        //DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        //String timeText = timeFormat.format(currentDate);
-
-        date.setText(dateText);
-        //textViewTime.setText(timeText);
-
-        //userName = getArguments().getString("userData");
         FirebaseUser userF = mAuth.getInstance().getCurrentUser();
         users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -96,6 +69,39 @@ public class HomeFragment extends Fragment {
                 //Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //return super.onCreateView(inflater, container, savedInstanceState);
+
+        View rootView =
+                inflater.inflate(R.layout.fragment_home,container,false);
+        dateMonth = rootView.findViewById(R.id.dateMonth);
+        dateDayOfWeek = rootView.findViewById(R.id.dateDayOfWeek);
+        date = rootView.findViewById(R.id.date);
+        textViewGreeting = rootView.findViewById(R.id.textViewGreeting);
+        //textViewUnfinishedTest1 = rootView.findViewById(R.id.textViewUnfinishedTest1);
+        //textViewUnfinishedTest2 = rootView.findViewById(R.id.textViewUnfinishedTest2);
+        //textViewUnfinishedTest3 = rootView.findViewById(R.id.textViewUnfinishedTest3);
+
+        Calendar calendar = Calendar.getInstance();
+        dateMonth.setText(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG_FORMAT, Locale.ENGLISH));
+        dateDayOfWeek.setText(calendar.getDisplayName(Calendar.DAY_OF_WEEK,Calendar.LONG_FORMAT,Locale.ENGLISH));
+
+        // Текущее время
+        Date currentDate = new Date();
+        // Форматирование времени как "день.месяц.год"
+        DateFormat dateFormat = new SimpleDateFormat("dd"/*"dd.MM.yyyy"*/, Locale.getDefault());
+        String dateText = dateFormat.format(currentDate);
+        // Форматирование времени как "часы:минуты:секунды"
+        //DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        //String timeText = timeFormat.format(currentDate);
+
+        date.setText(dateText);
+        //textViewTime.setText(timeText);
 
         textViewGreeting.setText("Welcome back, " + userName + "!");
 

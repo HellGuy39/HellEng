@@ -51,13 +51,13 @@ public class TensesActivity extends AppCompatActivity {
 
         switch (testType) {
             case 4:
-                textLabel.setText("Tenses: Present Simple");
+                textLabel.setText("Present Simple");
                 break;
             case 5:
-                textLabel.setText("Tenses: Past Simple");
+                textLabel.setText("Past Simple");
                 break;
             case 6:
-                textLabel.setText("Tenses: Future Simple");
+                textLabel.setText("Future Simple");
                 break;
         }
 
@@ -73,7 +73,7 @@ public class TensesActivity extends AppCompatActivity {
 
     protected void setFragResult(String task1UserRes, String task2UserRes, String task3UserRes, String task4UserRes, String task5UserRes,
                                  String task1TrueRes, String task2TrueRes, String task3TrueRes, String task4TrueRes, String task5TrueRes,
-                                 int completed, int countOfTasks) {
+                                 int completed, int countOfTasks, int testType) {
 
         fragResult = new TestResultFragment();
 
@@ -93,6 +93,7 @@ public class TensesActivity extends AppCompatActivity {
 
         testArguments.putInt("completedInt", completed);
         testArguments.putInt("countOfTasks", countOfTasks);
+        testArguments.putInt("testType", testType);
 
         fragResult.setArguments(testArguments);
 

@@ -43,7 +43,7 @@
                 android:layout_marginTop="10dp"
                 android:checkable="true"
                 android:focusable="true"
-                app:cardElevation="10dp"
+                app:cardElevation="1dp"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -110,7 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                app:cardElevation="10dp"
+                app:cardElevation="1dp"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -177,7 +177,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                app:cardElevation="10dp"
+                app:cardElevation="1dp"
                 app:strokeWidth="1dp">
 
                 <LinearLayout

@@ -36,15 +36,18 @@ import com.squareup.picasso.Picasso;
 
 public class EditProfileFragment extends Fragment {
 
-    private Button btnBack,btnSave;
-    private EditText editTextFirstName,editTextLastName,editTextUserStatus;
+    EditText editTextFirstName,editTextLastName,editTextUserStatus;
     ImageView profileImage;
+
+    com.google.android.material.floatingactionbutton.FloatingActionButton fltBtnSave;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
     StorageReference storageReference;
     StorageReference profileRef;
+
+    com.google.android.material.appbar.MaterialToolbar toolbar;
 
     User user = new User();
     String firstNStr,lastNStr,statusStr;
@@ -54,6 +57,8 @@ public class EditProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        users = database.getReference("Users");
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -64,16 +69,7 @@ public class EditProfileFragment extends Fragment {
                 Picasso.get().load(uri).into(profileImage);
             }
         });
-    }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
-
-        database = FirebaseDatabase.getInstance();
-        users = database.getReference("Users");
-        mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser userF = mAuth.getCurrentUser();
 
@@ -99,20 +95,34 @@ public class EditProfileFragment extends Fragment {
             }
         });
 
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //return super.onCreateView(inflater, container, savedInstanceState);
+
         View rootView =
                 inflater.inflate(R.layout.fragment_edit_profile,container,false);
 
         profileImage = rootView.findViewById(R.id.profileImage);
 
-        btnBack = rootView.findViewById(R.id.btnEdit);
-        btnSave = rootView.findViewById(R.id.btnSave);
+        toolbar = rootView.findViewById(R.id.topAppBar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity())
+                        .outEditProfileFragment();
+            }
+        });
 
-        btnBack.setOnClickListener(this::onClickBtnBack);
-        btnSave.setOnClickListener(this::onClickBtnSave);
+        fltBtnSave = rootView.findViewById(R.id.floatingButtonSave);
+
+        fltBtnSave.setOnClickListener(this::onClickBtnSave);
         profileImage.setOnClickListener(this::onClickChangeProfileImage);
 
         editTextFirstName = rootView.findViewById(R.id.editTextFirstName);
-        editTextLastName = rootView.findViewById(R.id.editTExtLastName);
+        editTextLastName = rootView.findViewById(R.id.editTextLastName);
         editTextUserStatus = rootView.findViewById(R.id.editTextUserStatus);
 
         editTextFirstName.setText(firstNStr);
@@ -149,11 +159,6 @@ public class EditProfileFragment extends Fragment {
             }
         });
 
-    }
-
-    protected void onClickBtnBack(View view) {
-        ((MainActivity)getActivity())
-                .outEditProfileFragment();
     }
 
     protected void onClickChangeProfileImage(View view) {
