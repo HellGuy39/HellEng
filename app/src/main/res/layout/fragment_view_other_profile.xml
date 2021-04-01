@@ -17,8 +17,8 @@
             android:layout_height="?attr/actionBarSize"
             android:elevation="10dp"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:menu="@menu/top_app_bar_profile"
-            app:navigationIcon="@drawable/ic_baseline_account_box_24"
+            app:menu="@menu/top_app_bar"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             app:navigationIconTint="?attr/navigationIconTint"
             app:title="@string/app_profile"
             app:titleTextColor="?attr/titleTextColor" />
@@ -78,7 +78,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:padding="5dp"
-                                android:text="~Adam Semenov~"
+                                android:text="Username"
                                 android:textSize="20sp" />
 
                             <TextView

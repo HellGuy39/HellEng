@@ -34,6 +34,8 @@ import com.google.firebase.storage.UploadTask;
 import com.hg39.helleng.Models.User;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 public class EditProfileFragment extends Fragment {
 
     EditText editTextFirstName,editTextLastName,editTextUserStatus;
@@ -51,6 +53,8 @@ public class EditProfileFragment extends Fragment {
 
     User user = new User();
     String firstNStr,lastNStr,statusStr;
+
+    FirebaseUser userF;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +75,7 @@ public class EditProfileFragment extends Fragment {
         });
 
 
-        FirebaseUser userF = mAuth.getCurrentUser();
+        userF = mAuth.getCurrentUser();
 
         users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -191,6 +195,19 @@ public class EditProfileFragment extends Fragment {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).into(profileImage);
+                        HashMap hashMap = new HashMap();
+                        hashMap.put("profileImage",uri.toString());
+                        users.child(mAuth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
+                            @Override
+                            public void onSuccess(Object o) {
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
                     }
                 });
             }

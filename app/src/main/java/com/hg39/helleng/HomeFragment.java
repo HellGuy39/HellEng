@@ -30,7 +30,7 @@ import java.util.Locale;
 
 import static com.hg39.helleng.MainActivity.PREFS_USER_NAME;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     TextView textViewGreeting,date;
     TextView dateMonth,dateDayOfWeek;
@@ -40,6 +40,8 @@ public class HomeFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
+
+    com.google.android.material.card.MaterialCardView cardViewFriends;
 
     User user = new User();
 
@@ -83,9 +85,9 @@ public class HomeFragment extends Fragment {
         dateDayOfWeek = rootView.findViewById(R.id.dateDayOfWeek);
         date = rootView.findViewById(R.id.date);
         textViewGreeting = rootView.findViewById(R.id.textViewGreeting);
-        //textViewUnfinishedTest1 = rootView.findViewById(R.id.textViewUnfinishedTest1);
-        //textViewUnfinishedTest2 = rootView.findViewById(R.id.textViewUnfinishedTest2);
-        //textViewUnfinishedTest3 = rootView.findViewById(R.id.textViewUnfinishedTest3);
+
+        cardViewFriends = rootView.findViewById(R.id.cardFriends);
+        cardViewFriends.setOnClickListener(this::onClick);
 
         Calendar calendar = Calendar.getInstance();
         dateMonth.setText(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG_FORMAT, Locale.ENGLISH));
@@ -112,4 +114,15 @@ public class HomeFragment extends Fragment {
         textViewGreeting.setText("Welcome back, " + userName + "!");
     }
 
+
+    @Override
+    public void onClick(View v) {
+
+        if (v.getId() == R.id.cardFriends) {
+
+            ((MainActivity)getContext()).setFragFriends();
+
+        }
+
+    }
 }

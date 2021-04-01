@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -59,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragEditProfile;
     Fragment fragSelectedVocabulary;
     Fragment fragSelectedGrammar;
+    Fragment fragFriends;
+    Fragment fragFindFriends;
+    Fragment fragViewOtherProfile;
 
     User userDB = new User();
 
@@ -85,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
         fragProfile = new ProfileFragment();
         fragSelectedVocabulary = new VocabularySelectedFragment();
         fragSelectedGrammar = new GrammarSelectedFragment();
+        fragFriends = new FriendsFragment();
+        fragFindFriends = new FindFriendsFragment();
+        fragViewOtherProfile = new ViewOtherProfileFragment();
 
         /*myRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -210,6 +217,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
+    protected void setFragViewOtherProfile(String userKey) {
+        Bundle bundle = new Bundle();
+        bundle.putString("userKey",userKey);
+        fragViewOtherProfile.setArguments(bundle);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,fragViewOtherProfile)
+                .commit();
+    }
+
     protected void setFragCourses() {
         userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
         getSupportFragmentManager()
@@ -223,6 +240,27 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container,fragSelectedVocabulary)
+                .commit();
+    }
+
+    protected void setFragHome(){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,fragHome)
+                .commit();
+    }
+
+    protected void setFragFriends() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,fragFriends)
+                .commit();
+    }
+
+    protected void setFragFindFriends() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,fragFindFriends)
                 .commit();
     }
 
@@ -288,4 +326,5 @@ public class MainActivity extends AppCompatActivity {
             users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue(userDB.getWebStatus());
         }
     }
+
 }

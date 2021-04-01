@@ -1,14 +1,12 @@
 package com.hg39.helleng;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,16 +29,18 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileFragment extends Fragment {
+public class ViewOtherProfileFragment extends Fragment {
 
     Button btnEdit,btnSignOut;
     TextView textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted,textViewUserId;
     TextView textViewFullName;
     CircleImageView profileImage;
     com.google.android.material.appbar.MaterialToolbar topAppBar;
+
+    FirebaseUser mUser;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
-    DatabaseReference users;
+    DatabaseReference mUserRef;
     StorageReference storageReference;
     StorageReference profileRef;
 
@@ -50,6 +49,8 @@ public class ProfileFragment extends Fragment {
     String profileImageUri;
 
     User user = new User();
+
+    String userID;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -60,52 +61,45 @@ public class ProfileFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        userID = getArguments().getString("userKey","Nope");
         mAuth = FirebaseAuth.getInstance();
+
         storageReference = FirebaseStorage.getInstance().getReference();
 
         profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        users = database.getReference("Users");
+        mUserRef = database.getReference("Users").child(userID);
 
-        if (mAuth != null) {
-            userId = mAuth.getCurrentUser().getUid();
-        }
-
+        mUser = mAuth.getCurrentUser();
         FirebaseUser userF = mAuth.getCurrentUser();
 
-        users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
+        mUserRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                firstNStr = dataSnapshot.child("firstName").getValue(String.class);
-                lastNStr = dataSnapshot.child("lastName").getValue(String.class);
-                statusStr = dataSnapshot.child("status").getValue(String.class);
-                regDate = dataSnapshot.child("registerDate").getValue(String.class);
-                testsFullCompleted = dataSnapshot.child("testsFullCompleted").getValue(int.class);
-                testsStarted = dataSnapshot.child("testsStarted").getValue(int.class);
-                profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
-                updateUI();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists())
+                {
+                    profileImageUri = snapshot.child("profileImage").getValue(String.class);
+                    firstNStr = snapshot.child("firstName").getValue(String.class);
+                    lastNStr = snapshot.child("lastName").getValue(String.class);
+                    statusStr = snapshot.child("status").getValue(String.class);
+                    regDate = snapshot.child("registerDate").getValue(String.class);
 
+                    updateUI();
+
+                }
+                else
+                {
+                    Toast.makeText(getContext(),"Data not found",Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-                //Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
-                // Failed to read value
-                //Log.w(TAG, "Failed to read value.", error.toException());
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
-
-        /*profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(profileImage);
-            }
-        });*/
 
     }
 
@@ -115,7 +109,7 @@ public class ProfileFragment extends Fragment {
         //return super.onCreateView(inflater, container, savedInstanceState);
 
         View rootView =
-                inflater.inflate(R.layout.fragment_profile,container,false);
+                inflater.inflate(R.layout.fragment_view_other_profile,container,false);
 
         topAppBar = rootView.findViewById(R.id.topAppBar);
         textViewUserId = rootView.findViewById(R.id.textViewUserId);
@@ -127,47 +121,12 @@ public class ProfileFragment extends Fragment {
         profileImage = rootView.findViewById(R.id.profileImage);
 
 
-        //btnEdit = rootView.findViewById(R.id.btnEdit);
-        //btnSignOut = rootView.findViewById(R.id.btnSingOut);
-
-        //btnSignOut.setOnClickListener(this::onClick);
-        //btnEdit.setOnClickListener(this::onClick);
 
         topAppBar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_baseline_settings_24));
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Хз для чего это нужно
-            }
-        });
-
-        topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                switch (item.getItemId()) {
-
-                    case R.id.editProfile:
-                        ((MainActivity)getActivity())
-                                .setEditProfileFragment();
-                        break;
-
-                    case R.id.settings:
-                        break;
-
-                    case R.id.reference:
-                        break;
-
-                    case R.id.aboutTheApp:
-                        break;
-
-                    case R.id.signOut:
-                        ((MainActivity)getActivity())
-                                .signOut();
-                        break;
-                }
-
-                return false;
+                ((MainActivity)getContext()).setFragFindFriends();
             }
         });
 
@@ -177,6 +136,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateUI() {
+
         textViewReg.setText("Registered since " + regDate);
         textViewTestsStarted.setText("Tests started: " + testsStarted);
         textViewTestsFullCompleted.setText("Tests completed 100%: " + testsFullCompleted);
@@ -186,12 +146,6 @@ public class ProfileFragment extends Fragment {
 
         Picasso.get().load(profileImageUri).into(profileImage);
 
-        /*profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(profileImage);
-            }
-        });*/
     }
 
     @Override
@@ -205,17 +159,4 @@ public class ProfileFragment extends Fragment {
         super.onResume();
     }
 
-    /*@Override
-    public void onClick(View v) {
-        /*if (v.getId() == R.id.btnEdit) {
-            ((MainActivity)getActivity())
-                    .setEditProfileFragment();
-        } else if (v.getId() == R.id.btnSingOut) {
-            ((MainActivity)getActivity())
-                    .signOut();
-            } else {
-                Toast.makeText(v.getContext(),"Error",Toast.LENGTH_SHORT).show();
-            }
-
-        }*/
     }

@@ -5,13 +5,20 @@ public class User {
     private String email,password,registerDate;
     private String firstName,lastName,status;
     private String webStatus;
+    private String profileImage;
     private int testsStarted,testsFullCompleted;
     private int test1Interest,test2Interest,test3Interest,test4Interest,
             test5Interest,test6Interest,test7Interest,test8Interest,
             test9Interest,test10Interest,test11Interest,test12Interest,
             test13Interest,test14Interest,test15Interest,test16Interest;
 
-    public User(String email, String password, String registerDate, String firstName, String lastName, String status, String webStatus, int testsStarted, int testsFullCompleted, int test1Interest, int test2Interest, int test3Interest, int test4Interest, int test5Interest, int test6Interest, int test7Interest, int test8Interest, int test9Interest, int test10Interest, int test11Interest, int test12Interest, int test13Interest, int test14Interest, int test15Interest, int test16Interest) {
+    public User(String email, String password, String registerDate, String firstName,
+                String lastName, String status, String webStatus, String profileImage, int testsStarted,
+                int testsFullCompleted, int test1Interest, int test2Interest, int test3Interest,
+                int test4Interest, int test5Interest, int test6Interest, int test7Interest,
+                int test8Interest, int test9Interest, int test10Interest, int test11Interest,
+                int test12Interest, int test13Interest, int test14Interest, int test15Interest,
+                int test16Interest) {
         this.email = email;
         this.password = password;
         this.registerDate = registerDate;
@@ -19,6 +26,7 @@ public class User {
         this.lastName = lastName;
         this.status = status;
         this.webStatus = webStatus;
+        this.profileImage = profileImage;
         this.testsStarted = testsStarted;
         this.testsFullCompleted = testsFullCompleted;
         this.test1Interest = test1Interest;
@@ -40,6 +48,14 @@ public class User {
     }
 
     public User() {}
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
 
     public int getTest1Interest() {
         return test1Interest;

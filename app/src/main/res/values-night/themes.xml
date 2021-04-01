@@ -19,5 +19,6 @@
         <item name="navigationIconTint">@color/white</item>
         <item name="android:navigationBarColor">@color/light_black</item>
         <item name="colorControlNormal">@color/white</item>
+        <item name="iconTint">@color/white</item>
     </style>
 </resources>
