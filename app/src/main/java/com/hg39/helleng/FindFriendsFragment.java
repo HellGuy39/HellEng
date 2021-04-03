@@ -1,17 +1,12 @@
 package com.hg39.helleng;
 
-import android.app.DownloadManager;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -40,7 +34,7 @@ public class FindFriendsFragment extends Fragment {
     SearchView searchView;
 
     FirebaseRecyclerOptions<User> options;
-    FirebaseRecyclerAdapter<User, FindFriendViewHolder> adapter;
+    FirebaseRecyclerAdapter<User, UserViewHolder> adapter;
 
     DatabaseReference mUserRef;
     FirebaseAuth mAuth;
@@ -93,9 +87,9 @@ public class FindFriendsFragment extends Fragment {
 
         options = new FirebaseRecyclerOptions.Builder<User>().setQuery(query,User.class).build();
 
-        adapter = new FirebaseRecyclerAdapter<User, FindFriendViewHolder>(options) {
+        adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull FindFriendViewHolder holder, int position, @NonNull User model) {
+            protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
                 if (!mUser.getUid().equals(getRef(position).getKey().toString()))
                 {
                     String username = model.getFirstName() + " " + model.getLastName();
@@ -118,10 +112,10 @@ public class FindFriendsFragment extends Fragment {
 
             @NonNull
             @Override
-            public FindFriendViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_view_find_friend,parent,false);
-                return new FindFriendViewHolder(view);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_view_user,parent,false);
+                return new UserViewHolder(view);
             }
         };
         adapter.startListening();

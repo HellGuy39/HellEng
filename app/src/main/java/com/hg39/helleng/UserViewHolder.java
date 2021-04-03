@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class FindFriendViewHolder extends RecyclerView.ViewHolder {
+public class UserViewHolder extends RecyclerView.ViewHolder {
 
     CircleImageView profileImage;
     TextView username,status;
 
-    public FindFriendViewHolder(@NonNull View itemView) {
+    public UserViewHolder(@NonNull View itemView) {
         super(itemView);
         profileImage = itemView.findViewById(R.id.profileImage);
         username = itemView.findViewById(R.id.username);

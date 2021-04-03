@@ -5,15 +5,18 @@ public class User {
     private String email,password,registerDate;
     private String firstName,lastName,status;
     private String webStatus;
-    private String profileImage;
+    private String username;
+    private String profileImage,profileImageUri;
+    private String userStatus;
     private int testsStarted,testsFullCompleted;
     private int test1Interest,test2Interest,test3Interest,test4Interest,
             test5Interest,test6Interest,test7Interest,test8Interest,
             test9Interest,test10Interest,test11Interest,test12Interest,
             test13Interest,test14Interest,test15Interest,test16Interest;
 
-    public User(String email, String password, String registerDate, String firstName,
+    public User(String email, String password, String registerDate, String firstName, String username,
                 String lastName, String status, String webStatus, String profileImage, int testsStarted,
+                String userStatus, String profileImageUri,
                 int testsFullCompleted, int test1Interest, int test2Interest, int test3Interest,
                 int test4Interest, int test5Interest, int test6Interest, int test7Interest,
                 int test8Interest, int test9Interest, int test10Interest, int test11Interest,
@@ -24,9 +27,12 @@ public class User {
         this.registerDate = registerDate;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
+        this.userStatus = userStatus;
         this.status = status;
         this.webStatus = webStatus;
         this.profileImage = profileImage;
+        this.profileImageUri = profileImageUri;
         this.testsStarted = testsStarted;
         this.testsFullCompleted = testsFullCompleted;
         this.test1Interest = test1Interest;
@@ -48,6 +54,30 @@ public class User {
     }
 
     public User() {}
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public String getProfileImageUri() {
+        return profileImageUri;
+    }
+
+    public void setProfileImageUri(String profileImageUri) {
+        this.profileImageUri = profileImageUri;
+    }
 
     public String getProfileImage() {
         return profileImage;

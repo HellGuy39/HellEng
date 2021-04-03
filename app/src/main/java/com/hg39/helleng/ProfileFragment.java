@@ -1,6 +1,7 @@
 package com.hg39.helleng;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -153,12 +154,14 @@ public class ProfileFragment extends Fragment {
                         break;
 
                     case R.id.settings:
+                        startActivity(new Intent(getContext(),SettingsActivity.class));
                         break;
 
                     case R.id.reference:
                         break;
 
                     case R.id.aboutTheApp:
+                        startActivity(new Intent(getContext(),AboutTheAppActivity.class));
                         break;
 
                     case R.id.signOut:
