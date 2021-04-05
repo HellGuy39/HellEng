@@ -41,6 +41,8 @@ public class EditProfileFragment extends Fragment {
     EditText editTextFirstName,editTextLastName,editTextUserStatus;
     ImageView profileImage;
 
+    String profileImageUri;
+
     com.google.android.material.floatingactionbutton.FloatingActionButton fltBtnSave;
 
     FirebaseAuth mAuth;
@@ -51,7 +53,6 @@ public class EditProfileFragment extends Fragment {
 
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
-    User user = new User();
     String firstNStr,lastNStr,statusStr;
 
     FirebaseUser userF;
@@ -66,13 +67,13 @@ public class EditProfileFragment extends Fragment {
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
+        /*profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(profileImage);
             }
-        });
+        });*/
 
 
         userF = mAuth.getCurrentUser();
@@ -87,13 +88,15 @@ public class EditProfileFragment extends Fragment {
                 lastNStr = dataSnapshot.child("lastName").getValue(String.class);
                 statusStr = dataSnapshot.child("status").getValue(String.class);
 
+                profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
+
                 updateUI();
 
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
                 // Failed to read value
                 //Log.w(TAG, "Failed to read value.", error.toException());
             }
@@ -155,13 +158,11 @@ public class EditProfileFragment extends Fragment {
         editTextLastName.setText(lastNStr);
         editTextUserStatus.setText(statusStr);
 
-        profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(profileImage);
-            }
-        });
+        if (profileImageUri != null) {
+            Picasso.get().load(profileImageUri).into(profileImage);
+        } else {
+            profileImage.setImageResource(R.drawable.no_avatar);
+        }
 
     }
 

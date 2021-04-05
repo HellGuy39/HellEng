@@ -39,7 +39,7 @@ public class ViewOtherProfileFragment extends Fragment {
 
     Button btnEdit,btnSignOut;
     TextView textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted,textViewUserId;
-    TextView textViewFullName;
+    TextView textViewFullName,textViewWebStatus;
     CircleImageView profileImage;
     com.google.android.material.appbar.MaterialToolbar topAppBar;
 
@@ -61,6 +61,7 @@ public class ViewOtherProfileFragment extends Fragment {
 
     String thisFirstNStr,thisLastNStr,thisStatusStr,thisRegDate;
     String thisProfileImageUri;
+    String webStatus;
 
     User user = new User();
 
@@ -118,6 +119,7 @@ public class ViewOtherProfileFragment extends Fragment {
                     lastNStr = snapshot.child("lastName").getValue(String.class);
                     statusStr = snapshot.child("status").getValue(String.class);
                     regDate = snapshot.child("registerDate").getValue(String.class);
+                    webStatus = snapshot.child("webStatus").getValue(String.class);
 
                     updateUI();
 
@@ -152,6 +154,7 @@ public class ViewOtherProfileFragment extends Fragment {
         textViewFullName = rootView.findViewById(R.id.textViewFullName);
         textViewUserStatus = rootView.findViewById(R.id.textViewUserStatus);
         profileImage = rootView.findViewById(R.id.profileImage);
+        textViewWebStatus = rootView.findViewById(R.id.textViewWebStatus);
 
         btnPerform = rootView.findViewById(R.id.btnPerform);
         btnDecline = rootView.findViewById(R.id.btnDecline);
@@ -396,14 +399,18 @@ public class ViewOtherProfileFragment extends Fragment {
 
     private void updateUI() {
 
+        textViewWebStatus.setText(webStatus);
         textViewReg.setText("Registered since " + regDate);
         textViewTestsStarted.setText("Tests started: " + testsStarted);
         textViewTestsFullCompleted.setText("Tests completed 100%: " + testsFullCompleted);
         textViewFullName.setText(firstNStr + " " + lastNStr);
         textViewUserStatus.setText(statusStr);
         textViewUserId.setText("Id: " + userID);//Warning!
-
-        Picasso.get().load(profileImageUri).into(profileImage);
+        if (profileImageUri != null) {
+            Picasso.get().load(profileImageUri).into(profileImage);
+        } else {
+            profileImage.setImageResource(R.drawable.no_avatar);
+        }
 
     }
 
@@ -418,4 +425,4 @@ public class ViewOtherProfileFragment extends Fragment {
         super.onResume();
     }
 
-    }
+}

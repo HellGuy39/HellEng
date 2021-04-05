@@ -28,8 +28,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.hg39.helleng.MainActivity.PREFS_USER_NAME;
-
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     TextView textViewGreeting,date;

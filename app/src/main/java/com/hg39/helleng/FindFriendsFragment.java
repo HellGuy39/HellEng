@@ -93,7 +93,13 @@ public class FindFriendsFragment extends Fragment {
                 if (!mUser.getUid().equals(getRef(position).getKey().toString()))
                 {
                     String username = model.getFirstName() + " " + model.getLastName();
-                    Picasso.get().load(model.getProfileImage()).into(holder.profileImage);
+
+                    if (model.getProfileImage() != null) {
+                        Picasso.get().load(model.getProfileImage()).into(holder.profileImage);
+                    } else {
+                        holder.profileImage.setImageResource(R.drawable.no_avatar);
+                    }
+
                     holder.username.setText(username);
                     holder.status.setText(model.getStatus());
                 }

@@ -38,6 +38,7 @@ public class ProfileFragment extends Fragment {
     Button btnEdit,btnSignOut;
     TextView textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted,textViewUserId;
     TextView textViewFullName;
+    TextView textViewWebStatus;
     CircleImageView profileImage;
     com.google.android.material.appbar.MaterialToolbar topAppBar;
     FirebaseAuth mAuth;
@@ -49,8 +50,7 @@ public class ProfileFragment extends Fragment {
     int testsStarted,testsFullCompleted;
     String firstNStr,lastNStr,statusStr,regDate,userId;
     String profileImageUri;
-
-    User user = new User();
+    String webStatus;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -85,8 +85,9 @@ public class ProfileFragment extends Fragment {
                 lastNStr = dataSnapshot.child("lastName").getValue(String.class);
                 statusStr = dataSnapshot.child("status").getValue(String.class);
                 regDate = dataSnapshot.child("registerDate").getValue(String.class);
-                testsFullCompleted = dataSnapshot.child("testsFullCompleted").getValue(int.class);
-                testsStarted = dataSnapshot.child("testsStarted").getValue(int.class);
+                webStatus = dataSnapshot.child("webStatus").getValue(String.class);
+                //testsFullCompleted = dataSnapshot.child("testsFullCompleted").getValue(int.class);
+                //testsStarted = dataSnapshot.child("testsStarted").getValue(int.class);
                 profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
                 updateUI();
 
@@ -99,14 +100,6 @@ public class ProfileFragment extends Fragment {
                 //Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-
-        /*profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(profileImage);
-            }
-        });*/
 
     }
 
@@ -126,7 +119,7 @@ public class ProfileFragment extends Fragment {
         textViewFullName = rootView.findViewById(R.id.textViewFullName);
         textViewUserStatus = rootView.findViewById(R.id.textViewUserStatus);
         profileImage = rootView.findViewById(R.id.profileImage);
-
+        textViewWebStatus = rootView.findViewById(R.id.textViewWebStatus);
 
         //btnEdit = rootView.findViewById(R.id.btnEdit);
         //btnSignOut = rootView.findViewById(R.id.btnSingOut);
@@ -180,6 +173,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateUI() {
+
+        textViewWebStatus.setText(webStatus);
         textViewReg.setText("Registered since " + regDate);
         textViewTestsStarted.setText("Tests started: " + testsStarted);
         textViewTestsFullCompleted.setText("Tests completed 100%: " + testsFullCompleted);
@@ -187,14 +182,13 @@ public class ProfileFragment extends Fragment {
         textViewUserStatus.setText(statusStr);
         textViewUserId.setText("Id: " + userId);
 
-        Picasso.get().load(profileImageUri).into(profileImage);
+        if (profileImageUri != null) {
+            Picasso.get().load(profileImageUri).into(profileImage);
+        } else {
+            //profileImage.setImageDrawable(getResources().getDrawable(R.drawable.no_avatar));
+            profileImage.setImageResource(R.drawable.no_avatar);
+        }
 
-        /*profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(profileImage);
-            }
-        });*/
     }
 
     @Override
@@ -208,17 +202,4 @@ public class ProfileFragment extends Fragment {
         super.onResume();
     }
 
-    /*@Override
-    public void onClick(View v) {
-        /*if (v.getId() == R.id.btnEdit) {
-            ((MainActivity)getActivity())
-                    .setEditProfileFragment();
-        } else if (v.getId() == R.id.btnSingOut) {
-            ((MainActivity)getActivity())
-                    .signOut();
-            } else {
-                Toast.makeText(v.getContext(),"Error",Toast.LENGTH_SHORT).show();
-            }
-
-        }*/
-    }
+}

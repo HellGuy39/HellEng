@@ -33,18 +33,14 @@ import java.util.Locale;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public LoginActivity loginActivity;
-
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
     FirebaseAuth.AuthStateListener mAuthListener;
     ConstraintLayout root;
 
-    private EditText etEmail,etPassword;
-    private Button btnSignIn,btnRegister;
-
-    User user = new User();
+    EditText etEmail,etPassword;
+    Button btnSignIn,btnRegister,btnForgotPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +53,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         etPassword = findViewById(R.id.etPassword);
         btnRegister = findViewById(R.id.btnRegister);
         btnSignIn = findViewById(R.id.btnSignIn);
+        btnForgotPass = findViewById(R.id.btnForgotPass);
 
+        btnForgotPass.setOnClickListener(this);
         btnSignIn.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
 
@@ -82,29 +80,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         };
-
-        //FirebaseUser user = mAuth.getCurrentUser();
-
-        /*if (user != null) {
-            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-            startActivity(intent);
-        }*/
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        /*if(currentUser != null){
-            reload();
-        }*/
 
     }
 
     @Override
     public void onClick(View view) {
+
+        if (view.getId() == R.id.btnSignIn) {
 
         //Проверка на вшивость
         if (TextUtils.isEmpty(etEmail.getText().toString())) {
@@ -123,11 +110,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         //
 
-
-        if (view.getId() == R.id.btnSignIn) {
             singing(etEmail.getText().toString(),etPassword.getText().toString());
         } else if (view.getId() == R.id.btnRegister) {
-            registration(etEmail.getText().toString(),etPassword.getText().toString());
+            startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+        } else if (view.getId() == R.id.btnForgotPass) {
+            //
         }
     }
 
@@ -165,45 +152,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     Toast.makeText(LoginActivity.this,"Failure",Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-    }
-
-    public void registration(String email , String password) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(LoginActivity.this,"Success",Toast.LENGTH_SHORT).show();
-
-                    // Текущее время
-                    Date currentDate = new Date();
-                    // Форматирование времени как "день.месяц.год"
-                    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-                    String dateText = dateFormat.format(currentDate);
-
-                    //user = new User();
-                    user.setEmail(email);
-                    user.setPassword(password);
-                    user.setRegisterDate(dateText);
-
-                    users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                            .setValue(user)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Snackbar.make(root,"User add success", Snackbar.LENGTH_LONG).show();
-                                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                                }
-                            });
-                } else {
-                    Toast.makeText(LoginActivity.this,"Failure",Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Snackbar.make(root,"Error. " + e.getMessage(),Snackbar.LENGTH_LONG);
             }
         });
     }

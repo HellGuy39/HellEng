@@ -14,13 +14,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.hg39.helleng.Models.User;
 
 public class WordsActivity extends AppCompatActivity {
 
-    private Button btnContinue;
-    private boolean wasOnTest;
-    private TextView textLabel;
+    Button btnContinue;
+    boolean wasOnTest;
+    TextView textLabel;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
@@ -28,6 +27,8 @@ public class WordsActivity extends AppCompatActivity {
     DatabaseReference myRef;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     Fragment fragTenses,fragTensesTest,fragResult;
+
+    WebStatusControl webStatusControl = new WebStatusControl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,36 @@ public class WordsActivity extends AppCompatActivity {
 
         btnContinue = findViewById(R.id.btnContinue);
         wasOnTest = false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        webStatusControl.setWebStatus("Online");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        webStatusControl.setWebStatus("Online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        webStatusControl.setWebStatus("Offline");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        webStatusControl.setWebStatus("Offline");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webStatusControl.setWebStatus("Offline");
     }
 
     protected void setFragResult(String task1UserRes, String task2UserRes, String task3UserRes, String task4UserRes, String task5UserRes,

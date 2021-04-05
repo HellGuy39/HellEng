@@ -10,6 +10,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
+    WebStatusControl webStatusControl = new WebStatusControl();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +25,36 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        webStatusControl.setWebStatus("Online");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        webStatusControl.setWebStatus("Online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        webStatusControl.setWebStatus("Offline");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        webStatusControl.setWebStatus("Offline");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webStatusControl.setWebStatus("Offline");
     }
 
     @Override

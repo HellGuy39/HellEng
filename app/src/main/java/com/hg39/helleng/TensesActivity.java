@@ -34,6 +34,7 @@ public class TensesActivity extends AppCompatActivity {
     DatabaseReference myRef;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+    WebStatusControl webStatusControl = new WebStatusControl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,36 @@ public class TensesActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container_tn, fragTenses)
                 .commit();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        webStatusControl.setWebStatus("Online");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        webStatusControl.setWebStatus("Online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        webStatusControl.setWebStatus("Offline");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        webStatusControl.setWebStatus("Offline");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webStatusControl.setWebStatus("Offline");
     }
 
     protected void setFragResult(String task1UserRes, String task2UserRes, String task3UserRes, String task4UserRes, String task5UserRes,
