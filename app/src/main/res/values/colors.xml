@@ -15,6 +15,7 @@
     <color name="blue">#2196F3</color>
     <color name="dark_blue">#192841</color>
     <color name="light_blue">#03A9F4</color>
+    <color name="chat_light_blue">#90CAF9</color>
     <color name="extreme_light_blue">#00BCD4</color>
 
     <color name="light_black">#1E1E1E</color>

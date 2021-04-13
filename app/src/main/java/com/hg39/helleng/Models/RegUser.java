@@ -4,6 +4,7 @@ public class RegUser {
 
     private String FirstName;
     private String LastName;
+    private String FullName;
     private String Email;
     private String Password;
     private String profileImage;
@@ -11,13 +12,24 @@ public class RegUser {
 
     public RegUser() {}
 
-    public RegUser(String firstName, String lastName, String email, String password, String profileImage, String registerDate) {
+    public RegUser(String firstName, String lastName, String fullName,
+                   String email, String password,
+                   String profileImage, String registerDate) {
         this.registerDate = registerDate;
         this.FirstName = firstName;
         this.LastName = lastName;
+        this.FullName = fullName;
         this.Email = email;
         this.Password = password;
         this.profileImage = profileImage;
+    }
+
+    public String getFullName() {
+        return FullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.FullName = fullName;
     }
 
     public String getRegisterDate() {

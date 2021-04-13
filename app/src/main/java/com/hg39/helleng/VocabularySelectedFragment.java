@@ -10,63 +10,61 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
+import static com.hg39.helleng.MainActivity.food;
+import static com.hg39.helleng.MainActivity.furniture;
+import static com.hg39.helleng.MainActivity.groupVocabulary;
+import static com.hg39.helleng.MainActivity.schoolSupplies;
+
 public class VocabularySelectedFragment extends Fragment implements View.OnClickListener{
 
     Button btnFrnTest,btnFoodTest,btnSchSupTest;
     TextView tvCompletedFurniture,tvCompletedFood,tvCompletedSchoolSupplies;
     TextView tvFurniture,tvFood,tvSchoolSupplies;
-    int completedInterestFurniture,completedInterestSchoolSupplies,completedInterestFood;
+    String completedInterestFurniture,completedInterestSchoolSupplies,completedInterestFood;
     Intent intentWords;
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
-    DatabaseReference users;
+    DatabaseReference usersTestsProgress;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }*/
+        intentWords = new Intent(getContext(), VocabularyActivity.class);
 
-        intentWords = new Intent(getContext(), WordsActivity.class);
+        mAuth = FirebaseAuth.getInstance();
 
         database = FirebaseDatabase.getInstance();
-        users = database.getReference("Users");
+        usersTestsProgress = database.getReference("Users Tests Progress");
 
-        FirebaseUser userF = mAuth.getInstance().getCurrentUser();
-
-        //users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test1Interest").get();
-
-        users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
+        usersTestsProgress.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(groupVocabulary).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                completedInterestFurniture = dataSnapshot.child("test1Interest").getValue(int.class);
-                completedInterestSchoolSupplies = dataSnapshot.child("test2Interest").getValue(int.class);
-                completedInterestFood = dataSnapshot.child("test3Interest").getValue(int.class);
+                completedInterestFurniture      = dataSnapshot.child(furniture).getValue(String.class);
+                completedInterestSchoolSupplies = dataSnapshot.child(schoolSupplies).getValue(String.class);
+                completedInterestFood           = dataSnapshot.child(food).getValue(String.class);
 
                 updateUI();
 
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 //Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
                 // Failed to read value
                 //Log.w(TAG, "Failed to read value.", error.toException());
@@ -77,7 +75,6 @@ public class VocabularySelectedFragment extends Fragment implements View.OnClick
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
         View rootView =
                 inflater.inflate(R.layout.fragment_vocabulary_selected,container,false);
 
@@ -115,42 +112,36 @@ public class VocabularySelectedFragment extends Fragment implements View.OnClick
 
     private void updateUI(){
 
-        tvCompletedFurniture.setText(String.format("%d%%", completedInterestFurniture));
-        tvCompletedSchoolSupplies.setText(String.format("%d%%", completedInterestSchoolSupplies));
-        tvCompletedFood.setText(String.format("%d%%", completedInterestFood));
+        if (completedInterestFood == null) {
+            completedInterestFood = "0";
+        }
+
+        if (completedInterestFurniture == null) {
+            completedInterestFurniture = "0";
+        }
+
+        if (completedInterestSchoolSupplies == null) {
+            completedInterestSchoolSupplies = "0";
+        }
+
+        tvCompletedFurniture.setText(completedInterestFurniture + " %");
+        tvCompletedSchoolSupplies.setText(completedInterestSchoolSupplies + " %");
+        tvCompletedFood.setText(completedInterestFood + " %");
 
     }
 
     @Override
     public void onClick(View v) {
 
-        /*1 - furniture
-         *2 - school supplies
-         *3 - food
-         *4 - present
-         *5 - past
-         *6 - future
-         */
-
-        switch (v.getId()) {
-
-            case R.id.btnFurnitureTest:
-                intentWords.putExtra("testType", 1);
-                startActivity(intentWords);
-                break;
-
-            case R.id.btnSchoolSuppliesTest:
-                intentWords.putExtra("testType", 2);
-                startActivity(intentWords);
-                break;
-
-            case R.id.btnFoodTest:
-                intentWords.putExtra("testType", 3);
-                startActivity(intentWords);
-                break;
-
-            default:
-                break;
+        if (v.getId() == R.id.btnFurnitureTest) {
+            intentWords.putExtra("testName", furniture);
+            startActivity(intentWords);
+        } else if (v.getId() == R.id.btnSchoolSuppliesTest) {
+            intentWords.putExtra("testName", schoolSupplies);
+            startActivity(intentWords);
+        } else if (v.getId() == R.id.btnFoodTest) {
+            intentWords.putExtra("testName", food);
+            startActivity(intentWords);
         }
     }
 }

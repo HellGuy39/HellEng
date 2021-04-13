@@ -41,8 +41,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     com.google.android.material.card.MaterialCardView cardViewFriends;
 
-    User user = new User();
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -17,6 +17,18 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Constants party
+    //by invitation only
+    public static final String groupGrammar = "Grammar";
+    public static final String groupVocabulary = "Vocabulary";
+    public static final String groupAudacity = "Audition";
+    public static final String presentSimple = "Present Simple";
+    public static final String pastSimple = "Past Simple";
+    public static final String futureSimple = "Future Simple";
+    public static final String food = "Food";
+    public static final String furniture = "Furniture";
+    public static final String schoolSupplies = "School Supplies";
+
     private SharedPreferences userData;
     private String userName,strFName,strLName,strStatus;
 
@@ -190,6 +202,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragSelectedGrammar)
+                .commit();
+    }
+
+    protected void setFragChat() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragChat)
                 .commit();
     }
 

@@ -6,6 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fltStartTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColor="?attr/titleTextColor"
+        app:iconTint="?attr/navigationIconTint"
+        android:backgroundTint="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:icon="@drawable/ic_baseline_done_24"
+        android:text="Start test"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"/>
+
     <LinearLayout
         android:id="@+id/test_container"
         android:layout_width="match_parent"
@@ -24,7 +38,7 @@
             app:strokeWidth="1dp">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"

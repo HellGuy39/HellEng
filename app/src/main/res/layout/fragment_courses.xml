@@ -37,12 +37,14 @@
             android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardViewVocabulary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_marginTop="10dp"
                 android:checkable="true"
                 android:focusable="true"
+                android:clickable="true"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp">
 
@@ -81,7 +83,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:visibility="gone">
 
                         <Button
                             android:id="@+id/btnVocabulary"
@@ -89,9 +93,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:padding="5dp"
                             android:layout_marginStart="5dp"
-                            android:text="@string/start"/>
+                            android:padding="5dp"
+                            android:text="@string/start" />
 
                         <Button
                             android:id="@+id/btnVocabularyMore"
@@ -107,9 +111,13 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardViewGrammar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:checkable="true"
+                android:focusable="true"
+                android:clickable="true"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp">
 
@@ -147,7 +155,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:visibility="gone">
 
                         <Button
                             android:id="@+id/btnGrammar"
@@ -155,9 +165,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
                             android:layout_marginEnd="5dp"
                             android:padding="5dp"
-                            android:layout_marginStart="5dp"
                             android:text="@string/start" />
 
                         <Button
@@ -174,9 +184,13 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardViewAudition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:checkable="true"
+                android:focusable="true"
+                android:clickable="true"
                 app:cardElevation="1dp"
                 app:strokeWidth="1dp">
 
@@ -214,27 +228,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        tools:visibility="gone">
 
                         <Button
-                            android:id="@+id/btnListening"
+                            android:id="@+id/btnAudition"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
                             android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
                             android:padding="5dp"
-                            android:text="@string/start"/>
+                            android:text="@string/start" />
 
                         <Button
-                            android:id="@+id/btnListeningMore"
+                            android:id="@+id/btnAuditionMore"
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:padding="5dp"
-                            android:text="@string/more"/>
+                            android:text="@string/more" />
 
                     </LinearLayout>
                 </LinearLayout>

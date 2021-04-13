@@ -21,8 +21,7 @@ public class SettingsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SettingsActivity.this, MainActivity.class));
-                finish();
+                onBackPressed();
             }
         });
     }

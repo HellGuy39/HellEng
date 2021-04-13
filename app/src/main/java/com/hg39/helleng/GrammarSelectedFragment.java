@@ -1,6 +1,5 @@
 package com.hg39.helleng;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,26 +13,31 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
+import static com.hg39.helleng.MainActivity.futureSimple;
+import static com.hg39.helleng.MainActivity.groupGrammar;
+import static com.hg39.helleng.MainActivity.pastSimple;
+import static com.hg39.helleng.MainActivity.presentSimple;
+
 public class GrammarSelectedFragment extends Fragment implements View.OnClickListener{
 
-    Button btnPrSimpleTest,btnPsSimpleTest,btnFtSimpleTest;
     TextView tvCompletedPrSimple,tvCompletedPsSimple,tvCompletedFtSimple;
     TextView tvPrSimple,tvPsSimple,tvRFtSimple;
-    int completedPrSimple,completedPsSimple,completedFrSimple;
+    String completedPrSimple,completedPsSimple,completedFrSimple;
     Intent intentTenses;
 
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
-    DatabaseReference users;
+    DatabaseReference usersTestsProgress;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,11 +45,10 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
 
         intentTenses = new Intent(getContext(), TensesActivity.class);
 
+        mAuth = FirebaseAuth.getInstance();
+
         database = FirebaseDatabase.getInstance();
-        users = database.getReference("Users");
-
-
-        FirebaseUser userF = mAuth.getInstance().getCurrentUser();
+        usersTestsProgress = database.getReference("Users Tests Progress");
 
         /*1 - furniture
          *2 - school supplies
@@ -55,21 +58,21 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
          *6 - future
          */
 
-        users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
+        usersTestsProgress.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(groupGrammar).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                completedPrSimple = dataSnapshot.child("test4Interest").getValue(int.class);
-                completedPsSimple = dataSnapshot.child("test5Interest").getValue(int.class);
-                completedFrSimple = dataSnapshot.child("test6Interest").getValue(int.class);
+                completedPrSimple = dataSnapshot.child(presentSimple).getValue(String.class);
+                completedPsSimple = dataSnapshot.child(pastSimple).getValue(String.class);
+                completedFrSimple = dataSnapshot.child(futureSimple).getValue(String.class);
 
                 updateUI();
 
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
                 //Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
                 // Failed to read value
                 //Log.w(TAG, "Failed to read value.", error.toException());
@@ -118,9 +121,21 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
 
     private void updateUI(){
 
-        tvCompletedPrSimple.setText(String.format("%d%%", completedPrSimple));
-        tvCompletedPsSimple.setText(String.format("%d%%", completedPsSimple));
-        tvCompletedFtSimple.setText(String.format("%d%%", completedFrSimple));
+        if (completedFrSimple == null) {
+            completedFrSimple = "0";
+        }
+
+        if (completedPsSimple == null) {
+            completedPsSimple = "0";
+        }
+
+        if (completedPrSimple == null) {
+            completedPrSimple = "0";
+        }
+
+        tvCompletedPrSimple.setText(completedPrSimple + " %");
+        tvCompletedPsSimple.setText(completedPsSimple + " %");
+        tvCompletedFtSimple.setText(completedFrSimple + " %");
 
     }
 
@@ -135,25 +150,15 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
          *6 - future
          */
 
-        switch (v.getId()) {
-
-            case R.id.btnPrSimpleTest:
-                intentTenses.putExtra("testType", 4);
-                startActivity(intentTenses);
-                break;
-
-            case R.id.btnPsSimpleTest:
-                intentTenses.putExtra("testType", 5);
-                startActivity(intentTenses);
-                break;
-
-            case R.id.btnFtSimpleTest:
-                intentTenses.putExtra("testType", 6);
-                startActivity(intentTenses);
-                break;
-
-            default:
-                break;
+        if (v.getId() == R.id.btnPrSimpleTest) {
+            intentTenses.putExtra("testType", 4);
+            startActivity(intentTenses);
+        } else if (v.getId() == R.id.btnPsSimpleTest) {
+            intentTenses.putExtra("testType", 5);
+            startActivity(intentTenses);
+        } else if (v.getId() == R.id.btnFtSimpleTest) {
+            intentTenses.putExtra("testType", 6);
+            startActivity(intentTenses);
         }
     }
 }

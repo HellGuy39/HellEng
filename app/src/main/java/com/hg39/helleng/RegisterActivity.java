@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -41,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
+    DatabaseReference userTestsProgress;
 
     Button btnRegister;
     EditText etEmail, etPassword, etFirstName, etLastName;
@@ -66,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
+        userTestsProgress = database.getReference("Users Tests Progress");
 
     }
 
@@ -131,9 +134,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     regUser.setPassword(password);
                     regUser.setFirstName(firstName);
                     regUser.setLastName(lastName);
+                    regUser.setFullName(firstName + " " + lastName);
                     regUser.setRegisterDate(dateText);
 
-                    users.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    users.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                             .setValue(regUser)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override

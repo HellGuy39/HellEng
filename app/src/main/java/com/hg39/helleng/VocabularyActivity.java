@@ -15,58 +15,40 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class WordsActivity extends AppCompatActivity {
+public class VocabularyActivity extends AppCompatActivity {
 
-    Button btnContinue;
     boolean wasOnTest;
-    TextView textLabel;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
     DatabaseReference myRef;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    Fragment fragTenses,fragTensesTest,fragResult;
+    Fragment fragVocabularyRule,fragVocabularyTest,fragResult;
 
     WebStatusControl webStatusControl = new WebStatusControl();
+
+    String testName;
+
+    Bundle arguments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_words);
 
-        textLabel = findViewById(R.id.textLabel);
+        fragVocabularyRule = new VocabularyRuleFragment();
+        fragVocabularyTest = new VocabularyTestFragment();
 
-        //1 - furniture
-        //2 - school supplies
-        //3 - food
+        Bundle argumentsFromIntent = getIntent().getExtras();
+        testName = argumentsFromIntent.getString("testName");
 
-        Bundle arguments = getIntent().getExtras();
-        int testType = arguments.getInt("testType");
+        arguments = new Bundle();
+        arguments.putString("testName", testName);
 
-        switch (testType) {
-            case 1:
-                textLabel.setText("Furniture");
-                break;
-            case 2:
-                textLabel.setText("School supplies");
-                break;
-            case 3:
-                textLabel.setText("Food");
-                break;
-        }
-        //Bundle aFrg = new Bundle();
-        //aFrg.putInt("testType", testType);
-        Fragment fragWords = new WordsFragment();
-        fragWords.setArguments(arguments);
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container_wf, fragWords)
-                .commit();
-
-        btnContinue = findViewById(R.id.btnContinue);
         wasOnTest = false;
+
+        setFragVocabularyRule();
     }
 
     @Override
@@ -103,7 +85,7 @@ public class WordsActivity extends AppCompatActivity {
                                  String task6UserRes, String task7UserRes, String task8UserRes, String task9UserRes, String task10UserRes,
                                  String task1TrueRes, String task2TrueRes, String task3TrueRes, String task4TrueRes, String task5TrueRes,
                                  String task6TrueRes, String task7TrueRes, String task8TrueRes, String task9TrueRes, String task10TrueRes,
-                                 int completed, int countOfTasks, int testType) {
+                                 int completed, int countOfTasks, String testName) {
 
         fragResult = new TestResultFragment();
 
@@ -133,13 +115,13 @@ public class WordsActivity extends AppCompatActivity {
 
         testArguments.putInt("completedInt", completed);
         testArguments.putInt("countOfTasks", countOfTasks);
-        testArguments.putInt("testType", testType);
+        testArguments.putString( "testName", testName);
 
         fragResult.setArguments(testArguments);
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container_wf, fragResult)
+                .replace(R.id.fragment_container_v, fragResult)
                 .commit();
 
     }
@@ -152,37 +134,41 @@ public class WordsActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startTestWordsFurniture();
-                        btnContinue.setClickable(false); btnContinue.setVisibility(View.INVISIBLE);
+                        //startTestWordsFurniture();
+                        //btnContinue.setClickable(false); btnContinue.setVisibility(View.INVISIBLE);
                         wasOnTest = true;
                     }
                 }).create().show();
 
     }
 
-    private void startTestWordsFurniture() {
-        Bundle arguments = getIntent().getExtras();
-        int testType = arguments.getInt("testType");
-
-        Fragment fragWordsTest = new WordsTestFragment();
-        fragWordsTest.setArguments(arguments);
+    protected void setFragVocabularyRule() {
+        fragVocabularyRule.setArguments(arguments);
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container_wf, fragWordsTest)
+                .replace(R.id.fragment_container_v, fragVocabularyRule)
+                .commit();
+    }
+
+    protected void setFragVocabularyTest() {
+        fragVocabularyTest.setArguments(arguments);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_v, fragVocabularyTest)
                 .commit();
     }
 
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
-                .setTitle("Курс ещё не окончен!")
-                .setMessage("Вы действительно хотите покинуть курс не закончив его?")
+                .setTitle("You are not finished")
+                .setMessage("If you leave the test now, the data will not be saved")
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //SomeActivity - имя класса Activity для которой переопределяем onBackPressed();
-                        WordsActivity.super.onBackPressed();
+                        VocabularyActivity.super.onBackPressed();
                     }
                 }).create().show();
     }

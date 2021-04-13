@@ -21,11 +21,22 @@
         <item name="android:navigationBarColor">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
 
+
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">true</item>
+
     </style>
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">
             @drawable/background_splash
         </item>
+
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryVariant">@color/light_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
     </style>
 </resources>

@@ -28,6 +28,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hg39.helleng.Models.User;
 
+import static com.hg39.helleng.MainActivity.futureSimple;
+import static com.hg39.helleng.MainActivity.groupGrammar;
+import static com.hg39.helleng.MainActivity.pastSimple;
+import static com.hg39.helleng.MainActivity.presentSimple;
+
 public class TensesTestFragment extends Fragment {
 
     TextView ruleTextView,textViewHint1,textViewHint2,resultView;
@@ -69,8 +74,7 @@ public class TensesTestFragment extends Fragment {
     DatabaseReference users;
     DatabaseReference tests;
 
-    User user = new User();
-
+    TestProgressControl testProgressControl = new TestProgressControl();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,18 +85,6 @@ public class TensesTestFragment extends Fragment {
         tests = database.getReference("Tests");
         users = database.getReference("Users");
         FirebaseUser userF = FirebaseAuth.getInstance().getCurrentUser();
-
-        users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                user.setTestsStarted(snapshot.child("testsStarted").getValue(int.class));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
-            }
-        });
 
         testType = getArguments().getInt("testType");
 
@@ -224,8 +216,6 @@ public class TensesTestFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
-        user.setTestsStarted(user.getTestsStarted() + 1);
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("testsStarted").setValue(user.getTestsStarted());
 
         View rootView =
                 inflater.inflate(R.layout.fragment_tenses_test,container,false);
@@ -360,18 +350,21 @@ public class TensesTestFragment extends Fragment {
 
         switch (testType) {
             case 4:
-                user.setTest4Interest(completed);
-                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test4Interest").setValue(user.getTest4Interest());
+                //user.setTest4Interest(completed);
+                //users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test4Interest").setValue(user.getTest4Interest());
+                testProgressControl.SaveTestProgress(groupGrammar,presentSimple,completedString);
                 break;
 
             case 5:
-                user.setTest5Interest(completed);
-                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test5Interest").setValue(user.getTest5Interest());
+                //user.setTest5Interest(completed);
+                //users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test5Interest").setValue(user.getTest5Interest());
+                testProgressControl.SaveTestProgress(groupGrammar,pastSimple,completedString);
                 break;
 
             case 6:
-                user.setTest6Interest(completed);
-                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test6Interest").setValue(user.getTest6Interest());
+                //user.setTest6Interest(completed);
+                //users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("test6Interest").setValue(user.getTest6Interest());
+                testProgressControl.SaveTestProgress(groupGrammar,futureSimple,completedString);
                 break;
 
             default:

@@ -9,9 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HellEng">
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity">
+
+        </activity>
         <activity android:name=".AboutTheAppActivity" />
         <activity android:name=".SettingsActivity" />
+        <activity android:name=".DialogActivity" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/SplashTheme">
@@ -25,7 +28,7 @@
             android:name=".MainActivity"
             android:theme="@style/Theme.HellEng" />
         <activity android:name=".TensesActivity" />
-        <activity android:name=".WordsActivity" />
+        <activity android:name=".VocabularyActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

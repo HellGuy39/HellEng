@@ -17,6 +17,13 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static com.hg39.helleng.MainActivity.food;
+import static com.hg39.helleng.MainActivity.furniture;
+import static com.hg39.helleng.MainActivity.futureSimple;
+import static com.hg39.helleng.MainActivity.pastSimple;
+import static com.hg39.helleng.MainActivity.presentSimple;
+import static com.hg39.helleng.MainActivity.schoolSupplies;
+
 public class TestResultFragment extends Fragment implements View.OnClickListener{
 
     TextView tvUserAnswer1,tvUserAnswer2,tvUserAnswer3,tvUserAnswer4,tvUserAnswer5,tvUserAnswer6,
@@ -32,21 +39,19 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
 
     Button btnOk;
 
-    FirebaseAuth mAuth;
-
     String userAnswer1,userAnswer2,userAnswer3,userAnswer4,userAnswer5,userAnswer6,
             userAnswer7,userAnswer8,userAnswer9,userAnswer10,userAnswer11,userAnswer12;
 
     String trueAnswer1,trueAnswer2,trueAnswer3,trueAnswer4,trueAnswer5,trueAnswer6,
             trueAnswer7,trueAnswer8,trueAnswer9,trueAnswer10,trueAnswer11,trueAnswer12;
 
-    int completed,countOfTasks,testType;
+    int completed,countOfTasks;
+
+    String testName;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        FirebaseUser userF = mAuth.getInstance().getCurrentUser();
 
         assert getArguments() != null;
         userAnswer1 = getArguments().getString("task1UserAnswer"," ");
@@ -77,7 +82,7 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
 
         completed = getArguments().getInt("completedInt", 0);
         countOfTasks = getArguments().getInt("countOfTasks", 0);
-        testType = getArguments().getInt("testType", 0);
+        testName = getArguments().getString("testName", "null");
 
     }
 
@@ -128,7 +133,7 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
         tvTrueAnswer12 = rootView.findViewById(R.id.tvTrueAnswer12);
 
         btnOk = rootView.findViewById(R.id.btnOk);
-        btnOk.setOnClickListener(this::onClick);
+        btnOk.setOnClickListener(this);
 
         tvCompleted = rootView.findViewById(R.id.tvCompleted);
 
@@ -193,15 +198,15 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         if (v.getId() == R.id.btnOk) {
 
-            if (testType == 0) {
+            if (testName.equals("null")) {
                 Toast.makeText(getContext(),"Something wrong!",Toast.LENGTH_SHORT).show();
             }
 
-            if (testType == 1 || testType == 2 || testType == 3) {
+            if (testName.equals(furniture) || testName.equals(food) ||testName.equals(schoolSupplies)) {
                 startActivity(new Intent(getContext(), MainActivity.class));
-                    ((WordsActivity)getContext()).finishActivity();
+                    ((VocabularyActivity)getContext()).finishActivity();
             }
-            if (testType == 4 || testType == 5 || testType == 6) {
+            if (testName.equals(presentSimple) || testName.equals(pastSimple) || testName.equals(futureSimple)) {
                 startActivity(new Intent(getContext(), MainActivity.class));
                     ((TensesActivity)getContext()).finishActivity();
             }

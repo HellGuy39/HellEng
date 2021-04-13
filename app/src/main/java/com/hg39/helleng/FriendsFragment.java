@@ -64,7 +64,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
         });
 
         extendedFloatingActionButtonFind = rootView.findViewById(R.id.floatingButtonFind);
-        extendedFloatingActionButtonFind.setOnClickListener(this::onClick);
+        extendedFloatingActionButtonFind.setOnClickListener(this);
 
         loadFriend("");
 
