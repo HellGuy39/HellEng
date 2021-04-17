@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.type.TimeOfDayOrBuilder;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static com.hg39.helleng.MainActivity.futureSimple;
 import static com.hg39.helleng.MainActivity.groupGrammar;
@@ -49,6 +50,12 @@ public class AuditionTestFragment extends Fragment {
 
     MediaPlayer humourSound, supermanSound, actualSound;
     com.google.android.material.button.MaterialButton btnPlayOrPause, btnReplay, btnVolumeOnOrOff;
+
+    //https://coderlessons.com/tutorials/mobilnaia-razrabotka/uchitsia-android/android-mediaplayer
+
+    double startTime = 0;
+    double finalTime = 0;
+
 
     String questions1,questions2,questions3,questions4,questions5,questions6,questions7,questions8,questions9,questions10;
     String question1After,question2After,question3After;
@@ -112,8 +119,8 @@ public class AuditionTestFragment extends Fragment {
 
         seekBar = rootView.findViewById(R.id.seekBar);
 
-        //seekBar.setMax(actualSound.getDuration());
-        //seekBar.setProgress(actualSound.getDuration());
+        seekBar.setMax(actualSound.getDuration());
+        seekBar.setProgress(actualSound.getCurrentPosition());
 
         //String maxCount = String.format( "%02d:%02d" , actualSound.getDuration());
         //String actualCount = "00:00";
@@ -123,7 +130,7 @@ public class AuditionTestFragment extends Fragment {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                soundPlay(actualSound, "change track pos");
             }
 
             @Override
@@ -201,14 +208,18 @@ public class AuditionTestFragment extends Fragment {
     private void soundPlay(MediaPlayer sound, String ToDo) {
         if (ToDo.equals("play")) {
             sound.start();
+
         } else if (ToDo.equals("pause")) {
             sound.pause();
         } else if (ToDo.equals("replay")) {
-            sound.reset();
+            //sound.reset();
+            sound.seekTo(0);
         } else if (ToDo.equals("volumeOff")) {
             sound.setVolume(0f,0f);
         } else if (ToDo.equals("volumeOn")) {
             sound.setVolume(1f,1f);
+        } else if (ToDo.equals("change track pos")) {
+            sound.seekTo(seekBar.getProgress());
         }
     }
 
