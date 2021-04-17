@@ -32,7 +32,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     TextView textViewGreeting,date;
     TextView dateMonth,dateDayOfWeek;
-    //TextView textViewUnfinishedTest1,textViewUnfinishedTest2,textViewUnfinishedTest3;
     String userName;
 
     FirebaseAuth mAuth;
@@ -52,8 +51,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
                 userName = dataSnapshot.child("firstName").getValue(String.class);
 
                 updateUI();
@@ -62,9 +59,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                //Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
-                // Failed to read value
-                //Log.w(TAG, "Failed to read value.", error.toException());
+
             }
         });
 
@@ -83,7 +78,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         textViewGreeting = rootView.findViewById(R.id.textViewGreeting);
 
         cardViewFriends = rootView.findViewById(R.id.cardFriends);
-        cardViewFriends.setOnClickListener(this::onClick);
+        cardViewFriends.setOnClickListener(this);
 
         Calendar calendar = Calendar.getInstance();
         dateMonth.setText(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG_FORMAT, Locale.ENGLISH));

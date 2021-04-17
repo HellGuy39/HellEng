@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -21,16 +20,18 @@ public class MainActivity extends AppCompatActivity {
     //by invitation only
     public static final String groupGrammar = "Grammar";
     public static final String groupVocabulary = "Vocabulary";
-    public static final String groupAudacity = "Audition";
+    public static final String groupAudition = "Audition";
+
     public static final String presentSimple = "Present Simple";
     public static final String pastSimple = "Past Simple";
     public static final String futureSimple = "Future Simple";
+
     public static final String food = "Food";
     public static final String furniture = "Furniture";
-    public static final String schoolSupplies = "School Supplies";
+    public static final String schoolSupplies = "School supplies";
 
-    private SharedPreferences userData;
-    private String userName,strFName,strLName,strStatus;
+    public static final String humor = "Humor";
+    public static final String superman = "Superman";
 
     boolean userOnMainMenu,userOnCoursesSelection,userOnEditProfile;
 
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragFriends;
     Fragment fragFindFriends;
     Fragment fragViewOtherProfile;
+    Fragment fragSelectedAudition;
 
     WebStatusControl webStatusControl = new WebStatusControl();
 
@@ -55,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
         userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
 
@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         fragProfile = new ProfileFragment();
         fragSelectedVocabulary = new VocabularySelectedFragment();
         fragSelectedGrammar = new GrammarSelectedFragment();
+        fragSelectedAudition = new AuditionSelectedFragment();
         fragFriends = new FriendsFragment();
         fragFindFriends = new FindFriendsFragment();
         fragViewOtherProfile = new ViewOtherProfileFragment();
@@ -81,11 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Вызов фрагмента home по умолчанию со старта приложения
         Fragment fragHome = new HomeFragment();
-
-        Bundle userData = new Bundle();
-        userData.putString("userData", userName);
-        fragHome.setArguments(userData);
-
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragHome)
@@ -146,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    protected void setFragCourses() {
+    public void setFragCourses() {
         userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
         getSupportFragmentManager()
                 .beginTransaction()
@@ -159,6 +155,14 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container,fragSelectedVocabulary)
+                .commit();
+    }
+
+    protected void setFragSelectedAudition() {
+        userOnMainMenu = false; userOnCoursesSelection = true; userOnEditProfile = false;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,fragSelectedAudition)
                 .commit();
     }
 

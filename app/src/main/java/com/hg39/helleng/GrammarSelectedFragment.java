@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,7 +42,7 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        intentTenses = new Intent(getContext(), TensesActivity.class);
+        intentTenses = new Intent(getContext(), GrammarActivity.class);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -151,13 +150,13 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
          */
 
         if (v.getId() == R.id.btnPrSimpleTest) {
-            intentTenses.putExtra("testType", 4);
+            intentTenses.putExtra("testName", presentSimple);
             startActivity(intentTenses);
         } else if (v.getId() == R.id.btnPsSimpleTest) {
-            intentTenses.putExtra("testType", 5);
+            intentTenses.putExtra("testName", pastSimple);
             startActivity(intentTenses);
         } else if (v.getId() == R.id.btnFtSimpleTest) {
-            intentTenses.putExtra("testType", 6);
+            intentTenses.putExtra("testName", futureSimple);
             startActivity(intentTenses);
         }
     }

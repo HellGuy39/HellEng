@@ -9,9 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HellEng">
-        <activity android:name=".RegisterActivity">
-
-        </activity>
+        <activity android:name=".AuditionActivity"></activity>
+        <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".AboutTheAppActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".DialogActivity" />
@@ -27,7 +26,7 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.HellEng" />
-        <activity android:name=".TensesActivity" />
+        <activity android:name=".GrammarActivity" />
         <activity android:name=".VocabularyActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>

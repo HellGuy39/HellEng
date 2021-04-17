@@ -30,7 +30,7 @@ import static com.hg39.helleng.MainActivity.schoolSupplies;
 public class VocabularyTestFragment extends Fragment {
 
     Button btnNext;
-    TextView wordView,resultView;
+    TextView wordView,taskView;
     EditText editTextField;
     //int words;
     int completed;
@@ -93,10 +93,12 @@ public class VocabularyTestFragment extends Fragment {
         btnNext = rootView.findViewById(R.id.btnNext);
         editTextField = rootView.findViewById(R.id.editTextField);
         wordView = rootView.findViewById(R.id.wordView);
-        resultView = rootView.findViewById(R.id.resultView);
+        taskView = rootView.findViewById(R.id.textViewTask);
 
         btnNext.setOnClickListener(this::onClickBtnNext);
         editTextField.setEnabled(false);
+
+        taskView.setText("You will see words in Russian, write them in English");
 
         return rootView;
     }
@@ -172,6 +174,7 @@ public class VocabularyTestFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
+                wordArr[0] = snapshot.child("ENG").child("0").getValue(String.class);
                 wordArr[1] = snapshot.child("ENG").child("1").getValue(String.class);
                 wordArr[2] = snapshot.child("ENG").child("2").getValue(String.class);
                 wordArr[3] = snapshot.child("ENG").child("3").getValue(String.class);

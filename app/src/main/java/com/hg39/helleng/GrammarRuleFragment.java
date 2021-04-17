@@ -1,26 +1,32 @@
 package com.hg39.helleng;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-public class TensesFragment extends Fragment {
+import java.util.Objects;
+
+import static com.hg39.helleng.MainActivity.futureSimple;
+import static com.hg39.helleng.MainActivity.pastSimple;
+import static com.hg39.helleng.MainActivity.presentSimple;
+
+public class GrammarRuleFragment extends Fragment {
 
     TextView ruleTextView;
-    int testType;
+    String testName;
+
+    com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton fltBtnStart;
 
     FirebaseDatabase database;
     DatabaseReference tests;
@@ -31,38 +37,23 @@ public class TensesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        testType = getArguments().getInt("testType");
+        assert getArguments() != null;
+        testName = getArguments().getString("testName");
 
         database = FirebaseDatabase.getInstance();
         tests = database.getReference("Tests");
 
-        //До лучших времён
-        /*tests.child("Tenses").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (testType == 4)
-                {
-                    rule = snapshot.child("Present Simple").child("Rules").child("rule1").getValue(String.class);
-                }
-                else if (testType == 5)
-                {
-                    rule = snapshot.child("Past Simple").child("Rules").child("rule1").getValue(String.class);
-                }
-                else if (testType == 6)
-                {
-                    rule = snapshot.child("Future Simple").child("Rules").child("rule1").getValue(String.class);
-                }
-
-                updateUI();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
+        switch (testName) {
+            case presentSimple:
+                setRuleForPresentSimple();
+                break;
+            case pastSimple:
+                setRuleForPastSimple();
+                break;
+            case futureSimple:
+                setRuleForFutureSimple();
+                break;
+        }
 
     }
 
@@ -71,21 +62,26 @@ public class TensesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //return super.onCreateView(inflater, container, savedInstanceState);
         View rootView =
-                inflater.inflate(R.layout.fragment_tenses,container,false);
+                inflater.inflate(R.layout.fragment_grammar_rule,container,false);
 
+        fltBtnStart = rootView.findViewById(R.id.fltStartTest);
         ruleTextView = rootView.findViewById(R.id.ruleTextView);
 
-        switch (testType) {
-            case 4:
-                setRuleForPresentSimple();
-                break;
-            case 5:
-                setRuleForPastSimple();
-                break;
-            case 6:
-                setRuleForFutureSimple();
-                break;
-        }
+        fltBtnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+                        .setTitle("Continuation confirmation")
+                        .setMessage("Are you sure want to continue?")
+                        .setNegativeButton(android.R.string.no,null)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ((GrammarActivity)getContext()).setFragGrammarTest();
+                            }
+                        }).create().show();
+            }
+        });
 
         updateUI();
 

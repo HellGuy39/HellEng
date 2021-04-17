@@ -14,9 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import static com.hg39.helleng.MainActivity.food;
 import static com.hg39.helleng.MainActivity.furniture;
 import static com.hg39.helleng.MainActivity.futureSimple;
@@ -208,7 +205,7 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
             }
             if (testName.equals(presentSimple) || testName.equals(pastSimple) || testName.equals(futureSimple)) {
                 startActivity(new Intent(getContext(), MainActivity.class));
-                    ((TensesActivity)getContext()).finishActivity();
+                    ((GrammarActivity)getContext()).finishActivity();
             }
         }
     }

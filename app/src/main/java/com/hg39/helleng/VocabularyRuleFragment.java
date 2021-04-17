@@ -102,7 +102,6 @@ public class VocabularyRuleFragment extends Fragment {
         word8.setText(wordsArr[7]);
         word9.setText(wordsArr[8]);
         word10.setText(wordsArr[9]);
-
     }
 
     private void setWordsArr(String testName) {

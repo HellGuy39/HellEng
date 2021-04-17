@@ -8,11 +8,10 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/test_container"
+            android:id="@+id/content_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -53,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text=" "
+                    android:text="taskView"
                     android:textColor="?android:attr/textColorSecondary" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -234,7 +233,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text=" "
+                    android:text="taskView"
                     android:textColor="?android:attr/textColorSecondary" />
             </com.google.android.material.card.MaterialCardView>
 
