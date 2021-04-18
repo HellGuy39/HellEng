@@ -96,8 +96,8 @@ public class AboutTheAppActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        tvVersion.setText("Version: " + version);
-        tvUpdate.setText("State: " + state);
+        tvVersion.setText("Version: 0.1.0");
+        tvUpdate.setText("State: early alpha");
         something.setText(textSong);
         somethingToo.setText(someText);
     }

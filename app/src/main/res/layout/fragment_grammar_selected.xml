@@ -38,6 +38,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardPresentSimple"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -45,14 +46,15 @@
                     android:focusable="true"
                     android:checkable="true"
                     android:layout_margin="10dp"
-                    app:cardElevation="1dp"
+                    app:cardElevation="10dp"
                     app:strokeWidth="1dp">
 
                     <LinearLayout
                         android:id="@+id/test1Layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="5dp">
 
                         <TextView
                             android:id="@+id/tvPrSimple"
@@ -75,31 +77,26 @@
                             android:text="0%"
                             android:textSize="24sp" />
 
-                        <Button
-                            android:id="@+id/btnPrSimpleTest"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
-                            android:layout_weight="20"
-                            android:padding="5dp"
-                            android:text="@string/start" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardPastSimple"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
-                    app:cardElevation="1dp"
-                    app:strokeWidth="1dp">
+                    app:cardElevation="10dp"
+                    app:strokeWidth="1dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:checkable="true">
 
                     <LinearLayout
                         android:id="@+id/test2Layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="5dp">
 
                         <TextView
                             android:id="@+id/tvPsSimple"
@@ -122,34 +119,29 @@
                             android:text="0%"
                             android:textSize="24sp" />
 
-                        <Button
-                            android:id="@+id/btnPsSimpleTest"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
-                            android:layout_weight="20"
-                            android:padding="5dp"
-                            android:text="@string/start"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardFutureSimple"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
-                    app:cardElevation="1dp"
-                    app:strokeWidth="1dp">
+                    app:cardElevation="10dp"
+                    app:strokeWidth="1dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:checkable="true">
 
                     <LinearLayout
                         android:id="@+id/test3Layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="5dp">
 
                         <TextView
                             android:id="@+id/tvFtSimple"
@@ -172,16 +164,6 @@
                             android:text="0%"
                             android:textSize="24sp" />
 
-                        <Button
-                            android:id="@+id/btnFtSimpleTest"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
-                            android:layout_weight="20"
-                            android:padding="5dp"
-                            android:text="@string/start" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

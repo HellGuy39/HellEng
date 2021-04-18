@@ -61,6 +61,12 @@ public class ChatFragment extends Fragment {
         chatList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         floatingButtonAdd = rootView.findViewById(R.id.floatingButtonAdd);
+        floatingButtonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getContext()).setFragFriends();
+            }
+        });
 
         loadUsers();
 

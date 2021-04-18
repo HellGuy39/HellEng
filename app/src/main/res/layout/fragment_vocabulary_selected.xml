@@ -38,6 +38,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardFurniture"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -52,7 +53,8 @@
                         android:id="@+id/test1Layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="5dp">
 
                         <TextView
                             android:id="@+id/tvFurniture"
@@ -75,17 +77,6 @@
                             android:text="0%"
                             android:textSize="24sp" />
 
-                        <Button
-                            android:id="@+id/btnFurnitureTest"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
-                            android:layout_weight="20"
-                            android:onClick="onClickBtnCnt"
-                            android:padding="5dp"
-                            android:text="Begin"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
                 <com.google.android.material.card.MaterialCardView
@@ -94,13 +85,18 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     app:cardElevation="10dp"
-                    app:strokeWidth="1dp">
+                    app:strokeWidth="1dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:checkable="true"
+                    android:id="@+id/cardSchoolSupplies">
 
                     <LinearLayout
                         android:id="@+id/test2Layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="5dp">
 
                         <TextView
                             android:id="@+id/tvSchoolSupplies"
@@ -123,17 +119,6 @@
                             android:text="0%"
                             android:textSize="24sp" />
 
-                        <Button
-                            android:id="@+id/btnSchoolSuppliesTest"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
-                            android:layout_weight="20"
-                            android:onClick="onClickBtnCnt"
-                            android:padding="5dp"
-                            android:text="Begin"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -145,13 +130,18 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
                     app:cardElevation="10dp"
-                    app:strokeWidth="1dp">
+                    app:strokeWidth="1dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:checkable="true"
+                    android:id="@+id/cardFood">
 
                     <LinearLayout
                         android:id="@+id/test3Layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="5dp">
 
                         <TextView
                             android:id="@+id/tvFood"
@@ -174,17 +164,6 @@
                             android:text="0%"
                             android:textSize="24sp" />
 
-                        <Button
-                            android:id="@+id/btnFoodTest"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="5dp"
-                            android:layout_weight="20"
-                            android:onClick="onClickBtnCnt"
-                            android:padding="5dp"
-                            android:text="Begin"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

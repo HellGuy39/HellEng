@@ -131,6 +131,18 @@ public class GrammarTestFragment extends Fragment {
 
                 } else if (testName.equals(presentSimple)) {
 
+                    answers1 = snapshot.child("Answers").child("0").child("0").getValue(String.class);
+                    answers2 = snapshot.child("Answers").child("1").child("1").getValue(String.class);
+                    answers3 = snapshot.child("Answers").child("2").child("2").getValue(String.class);
+                    answers4 = snapshot.child("Answers").child("3").getValue(String.class);
+                    answers5 = snapshot.child("Answers").child("4").getValue(String.class);
+
+                    slot1[2] = snapshot.child("Answers").child("0").child("2").getValue(String.class);
+
+                    slot2[2] = snapshot.child("Answers").child("1").child("2").getValue(String.class);
+
+                    slot3[2] = snapshot.child("Answers").child("2").child("2").getValue(String.class);
+
                 } else if (testName.equals(futureSimple)) {
                     answers1 = snapshot.child("Answers").child("0").child("0").getValue(String.class);
                     answers2 = snapshot.child("Answers").child("1").child("0").getValue(String.class);
@@ -276,6 +288,7 @@ public class GrammarTestFragment extends Fragment {
             completed+=20;
         }
 
+        completedString = Integer.toString(completed);
         testProgressControl.SaveTestProgress(groupGrammar,testName,completedString);
 
         ((GrammarActivity) Objects.requireNonNull(getContext())).setFragResult(slot1Res,slot2Res,slot3Res,slot4Res,slot5Res,

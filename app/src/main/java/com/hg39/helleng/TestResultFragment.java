@@ -17,9 +17,11 @@ import androidx.fragment.app.Fragment;
 import static com.hg39.helleng.MainActivity.food;
 import static com.hg39.helleng.MainActivity.furniture;
 import static com.hg39.helleng.MainActivity.futureSimple;
+import static com.hg39.helleng.MainActivity.humor;
 import static com.hg39.helleng.MainActivity.pastSimple;
 import static com.hg39.helleng.MainActivity.presentSimple;
 import static com.hg39.helleng.MainActivity.schoolSupplies;
+import static com.hg39.helleng.MainActivity.superman;
 
 public class TestResultFragment extends Fragment implements View.OnClickListener{
 
@@ -143,6 +145,18 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
 
     private void disableUselessContainers() {
 
+        if (countOfTasks == 3) {
+            container4.setVisibility(View.GONE);
+            container5.setVisibility(View.GONE);
+            container6.setVisibility(View.GONE);
+            container7.setVisibility(View.GONE);
+            container8.setVisibility(View.GONE);
+            container9.setVisibility(View.GONE);
+            container10.setVisibility(View.GONE);
+            container11.setVisibility(View.GONE);
+            container12.setVisibility(View.GONE);
+        }
+
         if (countOfTasks == 5) {
             container6.setVisibility(View.GONE);
             container7.setVisibility(View.GONE);
@@ -187,7 +201,11 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
         tvTrueAnswer11.setText(trueAnswer11);
         tvTrueAnswer12.setText(trueAnswer12);
 
-        tvCompleted.setText(completed + "%");
+        if (testName.equals(humor) || testName.equals(superman)) {
+            tvCompleted.setText(completed + "/" + countOfTasks);
+        } else {
+            tvCompleted.setText(completed + "%");
+        }
 
     }
 
@@ -206,6 +224,10 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
             if (testName.equals(presentSimple) || testName.equals(pastSimple) || testName.equals(futureSimple)) {
                 startActivity(new Intent(getContext(), MainActivity.class));
                     ((GrammarActivity)getContext()).finishActivity();
+            }
+            if (testName.equals(humor) || testName.equals(superman)) {
+                startActivity(new Intent(getContext(), MainActivity.class));
+                    ((AuditionActivity)getContext()).finishActivity();
             }
         }
     }

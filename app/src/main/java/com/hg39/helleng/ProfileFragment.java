@@ -35,7 +35,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
 
-    Button btnEdit,btnSignOut;
     TextView textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted,textViewUserId;
     TextView textViewFullName;
     TextView textViewWebStatus;
@@ -47,7 +46,6 @@ public class ProfileFragment extends Fragment {
     StorageReference storageReference;
     StorageReference profileRef;
 
-    int testsStarted,testsFullCompleted;
     String firstNStr,lastNStr,statusStr,regDate,userId;
     String profileImageUri;
     String webStatus;
@@ -114,8 +112,8 @@ public class ProfileFragment extends Fragment {
         topAppBar = rootView.findViewById(R.id.topAppBar);
         textViewUserId = rootView.findViewById(R.id.textViewUserId);
         textViewReg = rootView.findViewById(R.id.textViewReg);
-        textViewTestsFullCompleted = rootView.findViewById(R.id.textViewTestFullCompleted);
-        textViewTestsStarted = rootView.findViewById(R.id.textViewTestStarted);
+        //textViewTestsFullCompleted = rootView.findViewById(R.id.textViewTestFullCompleted);
+        //textViewTestsStarted = rootView.findViewById(R.id.textViewTestStarted);
         textViewFullName = rootView.findViewById(R.id.textViewFullName);
         textViewUserStatus = rootView.findViewById(R.id.textViewUserStatus);
         profileImage = rootView.findViewById(R.id.profileImage);
@@ -176,8 +174,6 @@ public class ProfileFragment extends Fragment {
 
         textViewWebStatus.setText(webStatus);
         textViewReg.setText("Registered since " + regDate);
-        textViewTestsStarted.setText("Tests started: " + testsStarted);
-        textViewTestsFullCompleted.setText("Tests completed 100%: " + testsFullCompleted);
         textViewFullName.setText(firstNStr + " " + lastNStr);
         textViewUserStatus.setText(statusStr);
         textViewUserId.setText("Id: " + userId);

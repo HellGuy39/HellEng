@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -114,32 +115,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if (view.getId() == R.id.btnRegister) {
             startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
         } else if (view.getId() == R.id.btnForgotPass) {
-            //
+            startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
         }
     }
-
-    private void reload() {
-        mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                    startActivity(intent);
-                    //updateUI(mAuth.getCurrentUser());
-                    Toast.makeText(LoginActivity.this,
-                            "Reload successful!",
-                            Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(LoginActivity.this,
-                            "Failed to reload user.",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-
     public void singing(String email , String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override

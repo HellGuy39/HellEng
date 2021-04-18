@@ -23,6 +23,7 @@ import com.hg39.helleng.R;
 
 import java.util.Objects;
 
+import static com.hg39.helleng.MainActivity.groupAudition;
 import static com.hg39.helleng.MainActivity.groupGrammar;
 import static com.hg39.helleng.MainActivity.humor;
 import static com.hg39.helleng.MainActivity.superman;
@@ -51,7 +52,7 @@ public class AuditionSelectedFragment extends Fragment implements View.OnClickLi
         database = FirebaseDatabase.getInstance();
         usersTestsProgress = database.getReference("Users Tests Progress");
 
-        usersTestsProgress.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(groupGrammar).addValueEventListener(new ValueEventListener() {
+        usersTestsProgress.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(groupAudition).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -65,9 +66,7 @@ public class AuditionSelectedFragment extends Fragment implements View.OnClickLi
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                //Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
-                // Failed to read value
-                //Log.w(TAG, "Failed to read value.", error.toException());
+
             }
         });
     }
@@ -106,15 +105,15 @@ public class AuditionSelectedFragment extends Fragment implements View.OnClickLi
     private void updateUI(){
 
         if (completedHumor == null) {
-            completedHumor = "0";
+            completedHumor = "0/3";
         }
 
         if (completedSuperman == null) {
-            completedSuperman = "0";
+            completedSuperman = "0/3";
         }
 
-        tvCompletedHumor.setText(completedHumor + " %");
-        tvCompletedSuperman.setText(completedSuperman + " %");
+        tvCompletedHumor.setText(completedHumor);
+        tvCompletedSuperman.setText(completedSuperman);
 
     }
 

@@ -160,7 +160,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
-                            android:text="Statistics"
+                            android:text="Information"
                             android:textSize="24sp" />
 
                         <LinearLayout
@@ -177,24 +177,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="Registered since ~date~"
-                                android:textSize="16sp"
-                                android:textIsSelectable="true"/>
-
-                            <TextView
-                                android:id="@+id/textViewTestStarted"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Tests started: ~num~"
-                                android:textSize="16sp"
-                                android:textIsSelectable="true"/>
-
-                            <TextView
-                                android:id="@+id/textViewTestFullCompleted"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Tests completed 100%: ~num~"
                                 android:textSize="16sp"
                                 android:textIsSelectable="true"/>
 

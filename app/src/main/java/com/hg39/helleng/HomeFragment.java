@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     FirebaseDatabase database;
     DatabaseReference users;
 
-    com.google.android.material.card.MaterialCardView cardViewFriends;
+    //com.google.android.material.card.MaterialCardView cardViewFriends;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,8 +77,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         date = rootView.findViewById(R.id.date);
         textViewGreeting = rootView.findViewById(R.id.textViewGreeting);
 
-        cardViewFriends = rootView.findViewById(R.id.cardFriends);
-        cardViewFriends.setOnClickListener(this);
+        //cardViewFriends = rootView.findViewById(R.id.cardFriends);
+        //cardViewFriends.setOnClickListener(this);
 
         Calendar calendar = Calendar.getInstance();
         dateMonth.setText(calendar.getDisplayName(Calendar.MONTH, Calendar.LONG_FORMAT, Locale.ENGLISH));
@@ -109,11 +109,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        if (v.getId() == R.id.cardFriends) {
-
-            ((MainActivity)getContext()).setFragFriends();
-
-        }
+        //nope
 
     }
 }

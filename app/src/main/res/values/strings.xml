@@ -19,6 +19,8 @@
     <!-- Secondary Texts -->
     <string name="second_text_vocabulary">Expand your speech with new words</string>
     <string name="second_text_grammar">Learn grammar to build sentences correctly</string>
+    <string name="second_text_audition">Improve your listening comprehension</string>
+
     <string name="second_text_grammar_fs_t2" translatable="false">Put the words into the correct order. You will have different types of sentences. Use punctuation marks (full stops and question marks) at the end of the sentences.</string>
     <string name="second_text_grammar_fs_t1" translatable="false">Choose the right variant.</string>
 

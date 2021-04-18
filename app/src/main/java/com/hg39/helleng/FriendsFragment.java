@@ -59,7 +59,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getContext()).setFragHome();
+                ((MainActivity)getContext()).setFragChat();
             }
         });
 

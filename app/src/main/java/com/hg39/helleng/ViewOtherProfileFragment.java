@@ -1,6 +1,7 @@
 package com.hg39.helleng;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.renderscript.Sampler;
 import android.view.LayoutInflater;
@@ -37,7 +38,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewOtherProfileFragment extends Fragment {
 
-    Button btnEdit,btnSignOut;
     TextView textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted,textViewUserId;
     TextView textViewFullName,textViewWebStatus;
     CircleImageView profileImage;
@@ -54,7 +54,6 @@ public class ViewOtherProfileFragment extends Fragment {
     StorageReference profileRef;
     DatabaseReference requestRef,friendRef;
 
-    int testsStarted,testsFullCompleted;
     String firstNStr,lastNStr,statusStr,regDate;//userId;
     String profileImageUri;
     String currentState = "nothing_happen";
@@ -149,8 +148,8 @@ public class ViewOtherProfileFragment extends Fragment {
         topAppBar = rootView.findViewById(R.id.topAppBar);
         textViewUserId = rootView.findViewById(R.id.textViewUserId);
         textViewReg = rootView.findViewById(R.id.textViewReg);
-        textViewTestsFullCompleted = rootView.findViewById(R.id.textViewTestFullCompleted);
-        textViewTestsStarted = rootView.findViewById(R.id.textViewTestStarted);
+        //textViewTestsFullCompleted = rootView.findViewById(R.id.textViewTestFullCompleted);
+        //textViewTestsStarted = rootView.findViewById(R.id.textViewTestStarted);
         textViewFullName = rootView.findViewById(R.id.textViewFullName);
         textViewUserStatus = rootView.findViewById(R.id.textViewUserStatus);
         profileImage = rootView.findViewById(R.id.profileImage);
@@ -392,7 +391,15 @@ public class ViewOtherProfileFragment extends Fragment {
         }
 
         if (currentState.equals("friend")) {
-            //
+
+            Intent intent = new Intent(getContext(),DialogActivity.class);
+
+            intent.putExtra("visit_user_id", userID);
+            intent.putExtra("visit_user_name", firstNStr + " " + lastNStr);
+            intent.putExtra("visit_user_image", profileImageUri);
+
+            startActivity(intent);
+
         }
 
     }
@@ -401,8 +408,6 @@ public class ViewOtherProfileFragment extends Fragment {
 
         textViewWebStatus.setText(webStatus);
         textViewReg.setText("Registered since " + regDate);
-        textViewTestsStarted.setText("Tests started: " + testsStarted);
-        textViewTestsFullCompleted.setText("Tests completed 100%: " + testsFullCompleted);
         textViewFullName.setText(firstNStr + " " + lastNStr);
         textViewUserStatus.setText(statusStr);
         textViewUserId.setText("Id: " + userID);//Warning!

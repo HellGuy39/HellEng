@@ -94,9 +94,9 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
             }
         });
 
-        rootView.findViewById(R.id.btnPrSimpleTest).setOnClickListener(this);
-        rootView.findViewById(R.id.btnPsSimpleTest).setOnClickListener(this);
-        rootView.findViewById(R.id.btnFtSimpleTest).setOnClickListener(this);
+        rootView.findViewById(R.id.cardPresentSimple).setOnClickListener(this);
+        rootView.findViewById(R.id.cardPastSimple).setOnClickListener(this);
+        rootView.findViewById(R.id.cardFutureSimple).setOnClickListener(this);
 
         //Tests completed info
         tvCompletedPrSimple = rootView.findViewById(R.id.tvCompletedPrSimple);
@@ -140,22 +140,13 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-
-        /*1 - furniture
-         *2 - school supplies
-         *3 - food
-         *4 - present
-         *5 - past
-         *6 - future
-         */
-
-        if (v.getId() == R.id.btnPrSimpleTest) {
+        if (v.getId() == R.id.cardPresentSimple) {
             intentTenses.putExtra("testName", presentSimple);
             startActivity(intentTenses);
-        } else if (v.getId() == R.id.btnPsSimpleTest) {
+        } else if (v.getId() == R.id.cardPastSimple) {
             intentTenses.putExtra("testName", pastSimple);
             startActivity(intentTenses);
-        } else if (v.getId() == R.id.btnFtSimpleTest) {
+        } else if (v.getId() == R.id.cardFutureSimple) {
             intentTenses.putExtra("testName", futureSimple);
             startActivity(intentTenses);
         }

@@ -28,7 +28,6 @@ import static com.hg39.helleng.MainActivity.schoolSupplies;
 
 public class VocabularySelectedFragment extends Fragment implements View.OnClickListener{
 
-    Button btnFrnTest,btnFoodTest,btnSchSupTest;
     TextView tvCompletedFurniture,tvCompletedFood,tvCompletedSchoolSupplies;
     TextView tvFurniture,tvFood,tvSchoolSupplies;
     String completedInterestFurniture,completedInterestSchoolSupplies,completedInterestFood;
@@ -86,9 +85,9 @@ public class VocabularySelectedFragment extends Fragment implements View.OnClick
             }
         });
 
-        rootView.findViewById(R.id.btnFurnitureTest).setOnClickListener(this);
-        rootView.findViewById(R.id.btnSchoolSuppliesTest).setOnClickListener(this);
-        rootView.findViewById(R.id.btnFoodTest).setOnClickListener(this);
+        rootView.findViewById(R.id.cardFurniture).setOnClickListener(this);
+        rootView.findViewById(R.id.cardSchoolSupplies).setOnClickListener(this);
+        rootView.findViewById(R.id.cardFood).setOnClickListener(this);
 
         //Tests completed info
         tvCompletedFurniture = rootView.findViewById(R.id.tvCompletedFurniture);
@@ -133,13 +132,13 @@ public class VocabularySelectedFragment extends Fragment implements View.OnClick
     @Override
     public void onClick(View v) {
 
-        if (v.getId() == R.id.btnFurnitureTest) {
+        if (v.getId() == R.id.cardFurniture) {
             intentWords.putExtra("testName", furniture);
             startActivity(intentWords);
-        } else if (v.getId() == R.id.btnSchoolSuppliesTest) {
+        } else if (v.getId() == R.id.cardSchoolSupplies) {
             intentWords.putExtra("testName", schoolSupplies);
             startActivity(intentWords);
-        } else if (v.getId() == R.id.btnFoodTest) {
+        } else if (v.getId() == R.id.cardFood) {
             intentWords.putExtra("testName", food);
             startActivity(intentWords);
         }
