@@ -77,7 +77,12 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
         adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
-                Picasso.get().load(model.getProfileImageUri()).into(holder.profileImage);
+                if (model.getProfileImage() != null) {
+                    Picasso.get().load(model.getProfileImageUri()).into(holder.profileImage);
+                } else {
+                    holder.profileImage.setImageResource(R.drawable.no_avatar);
+                }
+
                 holder.username.setText(model.getUsername());
                 holder.status.setText(model.getUserStatus());
             }

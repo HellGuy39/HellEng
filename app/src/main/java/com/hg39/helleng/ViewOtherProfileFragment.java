@@ -392,11 +392,17 @@ public class ViewOtherProfileFragment extends Fragment {
 
         if (currentState.equals("friend")) {
 
+            final String[] retImage = {"default_image"};
+
+            if (profileImageUri != null) {
+                retImage[0] = profileImageUri;
+            }
+
             Intent intent = new Intent(getContext(),DialogActivity.class);
 
             intent.putExtra("visit_user_id", userID);
             intent.putExtra("visit_user_name", firstNStr + " " + lastNStr);
-            intent.putExtra("visit_user_image", profileImageUri);
+            intent.putExtra("visit_user_image", retImage[0]);
 
             startActivity(intent);
 

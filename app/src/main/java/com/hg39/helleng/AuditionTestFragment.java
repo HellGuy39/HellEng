@@ -426,14 +426,6 @@ public class AuditionTestFragment extends Fragment {
         taskView2.setText(questionsBefore[1] + "  _ _ _  " + questionsAfter[1]);
         taskView3.setText(questionsBefore[2] + "  _ _ _  " + questionsAfter[2]);
 
-        /*task1Before.setText(questionsBefore[0]);
-        task1After.setText(questionsAfter[0]);
-
-        task2Before.setText(questionsBefore[1]);
-        task2After.setText(questionsAfter[1]);
-
-        task3Before.setText(questionsBefore[2]);
-        task3After.setText(questionsAfter[2]);*/
     }
 
     private void radioButtonsSetListeners() {

@@ -301,6 +301,7 @@
                 android:layout_marginEnd="10dp"
                 android:checkable="true"
                 android:focusable="true"
+                android:visibility="gone"
                 app:cardElevation="10dp"
                 app:strokeWidth="1dp">
 
@@ -348,6 +349,7 @@
                 android:layout_marginEnd="10dp"
                 android:checkable="true"
                 android:focusable="true"
+                android:visibility="gone"
                 app:cardElevation="10dp"
                 app:strokeWidth="1dp">
 
@@ -394,6 +396,7 @@
                 android:layout_marginEnd="10dp"
                 android:checkable="true"
                 android:focusable="true"
+                android:visibility="gone"
                 app:cardElevation="10dp"
                 app:strokeWidth="1dp">
 
