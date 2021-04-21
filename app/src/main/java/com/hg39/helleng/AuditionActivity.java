@@ -98,30 +98,30 @@ public class AuditionActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        webStatusControl.setWebStatus("Online");
+        //webStatusControl.setWebStatus("Online");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        webStatusControl.setWebStatus("Online");
+        //webStatusControl.setWebStatus("Online");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        webStatusControl.setWebStatus("Offline");
+        //webStatusControl.setWebStatus("Offline");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        webStatusControl.setWebStatus("Offline");
+        //webStatusControl.setWebStatus("Offline");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        webStatusControl.setWebStatus("Offline");
+        //webStatusControl.setWebStatus("Offline");
     }
 }

@@ -88,6 +88,7 @@ public class AuditionTestFragment extends Fragment {
     DatabaseReference users;
     DatabaseReference tests;
 
+
     TestProgressControl testProgressControl = new TestProgressControl();
 
     @Override
@@ -167,7 +168,7 @@ public class AuditionTestFragment extends Fragment {
         });
     }
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -251,12 +252,12 @@ public class AuditionTestFragment extends Fragment {
         seekBar.setMax(actualSound.getDuration());
         seekBar.setProgress(actualSound.getCurrentPosition());
 
-        mediaProgress.setText(String.format("%d:%d",
+        mediaProgress.setText(String.format("%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes((long) actualSound.getCurrentPosition()),
                 TimeUnit.MILLISECONDS.toSeconds((long) actualSound.getCurrentPosition()) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
                                                 actualSound.getCurrentPosition()))) + " / " +
-                String.format("%d:%d",
+                String.format("%02d:%02d",
                         TimeUnit.MILLISECONDS.toMinutes((long) actualSound.getDuration()),
                         TimeUnit.MILLISECONDS.toSeconds((long) actualSound.getDuration()) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
@@ -265,17 +266,20 @@ public class AuditionTestFragment extends Fragment {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                soundPlay(actualSound, "change track pos");
-                mediaProgress.setText(String.format("%d:%d",
-                        TimeUnit.MILLISECONDS.toMinutes((long) actualSound.getCurrentPosition()),
-                        TimeUnit.MILLISECONDS.toSeconds((long) actualSound.getCurrentPosition()) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                        actualSound.getCurrentPosition()))) + " / " +
-                        String.format("%d:%d",
-                                TimeUnit.MILLISECONDS.toMinutes((long) actualSound.getDuration()),
-                                TimeUnit.MILLISECONDS.toSeconds((long) actualSound.getDuration()) -
-                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                                actualSound.getDuration()))));
+                if (fromUser) {
+                    soundPlay(actualSound, "change track pos");
+                }
+                    mediaProgress.setText(String.format("%02d:%02d",
+                            TimeUnit.MILLISECONDS.toMinutes((long) actualSound.getCurrentPosition()),
+                            TimeUnit.MILLISECONDS.toSeconds((long) actualSound.getCurrentPosition()) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                            actualSound.getCurrentPosition()))) + " / " +
+                            String.format("%02d:%02d",
+                                    TimeUnit.MILLISECONDS.toMinutes((long) actualSound.getDuration()),
+                                    TimeUnit.MILLISECONDS.toSeconds((long) actualSound.getDuration()) -
+                                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                                    actualSound.getDuration()))));
+
             }
 
             @Override
@@ -301,7 +305,6 @@ public class AuditionTestFragment extends Fragment {
         textViewHint2 = rootView.findViewById(R.id.textViewHint2);
 
         //updateUI();
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -363,30 +366,37 @@ public class AuditionTestFragment extends Fragment {
     }
 
     private void soundPlay(MediaPlayer sound, String ToDo) {
-        if (ToDo.equals("play")) {
-            sound.start();
-        } else if (ToDo.equals("pause")) {
-            sound.pause();
-        } else if (ToDo.equals("replay")) {
-            //sound.reset();
-            sound.seekTo(0);
-        } else if (ToDo.equals("volumeOff")) {
-            sound.setVolume(0f,0f);
-        } else if (ToDo.equals("volumeOn")) {
-            sound.setVolume(1f,1f);
-        } else if (ToDo.equals("change track pos")) {
-            sound.seekTo(seekBar.getProgress());
+        switch (ToDo) {
+            case "play":
+                sound.start();
+                break;
+            case "pause":
+                sound.pause();
+                break;
+            case "replay":
+                //sound.reset();
+                sound.seekTo(0);
+                break;
+            case "volumeOff":
+                sound.setVolume(0f, 0f);
+                break;
+            case "volumeOn":
+                sound.setVolume(1f, 1f);
+                break;
+            case "change track pos":
+                sound.seekTo(seekBar.getProgress());
+                break;
         }
     }
 
     private void onClickControls(View view) {
 
         if (view.getId() == R.id.btnPlayOrPause) {
-            if (isPlay == true) {
+            if (isPlay) {
                 soundPlay(actualSound, "pause");
                 isPlay = false;
                 btnPlayOrPause.setIcon(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
-            } else if (isPlay == false) {
+            } else if (!isPlay) {
                 soundPlay(actualSound, "play");
                 isPlay = true;
                 btnPlayOrPause.setIcon(getResources().getDrawable(R.drawable.ic_baseline_pause_24));
@@ -394,7 +404,7 @@ public class AuditionTestFragment extends Fragment {
         } else if (view.getId() == R.id.btnReplay) {
                 soundPlay(actualSound, "replay");
         } else if (view.getId() == R.id.btnVolumeOnOrOff) {
-            if (isVolumeOn == true) {
+            if (isVolumeOn) {
                 soundPlay(actualSound, "volumeOff");
                 isVolumeOn = false;
                 btnVolumeOnOrOff.setIcon(getResources().getDrawable(R.drawable.ic_baseline_volume_off_24));
