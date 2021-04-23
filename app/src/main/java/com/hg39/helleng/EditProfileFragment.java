@@ -49,7 +49,6 @@ public class EditProfileFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference users;
     StorageReference storageReference;
-    StorageReference profileRef;
 
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
@@ -67,22 +66,11 @@ public class EditProfileFragment extends Fragment {
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        /*profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(profileImage);
-            }
-        });*/
-
-
         userF = mAuth.getCurrentUser();
 
         users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
 
                 firstNStr = dataSnapshot.child("firstName").getValue(String.class);
                 lastNStr = dataSnapshot.child("lastName").getValue(String.class);
@@ -96,9 +84,6 @@ public class EditProfileFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                //Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
-                // Failed to read value
-                //Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
 
@@ -135,11 +120,6 @@ public class EditProfileFragment extends Fragment {
         editTextFirstName.setText(firstNStr);
         editTextLastName.setText(lastNStr);
         editTextUserStatus.setText(statusStr);
-        //updateUI();
-
-        //editTextFirstName.setText(getArguments().getString("userFName"));
-        //editTextLastName.setText(getArguments().getString("userLName"));
-        //editTextUserStatus.setText(getArguments().getString("userStatus"));
 
         updateUI();
 
@@ -178,7 +158,6 @@ public class EditProfileFragment extends Fragment {
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri imageUri = data.getData();
-                //profileImage.setImageURI(imageUri);
 
                 uploadImageToFirebase(imageUri);
             }
@@ -227,6 +206,10 @@ public class EditProfileFragment extends Fragment {
         String strFName = editTextFirstName.getText().toString();
         String strLName = editTextLastName.getText().toString();
 
+        strFName = strFName.trim();
+        strLName = strLName.trim();
+        statusStr = strStatus.trim();
+
         if (strFName.length() > 32) {
             Toast.makeText(getActivity(),"First name must be no more than 32 characters",Toast.LENGTH_SHORT).show();
             return;
@@ -248,6 +231,7 @@ public class EditProfileFragment extends Fragment {
         user.setLastName(editTextLastName.getText().toString());
         user.setStatus(editTextUserStatus.getText().toString());
 
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("fullName").setValue(user.getFirstName() + " " +user.getLastName());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("firstName").setValue(user.getFirstName());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastName").setValue(user.getLastName());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("status").setValue(user.getStatus());

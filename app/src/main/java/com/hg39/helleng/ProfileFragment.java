@@ -126,12 +126,6 @@ public class ProfileFragment extends Fragment {
         //btnEdit.setOnClickListener(this::onClick);
 
         topAppBar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_baseline_settings_24));
-        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Хз для чего это нужно
-            }
-        });
 
         topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override

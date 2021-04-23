@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HellEng">
-        <activity android:name=".ResetPasswordActivity"></activity>
+        <activity android:name=".ChillZoneActivty"></activity>
+        <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".AuditionActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".AboutTheAppActivity" />

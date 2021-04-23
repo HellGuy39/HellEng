@@ -11,41 +11,73 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import static com.hg39.helleng.MainActivity.version;
 
 public class SplashScreen extends AppCompatActivity {
 
     FirebaseAuth mAuth;
+    DatabaseReference appDataRef;
+    FirebaseDatabase database;
+    String actualVersion, installedVersion;
+    FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        installedVersion = version;
+
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
 
-        if (currentUser != null) {
-            mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
+        database = FirebaseDatabase.getInstance();
+        appDataRef = database.getReference().child("App Data").getRef();
 
-                        startActivity(new Intent(SplashScreen.this,MainActivity.class));
+        appDataRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                actualVersion = snapshot.child("version").getValue(String.class);
+                start();
+            }
 
-                        /*Toast.makeText(SplashScreen.this,
-                                "Reload successful!",
-                                Toast.LENGTH_SHORT).show();*/
-                        finish();
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                    } else {
+            }
+        });
 
-                        Toast.makeText(SplashScreen.this,
-                                "Failed to reload user.",
-                                Toast.LENGTH_SHORT).show();
+    }
+    private void start() {
+        if (actualVersion.equalsIgnoreCase(installedVersion)) {
+            if (currentUser != null) {
+                mAuth.getCurrentUser().reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+
+                            startActivity(new Intent(SplashScreen.this,MainActivity.class));
+                            finish();
+
+                        } else {
+                            //something
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                startActivity(new Intent(SplashScreen.this,LoginActivity.class));
+                finish();
+            }
         } else {
-            startActivity(new Intent(SplashScreen.this,LoginActivity.class));
+            Intent intent = new Intent(SplashScreen.this,ChillZoneActivty.class);
+            intent.putExtra("version", version);
+            intent.putExtra("actualVersion", actualVersion);
+            startActivity(intent);
             finish();
         }
     }

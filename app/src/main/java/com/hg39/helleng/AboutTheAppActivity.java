@@ -15,10 +15,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.hg39.helleng.MainActivity.version;
+
 public class AboutTheAppActivity extends AppCompatActivity {
 
-    DatabaseReference appData;
-    String version,state;
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
     String HellGuy39,textSong,someText;
@@ -41,22 +41,6 @@ public class AboutTheAppActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
-            }
-        });
-
-        appData = FirebaseDatabase.getInstance().getReference("App Data");
-
-        appData.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                version = snapshot.child("version").getValue(String.class);
-                state = snapshot.child("Actual Update Name").getValue(String.class);
-                updateUI();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -96,7 +80,7 @@ public class AboutTheAppActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        tvVersion.setText("Version: 0.1.1");
+        tvVersion.setText("Version: " + version);
         tvUpdate.setText("State: early alpha");
         something.setText(textSong);
         somethingToo.setText(someText);
