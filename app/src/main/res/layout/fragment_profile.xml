@@ -63,8 +63,7 @@
                             android:layout_margin="10dp"
                             android:background="@android:color/transparent"
                             android:scaleType="centerCrop"
-                            android:contentDescription="@string/content_description_media"
-                            android:src="@drawable/ic_baseline_image_24" />
+                            android:contentDescription="@string/content_description_media" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -77,7 +76,7 @@
                                 android:id="@+id/textViewFullName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="~Adam Semenov~"
+                                android:text="FName LName"
                                 android:textSize="20sp" />
 
                             <TextView
@@ -94,7 +93,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
-                                android:text="~Online~"
+                                android:text="web status"
                                 android:textColor="?android:attr/textColorSecondary" />
 
                         </LinearLayout>
@@ -137,7 +136,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="Registered since ~date~"
+                                android:text="Registered since "
                                 android:textSize="16sp"
                                 android:textIsSelectable="true"/>
 
@@ -146,7 +145,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="Id: ~id~"
+                                android:text="Id: "
                                 android:textSize="16sp"
                                 android:textIsSelectable="true"/>
                         </LinearLayout>

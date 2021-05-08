@@ -24,10 +24,10 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
+
     List<Messages> userMessagesList;
     FirebaseAuth mAuth;
     DatabaseReference usersRef;
-
 
     public MessageAdapter (List<Messages> userMessagesList) {
         this.userMessagesList = userMessagesList;
@@ -36,13 +36,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     public class MessageViewHolder extends RecyclerView.ViewHolder {
 
         public TextView senderMessageText,receiverMessageText;
-        public CircleImageView receiverProfileImage;
+        //public CircleImageView receiverProfileImage;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             senderMessageText = itemView.findViewById(R.id.sender_message_text);
             receiverMessageText = itemView.findViewById(R.id.receiver_message_text);
-            receiverProfileImage = itemView.findViewById(R.id.message_profile_image);
+            //receiverProfileImage = itemView.findViewById(R.id.message_profile_image);
         }
     }
 
@@ -67,7 +67,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(fromUserID);
 
-        usersRef.addValueEventListener(new ValueEventListener() {
+        /*usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.hasChild("profileImage")) {
@@ -80,11 +80,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        });*/
 
         if (fromMessageType.equals("text")) {
             holder.receiverMessageText.setVisibility(View.INVISIBLE);
-            holder.receiverProfileImage.setVisibility(View.INVISIBLE);
+            //holder.receiverProfileImage.setVisibility(View.INVISIBLE);
             holder.senderMessageText.setVisibility(View.INVISIBLE);
 
             if (fromUserID.equals(messageSenderId)) {
@@ -94,7 +94,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             }
             else {
 
-                holder.receiverProfileImage.setVisibility(View.VISIBLE);
+                //holder.receiverProfileImage.setVisibility(View.VISIBLE);
                 holder.receiverMessageText.setVisibility(View.VISIBLE);
 
                 holder.receiverMessageText.setBackgroundResource(R.drawable.receiver_messages_layout);

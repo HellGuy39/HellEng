@@ -1,7 +1,6 @@
 package com.hg39.helleng;
 
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.hg39.helleng.Models.User;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 public class FindFriendsFragment extends Fragment {
 
@@ -60,14 +61,15 @@ public class FindFriendsFragment extends Fragment {
         View rootView
                 = inflater.inflate(R.layout.fragment_find_friends,container,false);
 
-        toolbar = rootView.findViewById(R.id.topAppBar);
         recyclerView = rootView.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        toolbar = rootView.findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getContext()).setFragFriends();
+                ((MainActivity)getContext()).onBackPressed();
+                //((MainActivity)getContext()).setFragFriends();
             }
         });
 
@@ -82,7 +84,7 @@ public class FindFriendsFragment extends Fragment {
 
     private void loadUsers(String s) {
 
-        Query query = mUserRef.orderByChild("fullName").startAt(s).endAt(s+"\uf8ff");
+        Query query = mUserRef.orderByChild("firstName").startAt(s).endAt(s+"\uf8ff");
 
         options = new FirebaseRecyclerOptions.Builder<User>().setQuery(query,User.class).build();
 
@@ -110,7 +112,7 @@ public class FindFriendsFragment extends Fragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ((MainActivity)getContext()).setFragViewOtherProfile(getRef(position).getKey().toString());
+                        ((MainActivity) Objects.requireNonNull(getContext())).setFragViewOtherProfile(getRef(position).getKey());
                     }
                 });
             }
@@ -133,6 +135,7 @@ public class FindFriendsFragment extends Fragment {
         inflater.inflate(R.menu.search_menu,menu);
 
         MenuItem menuItem = menu.findItem(R.id.search);
+
         searchView = (SearchView) menuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

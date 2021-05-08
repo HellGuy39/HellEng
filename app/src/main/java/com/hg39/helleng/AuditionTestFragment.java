@@ -314,7 +314,7 @@ public class AuditionTestFragment extends Fragment {
                             Message message = new Message();
                             message.what = actualSound.getCurrentPosition();
                             handler.sendMessage(message);
-                            Thread.sleep(1000);
+                            Thread.sleep(100);
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();

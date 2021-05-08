@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -12,6 +14,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Locale;
+
+import static com.hg39.helleng.SettingsActivity.CONFIG_FILE;
+import static com.hg39.helleng.SettingsActivity.CONFIG_LANGUAGE;
 
 public class GrammarActivity extends AppCompatActivity {
 
@@ -28,6 +35,7 @@ public class GrammarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLanguage();
         setContentView(R.layout.activity_grammar);
 
         wasOnTest = false;
@@ -141,6 +149,24 @@ public class GrammarActivity extends AppCompatActivity {
                         GrammarActivity.super.onBackPressed();
                     }
                 }).create().show();
+    }
+
+    protected void setLanguage() {
+        SharedPreferences sp = getSharedPreferences(CONFIG_FILE, 0);
+        String language = sp.getString(CONFIG_LANGUAGE, "en");
+
+        Locale locale = new Locale(language);
+
+        Locale.setDefault(locale);
+        // Create a new configuration object
+        Configuration config = new Configuration();
+        // Set the locale of the new configuration
+        config.locale = locale;
+        // Update the configuration of the Accplication context
+        getResources().updateConfiguration(
+                config,
+                getResources().getDisplayMetrics()
+        );
     }
 
 }

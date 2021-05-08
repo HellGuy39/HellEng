@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.renderscript.Sampler;
 import android.view.View;
@@ -15,7 +17,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Locale;
+
 import static com.hg39.helleng.MainActivity.version;
+import static com.hg39.helleng.SettingsActivity.CONFIG_FILE;
+import static com.hg39.helleng.SettingsActivity.CONFIG_LANGUAGE;
 
 public class AboutTheAppActivity extends AppCompatActivity {
 
@@ -29,6 +35,7 @@ public class AboutTheAppActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLanguage();
         setContentView(R.layout.activity_about_the_app);
 
         tvVersion = findViewById(R.id.version);
@@ -76,6 +83,10 @@ public class AboutTheAppActivity extends AppCompatActivity {
                 "|@| |@|  |@|    |@|_   |@|_   |@|_|@| |@| |@|   |@|        |@|     |@|" + "\n" +
                 "|@| |@|  |@@@@| |@@@@| |@@@@| |@@@@@| |@@@@@|  |@|      |@@@@| |@@@@@|" + "\n";
 
+
+
+
+
         updateUI();
     }
 
@@ -91,4 +102,23 @@ public class AboutTheAppActivity extends AppCompatActivity {
         super.onBackPressed();
         finish();
     }
+
+    protected void setLanguage() {
+        SharedPreferences sp = getSharedPreferences(CONFIG_FILE, 0);
+        String language = sp.getString(CONFIG_LANGUAGE, "en");
+
+        Locale locale = new Locale(language);
+
+        Locale.setDefault(locale);
+        // Create a new configuration object
+        Configuration config = new Configuration();
+        // Set the locale of the new configuration
+        config.locale = locale;
+        // Update the configuration of the Accplication context
+        getResources().updateConfiguration(
+                config,
+                getResources().getDisplayMetrics()
+        );
+    }
+
 }

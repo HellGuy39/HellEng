@@ -15,33 +15,42 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.hg39.helleng.Models.User;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 public class FriendsFragment extends Fragment implements View.OnClickListener{
 
     RecyclerView recyclerView;
 
-    com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton extendedFloatingActionButtonFind;
+    //com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton extendedFloatingActionButtonFind;
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
     FirebaseRecyclerOptions<User>options;
     FirebaseRecyclerAdapter<User,UserViewHolder>adapter;
 
     FirebaseAuth mAuth;
-    DatabaseReference mRef;
+    DatabaseReference friendsRef, usersRef;
     FirebaseUser mUser;
+
+    String currentUserID;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-        mRef = FirebaseDatabase.getInstance().getReference().child("Friends");
+        currentUserID = mAuth.getCurrentUser().getUid();
+        friendsRef = FirebaseDatabase.getInstance().getReference().child("Friends").child(currentUserID);
         mUser = mAuth.getCurrentUser();
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
     }
 
@@ -59,32 +68,69 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getContext()).setFragChat();
+                ((MainActivity)getContext()).onBackPressed();
+                //((MainActivity)getContext()).setFragChat();
             }
         });
 
-        extendedFloatingActionButtonFind = rootView.findViewById(R.id.floatingButtonFind);
-        extendedFloatingActionButtonFind.setOnClickListener(this);
+        //extendedFloatingActionButtonFind = rootView.findViewById(R.id.floatingButtonFind);
+        //extendedFloatingActionButtonFind.setOnClickListener(this);
 
-        loadFriend("");
+        loadFriend();
 
         return rootView;
     }
 
-    private void loadFriend(String s) {
-        Query query = mRef.child(mUser.getUid()).orderByChild("username").startAt(s).endAt(s+"\uf8ff");
-        options = new FirebaseRecyclerOptions.Builder<User>().setQuery(query,User.class).build();
+    private void loadFriend() {
+        //Query query = mRef.child(mUser.getUid()).orderByChild("username").startAt(s).endAt(s+"\uf8ff");
+        options = new FirebaseRecyclerOptions.Builder<User>().setQuery(friendsRef,User.class).build();
         adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
-                if (model.getProfileImage() != null) {
-                    Picasso.get().load(model.getProfileImageUri()).into(holder.profileImage);
+
+                String userIDs = getRef(position).getKey();
+
+                usersRef.child(userIDs).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        String username = snapshot.child("fullName").getValue(String.class);
+                        String status = snapshot.child("status").getValue(String.class);
+
+                        if (snapshot.hasChild("profileImage")) {
+                            String profileImage = snapshot.child("profileImage").getValue(String.class);
+                            Picasso.get().load(profileImage).placeholder(R.drawable.no_avatar).into(holder.profileImage);
+                        } else {
+                            holder.profileImage.setImageResource(R.drawable.no_avatar);
+                        }
+
+                        holder.username.setText(username);
+                        holder.status.setText(status);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+                /*if (model.getProfileImage() != null) {
+                    Picasso.get().load(model.getProfileImage()).into(holder.profileImage);
                 } else {
                     holder.profileImage.setImageResource(R.drawable.no_avatar);
                 }
 
                 holder.username.setText(model.getUsername());
-                holder.status.setText(model.getUserStatus());
+                holder.status.setText(model.getUserStatus());*/
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((MainActivity) Objects.requireNonNull(getContext())).setFragViewOtherProfile(getRef(position).getKey());
+                    }
+                });
+
             }
 
             @NonNull
@@ -101,9 +147,9 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
-        if (v.getId() == R.id.floatingButtonFind) {
+        /*if (v.getId() == R.id.floatingButtonFind) {
             ((MainActivity)getContext()).setFragFindFriends();
-        }
+        }*/
 
     }
 }

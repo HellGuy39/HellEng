@@ -5,7 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -14,6 +19,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.zeugmasolutions.localehelper.LocaleAwareCompatActivity;
+
+import java.util.Locale;
+
+import static com.hg39.helleng.SettingsActivity.CONFIG_FILE;
+import static com.hg39.helleng.SettingsActivity.CONFIG_LANGUAGE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String humor = "Humor";
     public static final String superman = "Superman";
 
-    public static final String version = "0.1.2";
-
-    boolean userOnMainMenu,userOnCoursesSelection,userOnEditProfile;
+    public static final String version = "0.2.0";
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
@@ -53,19 +62,21 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragFindFriends;
     Fragment fragViewOtherProfile;
     Fragment fragSelectedAudition;
+    Fragment fragFriendRequests;
 
     WebStatusControl webStatusControl = new WebStatusControl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLanguage();
         setContentView(R.layout.activity_main);
-
-        userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
+
+        //localeDelegate.setLocale(this, locale);
 
         //Фрагментики
         fragEditProfile = new EditProfileFragment();
@@ -78,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
         fragSelectedAudition = new AuditionSelectedFragment();
         fragFriends = new FriendsFragment();
         fragFindFriends = new FindFriendsFragment();
-        fragViewOtherProfile = new ViewOtherProfileFragment();
+        fragFriendRequests = new RequestsFragment();
+        //fragViewOtherProfile = new ViewOtherProfileFragment();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -103,14 +115,19 @@ public class MainActivity extends AppCompatActivity {
         webStatusControl.setWebStatus("Online");
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        webStatusControl.setWebStatus("Online");
+        
+    }
+
     private final BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @SuppressLint("NonConstantResourceId")
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment selectedFragment = null;
-
-                    userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
 
                     switch (item.getItemId()) {
                         case R.id.nav_home:
@@ -127,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
 
+                    assert selectedFragment != null;
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, selectedFragment)
@@ -136,64 +154,45 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
-    protected void setFragViewOtherProfile(String userKey) {
-        Bundle bundle = new Bundle();
-        bundle.putString("userKey",userKey);
-        fragViewOtherProfile.setArguments(bundle);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container,fragViewOtherProfile)
-                .commit();
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public void setFragCourses() {
-        userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container,fragCourses)
-                .commit();
+    protected void setLanguage() {
+        SharedPreferences sp = getSharedPreferences(CONFIG_FILE, 0);
+        String language = sp.getString(CONFIG_LANGUAGE, "en");
+
+        Locale locale = new Locale(language);
+
+        Locale.setDefault(locale);
+        // Create a new configuration object
+        Configuration config = new Configuration();
+        // Set the locale of the new configuration
+        config.locale = locale;
+        // Update the configuration of the Accplication context
+        getResources().updateConfiguration(
+                config,
+                getResources().getDisplayMetrics()
+        );
     }
 
-    protected void setFragSelectedVocabulary() {
-        userOnMainMenu = false; userOnCoursesSelection = true; userOnEditProfile = false;
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container,fragSelectedVocabulary)
-                .commit();
-    }
-
-    protected void setFragSelectedAudition() {
-        userOnMainMenu = false; userOnCoursesSelection = true; userOnEditProfile = false;
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container,fragSelectedAudition)
-                .commit();
-    }
-
-    protected void setFragHome(){
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container,fragHome)
-                .commit();
-    }
-
-    protected void setFragFriends() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container,fragFriends)
-                .commit();
-    }
-
-    protected void setFragFindFriends() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container,fragFindFriends)
-                .commit();
-    }
 
     @Override
     public void onBackPressed() {
-        if (userOnMainMenu) {
+
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
+        /*if (userOnMainMenu) {
             finish();
         } else if (userOnEditProfile) {
             outEditProfileFragment();
@@ -201,14 +200,82 @@ public class MainActivity extends AppCompatActivity {
             setFragCourses();
         } else {
             super.onBackPressed();
-        }
+        }*/
 
     }
 
-    protected void setFragSelectedGrammar() {
-        userOnMainMenu = false; userOnCoursesSelection = true; userOnEditProfile = false;
+    protected void setFragFriendRequests() {
         getSupportFragmentManager()
                 .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container,fragFriendRequests)
+                .commit();
+    }
+
+    protected void setFragViewOtherProfile(String userKey) {
+        fragViewOtherProfile = new ViewOtherProfileFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("userKey",userKey);
+        fragViewOtherProfile.setArguments(bundle);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container,fragViewOtherProfile)
+                .commit();
+    }
+
+    protected void setFragCourses() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container,fragCourses)
+                .commit();
+    }
+
+    protected void setFragSelectedVocabulary() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container,fragSelectedVocabulary)
+                .commit();
+    }
+
+    protected void setFragSelectedAudition() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container,fragSelectedAudition)
+                .commit();
+    }
+
+    protected void setFragHome(){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container,fragHome)
+                .commit();
+    }
+
+    protected void setFragFriends() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container,fragFriends)
+                .commit();
+    }
+
+    protected void setFragFindFriends() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container,fragFindFriends)
+                .commit();
+    }
+
+    protected void setFragSelectedGrammar() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
                 .replace(R.id.fragment_container, fragSelectedGrammar)
                 .commit();
     }
@@ -216,26 +283,28 @@ public class MainActivity extends AppCompatActivity {
     protected void setFragChat() {
         getSupportFragmentManager()
                 .beginTransaction()
+                .addToBackStack(null)
                 .replace(R.id.fragment_container, fragChat)
                 .commit();
     }
 
     protected void setEditProfileFragment() {
-        userOnMainMenu = false; userOnCoursesSelection = false; userOnEditProfile = true;
         getSupportFragmentManager()
                 .beginTransaction()
+                .addToBackStack(null)
                 .replace(R.id.fragment_container, fragEditProfile)
                 .commit();
     }
     protected void outEditProfileFragment() {
-        userOnMainMenu = true; userOnCoursesSelection = false; userOnEditProfile = false;
         getSupportFragmentManager()
                 .beginTransaction()
+                .addToBackStack(null)
                 .replace(R.id.fragment_container, fragProfile)
                 .commit();
     }
 
     public void signOut() {
+        webStatusControl.setWebStatus("Offline");
         FirebaseAuth.getInstance().signOut();
         if (mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -248,7 +317,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        webStatusControl.setWebStatus("Offline");
+        //webStatusControl.setWebStatus("Offline");
 
     }
 

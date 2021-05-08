@@ -3,7 +3,7 @@
 
     <!-- Main Activity -->
     <string name="app_home">Home</string>
-    <string name="app_chat">Chat</string>
+    <string name="app_chat">Chats</string>
     <string name="app_courses">Courses</string>
     <string name="app_profile">Profile</string>
 
@@ -35,5 +35,8 @@
     <string name="reference">Reference</string>
     <string name="about_the_app">About the app</string>
     <string name="sign_out">Sign out</string>
+
+    <!-- Settings -->
+    <string name="language">Language</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.hg39.helleng;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -41,14 +43,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     //com.google.android.material.card.MaterialCardView cardViewFriends;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
 
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
-
-        FirebaseUser userF = mAuth.getInstance().getCurrentUser();
-        users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
+        mAuth = FirebaseAuth.getInstance();
+        //FirebaseUser userF = mAuth.getInstance().getCurrentUser();
+        users.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userName = dataSnapshot.child("firstName").getValue(String.class);
@@ -62,6 +64,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Context context = MyContextWrapper.wrap(Objects.requireNonNull(getContext())/*in fragment use getContext() instead of this*/, "en");
+        //getResources().updateConfiguration(context.getResources().getConfiguration(), context.getResources().getDisplayMetrics());
 
     }
 

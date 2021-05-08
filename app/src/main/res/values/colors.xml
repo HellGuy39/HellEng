@@ -18,6 +18,12 @@
     <color name="chat_light_blue">#90CAF9</color>
     <color name="extreme_light_blue">#00BCD4</color>
 
+    <color name="senderMessageDarkTheme">#434547</color>
+    <color name="receiverMessageDarkTheme">#202020</color>
+
+    <color name="senderMessageDayTheme">#90CAF9</color>
+    <color name="receiverMessageDayTheme">#DFDFDF</color>
+
     <color name="light_black">#1E1E1E</color>
 
     <color name="light_red">#CCFF1744</color>

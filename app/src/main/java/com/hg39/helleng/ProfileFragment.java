@@ -1,5 +1,6 @@
 package com.hg39.helleng;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,6 +32,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.hg39.helleng.Models.User;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -51,8 +55,15 @@ public class ProfileFragment extends Fragment {
     String webStatus;
 
     @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+
     }
 
     @Override
@@ -69,35 +80,13 @@ public class ProfileFragment extends Fragment {
         users = database.getReference("Users");
 
         if (mAuth != null) {
-            userId = mAuth.getCurrentUser().getUid();
+            userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         }
 
-        FirebaseUser userF = mAuth.getCurrentUser();
+        loadData();
 
-        users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                firstNStr = dataSnapshot.child("firstName").getValue(String.class);
-                lastNStr = dataSnapshot.child("lastName").getValue(String.class);
-                statusStr = dataSnapshot.child("status").getValue(String.class);
-                regDate = dataSnapshot.child("registerDate").getValue(String.class);
-                webStatus = dataSnapshot.child("webStatus").getValue(String.class);
-                //testsFullCompleted = dataSnapshot.child("testsFullCompleted").getValue(int.class);
-                //testsStarted = dataSnapshot.child("testsStarted").getValue(int.class);
-                profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
-                updateUI();
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                //Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
-                // Failed to read value
-                //Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
+        //Context context = MyContextWrapper.wrap(Objects.requireNonNull(getContext())/*in fragment use getContext() instead of this*/, "en");
+        //getResources().updateConfiguration(context.getResources().getConfiguration(), context.getResources().getDisplayMetrics());
 
     }
 
@@ -125,16 +114,17 @@ public class ProfileFragment extends Fragment {
         //btnSignOut.setOnClickListener(this::onClick);
         //btnEdit.setOnClickListener(this::onClick);
 
-        topAppBar.setOverflowIcon(getResources().getDrawable(R.drawable.ic_baseline_settings_24));
+        topAppBar.setOverflowIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_baseline_settings_24,null));
 
         topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
                 switch (item.getItemId()) {
 
                     case R.id.editProfile:
-                        ((MainActivity)getActivity())
+                        ((MainActivity) Objects.requireNonNull(getActivity()))
                                 .setEditProfileFragment();
                         break;
 
@@ -150,7 +140,7 @@ public class ProfileFragment extends Fragment {
                         break;
 
                     case R.id.signOut:
-                        ((MainActivity)getActivity())
+                        ((MainActivity) Objects.requireNonNull(getContext()))
                                 .signOut();
                         break;
                 }
@@ -159,18 +149,43 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        updateUI();
+        //updateUI();
 
         return rootView;
     }
 
+    @SuppressLint("SetTextI18n")
     private void updateUI() {
+
+        if (webStatus == null)
+            webStatus = "";
+
+        if (regDate == null)
+            regDate = "";
+
+        if (firstNStr == null)
+            firstNStr = "";
+
+        if (lastNStr == null)
+            lastNStr = "";
+
+        if (statusStr == null)
+            statusStr = "";
+
+        if (userId == null)
+            userId = "";
 
         textViewWebStatus.setText(webStatus);
         textViewReg.setText("Registered since " + regDate);
         textViewFullName.setText(firstNStr + " " + lastNStr);
         textViewUserStatus.setText(statusStr);
         textViewUserId.setText("Id: " + userId);
+
+        /*if (webStatus.equalsIgnoreCase("Online")) {
+            textViewWebStatus.setTextColor(getResources().getColor(R.color.blue));
+        } else {
+            textViewWebStatus.setTextColor(getResources().getColor(R.color.gray));
+        }*/
 
         if (profileImageUri != null) {
             Picasso.get().load(profileImageUri).into(profileImage);
@@ -184,7 +199,34 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //updateUI();
+        updateUI();
+    }
+
+    private void loadData() {
+        users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                firstNStr = dataSnapshot.child("firstName").getValue(String.class);
+                lastNStr = dataSnapshot.child("lastName").getValue(String.class);
+                statusStr = dataSnapshot.child("status").getValue(String.class);
+                regDate = dataSnapshot.child("registerDate").getValue(String.class);
+                webStatus = dataSnapshot.child("webStatus").getValue(String.class);
+                //testsFullCompleted = dataSnapshot.child("testsFullCompleted").getValue(int.class);
+                //testsStarted = dataSnapshot.child("testsStarted").getValue(int.class);
+                profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
+                updateUI();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //Toast.makeText(getContext(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
+                // Failed to read value
+                //Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
     @Override

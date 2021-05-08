@@ -20,7 +20,7 @@
             app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             app:navigationIconTint="?attr/navigationIconTint"
-            app:title="Friends"
+            app:title="Friend requests"
             app:titleTextColor="?attr/titleTextColor" />
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -40,20 +40,5 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/floatingButtonFind"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:backgroundTint="?attr/colorPrimary"
-        android:text="Find friends"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-        android:textColor="?attr/titleTextColor"
-        android:visibility="gone"
-        app:icon="@drawable/ic_baseline_person_search_24"
-        app:iconTint="?attr/navigationIconTint"
-        tools:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

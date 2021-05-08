@@ -5,7 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+
+import java.util.Locale;
+
+import static com.hg39.helleng.SettingsActivity.CONFIG_FILE;
+import static com.hg39.helleng.SettingsActivity.CONFIG_LANGUAGE;
 
 public class AuditionActivity extends AppCompatActivity {
 
@@ -20,6 +27,7 @@ public class AuditionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLanguage();
         setContentView(R.layout.activity_audition);
 
         //fragAuditionTest = new
@@ -124,4 +132,23 @@ public class AuditionActivity extends AppCompatActivity {
         super.onDestroy();
         //webStatusControl.setWebStatus("Offline");
     }
+
+    protected void setLanguage() {
+        SharedPreferences sp = getSharedPreferences(CONFIG_FILE, 0);
+        String language = sp.getString(CONFIG_LANGUAGE, "en");
+
+        Locale locale = new Locale(language);
+
+        Locale.setDefault(locale);
+        // Create a new configuration object
+        Configuration config = new Configuration();
+        // Set the locale of the new configuration
+        config.locale = locale;
+        // Update the configuration of the Accplication context
+        getResources().updateConfiguration(
+                config,
+                getResources().getDisplayMetrics()
+        );
+    }
+
 }

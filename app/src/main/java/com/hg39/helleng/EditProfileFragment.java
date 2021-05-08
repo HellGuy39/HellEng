@@ -1,8 +1,11 @@
 package com.hg39.helleng;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,10 +19,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,8 +41,14 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.hg39.helleng.Models.User;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+
+import id.zelory.compressor.Compressor;
 
 public class EditProfileFragment extends Fragment {
 
@@ -42,6 +56,8 @@ public class EditProfileFragment extends Fragment {
     ImageView profileImage;
 
     String profileImageUri;
+
+    Button btnDeleteProfileImage;
 
     com.google.android.material.floatingactionbutton.FloatingActionButton fltBtnSave;
 
@@ -54,7 +70,11 @@ public class EditProfileFragment extends Fragment {
 
     String firstNStr,lastNStr,statusStr;
 
+    ProgressDialog loadingBar;
+
     FirebaseUser userF;
+
+    androidx.coordinatorlayout.widget.CoordinatorLayout root;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,19 +117,25 @@ public class EditProfileFragment extends Fragment {
         View rootView =
                 inflater.inflate(R.layout.fragment_edit_profile,container,false);
 
+        root = rootView.findViewById(R.id.root);
+
         profileImage = rootView.findViewById(R.id.profileImage);
 
         toolbar = rootView.findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity())
-                        .outEditProfileFragment();
+                ((MainActivity)getContext()).onBackPressed();
             }
         });
 
+        loadingBar = new ProgressDialog(getContext());
+
+        btnDeleteProfileImage = rootView.findViewById(R.id.btnDeleteProfileImage);
+
         fltBtnSave = rootView.findViewById(R.id.floatingButtonSave);
 
+        btnDeleteProfileImage.setOnClickListener(this::onClickDeleteProfileImage);
         fltBtnSave.setOnClickListener(this::onClickBtnSave);
         profileImage.setOnClickListener(this::onClickChangeProfileImage);
 
@@ -124,6 +150,85 @@ public class EditProfileFragment extends Fragment {
         updateUI();
 
         return rootView;
+    }
+
+    private void onClickDeleteProfileImage(View view) {
+        if (!((MainActivity)getContext()).isOnline())
+        {
+            dialogBuilder();
+            return;
+        }
+
+        loadingBar.setTitle("Updating data...");
+        loadingBar.setMessage("Please wait, while we update your account information...");
+        loadingBar.setCanceledOnTouchOutside(true);
+        loadingBar.show();
+
+        final StorageReference fileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() + "/profile.jpg");
+        fileRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if (task.isSuccessful())
+                {
+                    users.child(mAuth.getUid()).child("profileImage").removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful())
+                            {
+                                Toast.makeText(getContext(), "Image successful deleted.", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+                            }
+                            else
+                            {
+
+                                Toast.makeText(getContext(), "Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+                                dialogBuilder();
+                            }
+                        }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+
+                            Toast.makeText(getContext(), "Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
+                            dialogBuilder();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            Toast.makeText(getContext(), "Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
+                            dialogBuilder();
+                        }
+                    });
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    loadingBar.dismiss();
+                }
+            }
+        }).addOnCanceledListener(new OnCanceledListener()
+        {
+            @Override
+            public void onCanceled()
+            {
+                Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+                loadingBar.dismiss();
+                dialogBuilder();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e)
+            {
+                //Toast.makeText(getContext(),"Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                loadingBar.dismiss();
+            }
+        });
+
     }
 
     @Override
@@ -149,55 +254,124 @@ public class EditProfileFragment extends Fragment {
     protected void onClickChangeProfileImage(View view) {
         Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(openGalleryIntent,1000);
-
+        profileImage.setClickable(false);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1000) {
-            if (resultCode == Activity.RESULT_OK) {
-                Uri imageUri = data.getData();
+        profileImage.setClickable(true);
+        if (requestCode == 1000 && resultCode == Activity.RESULT_OK && data != null) {
+            Uri imageUri = data.getData();
 
-                uploadImageToFirebase(imageUri);
+            CropImage.activity(imageUri)
+                    .setAspectRatio(1,1)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .start(getContext(), this);
+
+            //uploadImageToFirebase(imageUri);
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == Activity.RESULT_OK)
+            {
+                Uri resultUri = result.getUri();
+                uploadImageToFirebase(resultUri);
             }
         }
     }
 
     private void uploadImageToFirebase(Uri imageUri) {
         //upload image to firebase storage
+        if (!((MainActivity)getContext()).isOnline()) {
+            dialogBuilder();
+            return;
+        }
+
+        loadingBar.setTitle("Updating data...");
+        loadingBar.setMessage("Updating account data, please wait..."/*"Please wait, while we update your account information..."*/);
+        loadingBar.setCanceledOnTouchOutside(true);//!
+        loadingBar.show();
+
         final StorageReference fileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() + "/profile.jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getContext(),"Image Uploaded.", Toast.LENGTH_SHORT).show();
-                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                //Toast.makeText(getContext(),"Image Uploaded.\nYou don't need to press save button repeatedly", Toast.LENGTH_SHORT).show();
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                {
                     @Override
-                    public void onSuccess(Uri uri) {
+                    public void onSuccess(Uri uri)
+                    {
                         Picasso.get().load(uri).into(profileImage);
                         HashMap hashMap = new HashMap();
                         hashMap.put("profileImage",uri.toString());
-                        users.child(mAuth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
+                        users.child(mAuth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener()
+                        {
                             @Override
-                            public void onSuccess(Object o) {
+                            public void onSuccess(Object o)
+                            {
+                                Snackbar.make(root,"Image Uploaded\nYou don't need to press save button repeatedly", Snackbar.LENGTH_LONG).show();
+                                //Toast.makeText(getContext(),"Image Uploaded\nYou don't need to press save button repeatedly", Toast.LENGTH_LONG).show();
+                                loadingBar.dismiss();
+                            }
+                        }).addOnFailureListener(new OnFailureListener()
+                        {
+                            @Override
+                            public void onFailure(@NonNull Exception e)
+                            {
+                                Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
+
+                                dialogBuilder();
 
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
+                        }).addOnCanceledListener(new OnCanceledListener()
+                        {
                             @Override
-                            public void onFailure(@NonNull Exception e) {
+                            public void onCanceled()
+                            {
+                                Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+                                loadingBar.dismiss();
 
+                                dialogBuilder();
                             }
                         });
                     }
                 });
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        }).addOnFailureListener(new OnFailureListener()
+        {
             @Override
-            public void onFailure(@NonNull Exception e) {
+            public void onFailure(@NonNull Exception e)
+            {
+                loadingBar.dismiss();
                 Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+                dialogBuilder();
+            }
+        }).addOnCanceledListener(new OnCanceledListener()
+        {
+            @Override
+            public void onCanceled()
+            {
+                loadingBar.dismiss();
+                Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+                dialogBuilder();
             }
         });
+    }
 
+    private void dialogBuilder() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Failed")
+                .setMessage("Please check your internet connection")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).create().show();
     }
 
     protected void onClickBtnSave(View view) {
@@ -223,8 +397,15 @@ public class EditProfileFragment extends Fragment {
             return;
         }
 
-        //((MainActivity)getActivity())
-        //           .saveProfileInfo(strStatus,strFName,strLName);
+        if (!((MainActivity)getContext()).isOnline()) {
+            dialogBuilder();
+            return;
+        }
+
+        if (!((MainActivity)getContext()).isOnline()) {
+            dialogBuilder();
+            return;
+        }
 
         User user = new User();
         user.setFirstName(editTextFirstName.getText().toString());
@@ -239,10 +420,9 @@ public class EditProfileFragment extends Fragment {
         Toast.makeText(getActivity(),
                 "What a save!",
                 Toast.LENGTH_SHORT).show();
+
         ((MainActivity)getActivity())
-                .outEditProfileFragment();
-
-
+                .onBackPressed();
+                //.outEditProfileFragment();
     }
-
 }

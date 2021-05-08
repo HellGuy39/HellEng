@@ -6,8 +6,8 @@
         <item name="colorPrimaryVariant">@color/light_blue</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/blue</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">@color/black</item>
+        <item name="colorSecondaryVariant">@color/black</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/light_black</item>
@@ -24,6 +24,14 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">true</item>
 
+    </style>
+
+    <style name="senderMessageTheme">
+        <item name="backgroundTint">@color/senderMessageDarkTheme</item>
+    </style>
+
+    <style name="receiverMessageTheme">
+        <item name="backgroundTint">@color/receiverMessageDarkTheme</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">

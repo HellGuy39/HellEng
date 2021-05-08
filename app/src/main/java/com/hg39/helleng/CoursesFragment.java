@@ -1,6 +1,7 @@
 package com.hg39.helleng;
 
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
@@ -33,7 +34,8 @@ public class CoursesFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //Context context = MyContextWrapper.wrap(Objects.requireNonNull(getContext())/*in fragment use getContext() instead of this*/, "en");
+        //getResources().updateConfiguration(context.getResources().getConfiguration(), context.getResources().getDisplayMetrics());
     }
 
     @Nullable

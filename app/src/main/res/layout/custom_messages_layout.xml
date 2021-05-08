@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="5dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/message_profile_image"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/no_avatar"/>
+        android:src="@drawable/no_avatar"
+        android:visibility="gone"
+        tools:visibility="gone" />
 
     <TextView
+        style="@style/receiverMessageTheme"
         android:id="@+id/receiver_message_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/message_profile_image"
         android:background="@drawable/receiver_messages_layout"
         android:text="receiver messages here"
+        android:layout_marginEnd="40dp"
         android:padding="10dp"
-        android:textSize="14sp"/>
+        android:textSize="16sp"/>
 
     <TextView
+        style="@style/senderMessageTheme"
         android:id="@+id/sender_message_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
         android:layout_alignParentTop="@+id/receiver_message_text"
         android:background="@drawable/sender_messages_layout"
         android:text="sender messages"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:padding="10dp"/>
 </RelativeLayout>

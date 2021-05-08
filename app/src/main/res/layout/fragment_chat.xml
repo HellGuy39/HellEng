@@ -40,9 +40,52 @@
                 android:id="@+id/chatsList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <com.nambimobile.widgets.efab.ExpandableFabLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.nambimobile.widgets.efab.Overlay
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.nambimobile.widgets.efab.ExpandableFab
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            app:efab_color="@color/blue"
+            app:efab_icon="@drawable/ic_baseline_menu_24"
+            app:efab_iconAnimationRotationDeg="-270"/>
+
+        <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fabFriendRequests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_icon="@drawable/ic_baseline_person_add_24"
+            app:label_text="Friend Requests" />
+
+        <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fabFriendsList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_icon="@drawable/ic_baseline_group_24"
+            app:label_text="Friends List" />
+
+        <com.nambimobile.widgets.efab.FabOption
+            android:id="@+id/fabFindUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_icon="@drawable/ic_baseline_person_search_24"
+            app:label_text="Find Users" />
+
+    </com.nambimobile.widgets.efab.ExpandableFabLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingButtonAdd"
@@ -50,9 +93,22 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        app:tint="?attr/navigationIconTint"
         android:backgroundTint="?attr/colorPrimary"
+        android:contentDescription="TODO"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_baseline_contacts_24"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"/>
+        app:tint="?attr/navigationIconTint"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textViewNoFriends"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="You haven't friends yet,\nclick on the button in the lower right corner \nto find someone." />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

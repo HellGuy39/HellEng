@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">HellEng</string>
     <string name="app_home">Главная</string>
-    <string name="app_chat">Чат</string>
+    <string name="app_chat">Сообщения</string>
     <string name="app_courses">Курсы</string>
     <string name="app_profile">Профиль</string>
     <string name="start">Начать</string>
@@ -17,4 +17,5 @@
     <string name="about_the_app">О приложении</string>
     <string name="sign_out">Выйти</string>
     <string name="second_text_audition">Улучши своё понимание на слух</string>
+    <string name="language">Язык</string>
 </resources>
