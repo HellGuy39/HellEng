@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.renderscript.Sampler;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +33,8 @@ public class AboutTheAppActivity extends AppCompatActivity {
     TextView tvVersion, tvUpdate;
     TextView something, somethingToo;
 
+    com.google.android.material.card.MaterialCardView cardSamurai;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +45,14 @@ public class AboutTheAppActivity extends AppCompatActivity {
         tvUpdate = findViewById(R.id.state);
         something = findViewById(R.id.something);
         somethingToo = findViewById(R.id.somethingToo);
+        cardSamurai = findViewById(R.id.card_samurai);
+
+        cardSamurai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(AboutTheAppActivity.this, "Never Fade Away", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         toolbar = findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -92,7 +103,7 @@ public class AboutTheAppActivity extends AppCompatActivity {
 
     private void updateUI() {
         tvVersion.setText("Version: " + version);
-        tvUpdate.setText("State: early alpha");
+        tvUpdate.setText("State: pre-release");
         something.setText(textSong);
         somethingToo.setText(someText);
     }

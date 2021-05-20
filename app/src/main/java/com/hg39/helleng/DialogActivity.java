@@ -83,6 +83,7 @@ public class DialogActivity extends AppCompatActivity {
         messageSenderID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         btnSendMessage = findViewById(R.id.btnSendMessage);
         messageInputText = findViewById(R.id.editTextNewMessage);
+
         messageReceiverID = getIntent().getExtras().get("visit_user_id").toString();
         //messageReceiverName = getIntent().getExtras().get("visit_user_name").toString();
         //messageReceiverImage = getIntent().getExtras().get("visit_user_image").toString();
@@ -162,8 +163,6 @@ public class DialogActivity extends AppCompatActivity {
 
                     }
                 });
-
-
     }
 
     @Override

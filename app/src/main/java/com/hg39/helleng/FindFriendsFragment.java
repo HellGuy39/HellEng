@@ -11,6 +11,7 @@ import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,26 +46,24 @@ public class FindFriendsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
 
         mUserRef = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-
         //loadUsers("");
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
+        setHasOptionsMenu(true);
         View rootView
                 = inflater.inflate(R.layout.fragment_find_friends,container,false);
-
         recyclerView = rootView.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         toolbar = rootView.findViewById(R.id.topAppBar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +71,8 @@ public class FindFriendsFragment extends Fragment {
                 //((MainActivity)getContext()).setFragFriends();
             }
         });
+
+        //System.out.println(toolbar.getMenu().findItem(R.id.search));
 
         return rootView;
     }
@@ -84,7 +85,9 @@ public class FindFriendsFragment extends Fragment {
 
     private void loadUsers(String s) {
 
-        Query query = mUserRef.orderByChild("firstName").startAt(s).endAt(s+"\uf8ff");
+        Query query = mUserRef.orderByChild("fullName")
+                .startAt(s)
+                .endAt(s+"\uf8ff");
 
         options = new FirebaseRecyclerOptions.Builder<User>().setQuery(query,User.class).build();
 
@@ -130,12 +133,20 @@ public class FindFriendsFragment extends Fragment {
     }
 
     @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        System.out.println(1);
+    }
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_menu,menu);
 
-        MenuItem menuItem = menu.findItem(R.id.search);
+        System.out.println(2);
 
+        MenuItem menuItem = menu.findItem(R.id.search);
+        System.out.println(menuItem);
         searchView = (SearchView) menuItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

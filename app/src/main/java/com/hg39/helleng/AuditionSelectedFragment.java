@@ -79,7 +79,7 @@ public class AuditionSelectedFragment extends Fragment implements View.OnClickLi
                 inflater.inflate(R.layout.fragment_audition_selected,container,false);
 
         toolbar = rootView.findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(v -> ((MainActivity)getContext()).setFragCourses());
+        toolbar.setNavigationOnClickListener(v -> ((MainActivity)getContext()).onBackPressed());
 
         rootView.findViewById(R.id.cardHumor).setOnClickListener(this);
         rootView.findViewById(R.id.cardSuperman).setOnClickListener(this);

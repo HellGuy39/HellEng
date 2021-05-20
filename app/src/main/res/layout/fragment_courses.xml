@@ -37,15 +37,50 @@
             android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardViewVocabulary"
+                android:id="@+id/cardViewCreateTest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_margin="5dp"
                 android:checkable="true"
                 android:focusable="true"
                 android:clickable="true"
-                app:cardElevation="1dp"
+                app:cardElevation="10dp"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textViewPrimaryCreateTest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="5dp"
+                        android:text="Hell's Test Maker - Beta"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/textViewSecondaryCreateTest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Сreate and share your tests!"
+                        android:textColor="?android:attr/textColorSecondary" />
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardViewVocabulary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:checkable="true"
+                android:focusable="true"
+                android:clickable="true"
+                app:cardElevation="10dp"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -114,11 +149,11 @@
                 android:id="@+id/cardViewGrammar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:checkable="true"
                 android:focusable="true"
                 android:clickable="true"
-                app:cardElevation="1dp"
+                app:cardElevation="10dp"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -187,11 +222,11 @@
                 android:id="@+id/cardViewAudition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:checkable="true"
                 android:focusable="true"
                 android:clickable="true"
-                app:cardElevation="1dp"
+                app:cardElevation="10dp"
                 app:strokeWidth="1dp">
 
                 <LinearLayout

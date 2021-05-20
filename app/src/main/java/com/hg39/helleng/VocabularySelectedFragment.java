@@ -78,12 +78,7 @@ public class VocabularySelectedFragment extends Fragment implements View.OnClick
                 inflater.inflate(R.layout.fragment_vocabulary_selected,container,false);
 
         toolbar = rootView.findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)getContext()).setFragCourses();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> ((MainActivity)getContext()).onBackPressed());
 
         rootView.findViewById(R.id.cardFurniture).setOnClickListener(this);
         rootView.findViewById(R.id.cardSchoolSupplies).setOnClickListener(this);

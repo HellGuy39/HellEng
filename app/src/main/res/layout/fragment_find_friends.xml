@@ -22,6 +22,7 @@
             app:navigationIconTint="?attr/navigationIconTint"
             app:title="Find friends"
             app:titleTextColor="?attr/titleTextColor" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView

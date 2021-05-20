@@ -21,21 +21,13 @@ import java.util.Objects;
 
 public class CoursesFragment extends Fragment implements View.OnClickListener {
 
-    com.google.android.material.card.MaterialCardView cardViewVocabulary, cardViewGrammar,cardViewAudition;
-
-    /*1 - furniture
-     *2 - school supplies
-     *3 - food
-     *4 - present
-     *5 - past
-     *6 - future
-     */
+    com.google.android.material.card.MaterialCardView cardViewVocabulary, cardViewGrammar,
+            cardViewAudition, cardViewCreateTest;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Context context = MyContextWrapper.wrap(Objects.requireNonNull(getContext())/*in fragment use getContext() instead of this*/, "en");
-        //getResources().updateConfiguration(context.getResources().getConfiguration(), context.getResources().getDisplayMetrics());
+
     }
 
     @Nullable
@@ -44,6 +36,7 @@ public class CoursesFragment extends Fragment implements View.OnClickListener {
         View rootView =
                 inflater.inflate(R.layout.fragment_courses, container, false);
 
+        cardViewCreateTest = rootView.findViewById(R.id.cardViewCreateTest);
         cardViewVocabulary = rootView.findViewById(R.id.cardViewVocabulary);
         cardViewGrammar = rootView.findViewById(R.id.cardViewGrammar);
         cardViewAudition = rootView.findViewById(R.id.cardViewAudition);
@@ -51,6 +44,7 @@ public class CoursesFragment extends Fragment implements View.OnClickListener {
         cardViewGrammar.setOnClickListener(this);
         cardViewVocabulary.setOnClickListener(this);
         cardViewAudition.setOnClickListener(this);
+        cardViewCreateTest.setOnClickListener(this);
 
         return rootView;
     }
@@ -66,6 +60,8 @@ public class CoursesFragment extends Fragment implements View.OnClickListener {
             ((MainActivity) Objects.requireNonNull(getContext())).setFragSelectedVocabulary();
         } else if (v.getId() == R.id.cardViewAudition) {
             ((MainActivity) Objects.requireNonNull(getContext())).setFragSelectedAudition();
+        } else if (v.getId() == R.id.cardViewCreateTest) {
+            ((MainActivity) Objects.requireNonNull(getContext())).setFragSelectedCreateTest();
         }
     }
 }

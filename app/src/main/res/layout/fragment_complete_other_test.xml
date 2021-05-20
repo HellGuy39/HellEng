@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CompleteOtherTestFragment"
+    android:id="@+id/root">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="10dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:menu="@menu/top_app_bar"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:title="Test"
+            app:titleTextColor="?attr/titleTextColor" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardInf"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="true"
+                android:checkable="true"
+                app:cardElevation="10dp"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvTestName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Test Name"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvTime"
+                        android:layout_marginTop="5dp"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Time left " />
+
+                    <TextView
+                        android:id="@+id/tvTestID"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="ID"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTask1"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="true"
+                android:checkable="true"
+                app:cardElevation="10dp"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvTask1Tittle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Task 1"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask1Question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Question"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask1SecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Description"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_baseline_edit_note_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTask1Answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="16"
+                            android:hint="Your Answer"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTask2"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="true"
+                android:checkable="true"
+                app:cardElevation="10dp"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvTask2Tittle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Task 2"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask2Question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Question"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask2SecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Description"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_baseline_edit_note_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTask2Answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="16"
+                            android:hint="Your Answer"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTask3"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="true"
+                android:checkable="true"
+                app:cardElevation="10dp"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvSTask3Tittle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Task 3"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask3Question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Question"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask3SecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Description"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_baseline_edit_note_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTask3Answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="16"
+                            android:hint="Your Answer"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTask4"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="true"
+                android:checkable="true"
+                app:cardElevation="10dp"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvTask4Tittle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Step 4"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask4Question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Question"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask4SecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Description"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_baseline_edit_note_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTask4Answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="16"
+                            android:hint="Your Answer"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTask5"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="true"
+                android:checkable="true"
+                app:cardElevation="10dp"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvTask5Tittle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Task 5"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask5Question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Question"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask5SecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Description"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_baseline_edit_note_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTask5Answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="16"
+                            android:hint="Your Answer"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTask6"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="true"
+                android:checkable="true"
+                app:cardElevation="10dp"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvTask6Tittle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Task 6"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask6Question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Question"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask6SecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Description"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_baseline_edit_note_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTask6Answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="16"
+                            android:hint="Your Answer"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardTask7"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="true"
+                android:checkable="true"
+                app:cardElevation="10dp"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/tvTask7Tittle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Task 7"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask7Question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Question"
+                        android:textColor="?android:attr/textColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvTask7SecondaryText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Description"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_baseline_edit_note_24">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTask7Answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="16"
+                            android:hint="Your Answer"
+                            android:inputType="text" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <Button
+                android:id="@+id/btn_end"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="End Test" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

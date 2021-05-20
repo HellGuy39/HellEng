@@ -100,7 +100,6 @@ public class RequestsFragment extends Fragment implements View.OnClickListener{
                         if (snapshot.exists())
                         {
                             String type = snapshot.getValue(String.class);
-
                             if (Objects.requireNonNull(type).equalsIgnoreCase("received"))
                             {
                                 usersRef.child(Objects.requireNonNull(list_user_ID)).addValueEventListener(new ValueEventListener()
@@ -216,8 +215,10 @@ public class RequestsFragment extends Fragment implements View.OnClickListener{
                                     }
                                 });
                             }
-
-
+                            else if (Objects.requireNonNull(type).equalsIgnoreCase("sent"))
+                            {
+                                holder.itemView.setVisibility(View.GONE);
+                            }
                         }
                     }
 

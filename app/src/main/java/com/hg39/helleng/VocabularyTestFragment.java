@@ -157,7 +157,7 @@ public class VocabularyTestFragment extends Fragment {
         userResArr[i] = userResArr[i].trim();
 
         if (userResArr[i].equalsIgnoreCase(wordArr[i])) {
-            completed += 10;
+            completed += 1;//10;
         }
 
         editTextField.setText(null);

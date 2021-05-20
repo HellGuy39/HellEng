@@ -132,9 +132,6 @@ public class ProfileFragment extends Fragment {
                         startActivity(new Intent(getContext(),SettingsActivity.class));
                         break;
 
-                    case R.id.reference:
-                        break;
-
                     case R.id.aboutTheApp:
                         startActivity(new Intent(getContext(),AboutTheAppActivity.class));
                         break;

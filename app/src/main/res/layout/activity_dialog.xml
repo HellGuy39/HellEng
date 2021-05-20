@@ -8,6 +8,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".DialogActivity">
 
+    <ImageView
+        android:id="@+id/dialogBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@color/fui_transparent" />
+
     <include
         android:id="@+id/chat_bar"
         layout="@layout/custom_top_chat_bar"
@@ -42,14 +49,14 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewPrivateDialog"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/linearLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chat_bar"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewPrivateDialog"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chat_bar" />
 
 
     <LinearLayout
@@ -59,7 +66,7 @@
         android:layout_gravity="bottom"
         android:background="?attr/colorPrimary"
         android:orientation="horizontal"
-        android:padding="5dp"
+        android:padding="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -79,6 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="20"
             android:ems="10"
+            android:backgroundTint="@color/fui_transparent"
             android:hint="Message"
             android:inputType="text"
             android:textColor="?attr/titleTextColor" />
@@ -91,4 +99,5 @@
             android:background="@color/fui_transparent"
             android:src="@drawable/ic_baseline_send_24" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

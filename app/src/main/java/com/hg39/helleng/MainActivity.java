@@ -2,15 +2,22 @@ package com.hg39.helleng;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -19,12 +26,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.zeugmasolutions.localehelper.LocaleAwareCompatActivity;
 
 import java.util.Locale;
 
+import static com.hg39.helleng.App.CHANNEL_1_ID;
+import static com.hg39.helleng.App.CHANNEL_2_ID;
 import static com.hg39.helleng.SettingsActivity.CONFIG_FILE;
 import static com.hg39.helleng.SettingsActivity.CONFIG_LANGUAGE;
+import static com.hg39.helleng.SettingsActivity.CONFIG_STARTING_FRAGMENT;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,11 +56,17 @@ public class MainActivity extends AppCompatActivity {
     public static final String humor = "Humor";
     public static final String superman = "Superman";
 
-    public static final String version = "0.2.0";
+    public static final String CHANNEL_ID = "channel_id";
+    public static final String CHANNEL_NAME = "msg_channel";
+    public static final String CHANNEL_DESC = "Messages";
+
+    public static final String version = "0.2.1";
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
+
+    BottomNavigationView bottomNav;
 
     Fragment fragHome;
     Fragment fragChat;
@@ -63,14 +80,18 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragViewOtherProfile;
     Fragment fragSelectedAudition;
     Fragment fragFriendRequests;
+    Fragment fragSelectedCreateTest;
 
     WebStatusControl webStatusControl = new WebStatusControl();
+
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLanguage();
         setContentView(R.layout.activity_main);
+
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -90,17 +111,50 @@ public class MainActivity extends AppCompatActivity {
         fragFriends = new FriendsFragment();
         fragFindFriends = new FindFriendsFragment();
         fragFriendRequests = new RequestsFragment();
+        fragSelectedCreateTest = new CreateTestSelectedFragment();
         //fragViewOtherProfile = new ViewOtherProfileFragment();
 
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         //Вызов фрагмента home по умолчанию со старта приложения
-        Fragment fragHome = new HomeFragment();
-        getSupportFragmentManager()
+        //Fragment fragHome = new HomeFragment();
+        /*getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragHome)
-                .commit();
+                .commit();*/
+
+        setStartingFragment();
+        /*notificationManagerCompat = NotificationManagerCompat.from(this);
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_baseline_chat_24)
+                .setContentTitle("Channel 1")
+                .setContentText("Are you gay?")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+
+        notificationManagerCompat.notify(1, notification);
+
+        Notification notification2 = new NotificationCompat.Builder(this, CHANNEL_2_ID)
+                .setSmallIcon(R.drawable.ic_baseline_chat_24)
+                .setContentTitle("Channel 2")
+                .setContentText("No, I don't!")
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+
+        notificationManagerCompat.notify(2, notification2);*/
+
+        FirebaseMessaging.getInstance().subscribeToTopic("topic");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel1 = new NotificationChannel(CHANNEL_ID,CHANNEL_NAME,NotificationManager.IMPORTANCE_DEFAULT);
+            channel1.setDescription(CHANNEL_DESC);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel1);
+        }
+        //displayNotification();
     }
 
     @Override
@@ -154,6 +208,34 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
+    protected void setStartingFragment() {
+
+        sp = getSharedPreferences(CONFIG_FILE, 0);
+        String stFrag = sp.getString(CONFIG_STARTING_FRAGMENT, "Home");
+
+        if (stFrag.equalsIgnoreCase("Home"))
+        {
+            setFragHome();
+            bottomNav.setSelectedItemId(R.id.nav_home);
+        }
+        else if (stFrag.equalsIgnoreCase("Chats"))
+        {
+            setFragChats();
+            bottomNav.setSelectedItemId(R.id.nav_chat);
+        }
+        else if (stFrag.equalsIgnoreCase("Courses"))
+        {
+            setFragCourses();
+            bottomNav.setSelectedItemId(R.id.nav_courses);
+        }
+        else if (stFrag.equalsIgnoreCase("Profile"))
+        {
+            setFragProfile();
+            bottomNav.setSelectedItemId(R.id.nav_profile);
+        }
+
+    }
+
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -162,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setLanguage() {
-        SharedPreferences sp = getSharedPreferences(CONFIG_FILE, 0);
+        sp = getSharedPreferences(CONFIG_FILE, 0);
         String language = sp.getString(CONFIG_LANGUAGE, "en");
 
         Locale locale = new Locale(language);
@@ -202,6 +284,14 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }*/
 
+    }
+
+    protected void setFragSelectedCreateTest() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container,fragSelectedCreateTest)
+                .commit();
     }
 
     protected void setFragFriendRequests() {
@@ -280,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    protected void setFragChat() {
+    protected void setFragChats() {
         getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack(null)
@@ -295,7 +385,7 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, fragEditProfile)
                 .commit();
     }
-    protected void outEditProfileFragment() {
+    protected void setFragProfile() { // Old Name outEditProfileFragment
         getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack(null)
@@ -317,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //webStatusControl.setWebStatus("Offline");
+        webStatusControl.setWebStatus("Offline");
 
     }
 

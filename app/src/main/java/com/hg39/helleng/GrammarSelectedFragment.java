@@ -49,14 +49,6 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
         database = FirebaseDatabase.getInstance();
         usersTestsProgress = database.getReference("Users Tests Progress");
 
-        /*1 - furniture
-         *2 - school supplies
-         *3 - food
-         *4 - present
-         *5 - past
-         *6 - future
-         */
-
         usersTestsProgress.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(groupGrammar).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -87,12 +79,7 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
                 inflater.inflate(R.layout.fragment_grammar_selected,container,false);
 
         toolbar = rootView.findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)getContext()).setFragCourses();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> ((MainActivity)getContext()).onBackPressed());
 
         rootView.findViewById(R.id.cardPresentSimple).setOnClickListener(this);
         rootView.findViewById(R.id.cardPastSimple).setOnClickListener(this);

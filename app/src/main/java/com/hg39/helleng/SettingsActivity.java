@@ -27,15 +27,17 @@ public class SettingsActivity extends AppCompatActivity {
 
     WebStatusControl webStatusControl = new WebStatusControl();
 
-    AutoCompleteTextView languageDropdown;
+    AutoCompleteTextView languageDropdown, startFragmentDropdown;
 
     TextView tvLanguage;
 
     String[] languages = { "English (recommended)", "Русский" };
-    String actualSelected;
+    String[] fragments = { "Home", "Chats", "Courses", "Profile" };
+
 
     public static final String CONFIG_FILE = "config";
     public static final String CONFIG_LANGUAGE = "language";
+    public static final String CONFIG_STARTING_FRAGMENT = "starting_fragment";
 
     SharedPreferences sp;
     SharedPreferences.Editor editor;
@@ -46,6 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         sp = getSharedPreferences(CONFIG_FILE, 0);
         String language = sp.getString(CONFIG_LANGUAGE, "en");
+        String stFragment = sp.getString(CONFIG_STARTING_FRAGMENT, "Home");
 
         Locale locale = new Locale(language);
 
@@ -62,12 +65,28 @@ public class SettingsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_settings);
 
+        startFragmentDropdown = findViewById(R.id.startFragmentDropdown);
         languageDropdown = findViewById(R.id.languageDropdown);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languages);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        languageDropdown.setAdapter(adapter);
+
+        ArrayAdapter<String> adapterLang = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, languages);
+        ArrayAdapter<String> adapterStFrags = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, fragments);
+
+        adapterLang.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapterStFrags.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        languageDropdown.setAdapter(adapterLang);
+        startFragmentDropdown.setAdapter(adapterStFrags);
 
         //languageDropdown.setHintTextColor(ContextCompat.getColor(this,R.color.black));
+
+        if (stFragment.equalsIgnoreCase(fragments[0]))
+            startFragmentDropdown.setHint(fragments[0]);
+        if (stFragment.equalsIgnoreCase(fragments[1]))
+            startFragmentDropdown.setHint(fragments[1]);
+        if (stFragment.equalsIgnoreCase(fragments[2]))
+            startFragmentDropdown.setHint(fragments[2]);
+        if (stFragment.equalsIgnoreCase(fragments[3]))
+            startFragmentDropdown.setHint(fragments[3]);
 
         if(language.equalsIgnoreCase("en"))
             languageDropdown.setHint(languages[0]);
@@ -75,6 +94,55 @@ public class SettingsActivity extends AppCompatActivity {
             languageDropdown.setHint(languages[1]);
         else
             languageDropdown.setHint(languages[0]);
+
+        dropdownListeners();
+
+        toolbar = findViewById(R.id.topAppBar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+                //finish();
+            }
+        });
+    }
+
+    private void dropdownListeners() {
+        startFragmentDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String item = (String)parent.getItemAtPosition(position);
+
+                if (item.equalsIgnoreCase(fragments[0]))
+                {
+                    editor = sp.edit();
+                    editor.putString(CONFIG_STARTING_FRAGMENT,fragments[0]);
+                    editor.apply();
+                    startFragmentDropdown.setHint(fragments[0]);
+                }
+                else if (item.equalsIgnoreCase(fragments[1]))
+                {
+                    editor = sp.edit();
+                    editor.putString(CONFIG_STARTING_FRAGMENT,fragments[1]);
+                    editor.apply();
+                    startFragmentDropdown.setHint(fragments[1]);
+                }
+                else if (item.equalsIgnoreCase(fragments[2]))
+                {
+                    editor = sp.edit();
+                    editor.putString(CONFIG_STARTING_FRAGMENT,fragments[2]);
+                    editor.apply();
+                    startFragmentDropdown.setHint(fragments[2]);
+                }
+                else if (item.equalsIgnoreCase(fragments[3]))
+                {
+                    editor = sp.edit();
+                    editor.putString(CONFIG_STARTING_FRAGMENT,fragments[3]);
+                    editor.apply();
+                    startFragmentDropdown.setHint(fragments[3]);
+                }
+            }
+        });
 
         languageDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -110,15 +178,6 @@ public class SettingsActivity extends AppCompatActivity {
                     reloadActivity(countryCode);
                 }
 
-            }
-        });
-
-        toolbar = findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-                //finish();
             }
         });
     }

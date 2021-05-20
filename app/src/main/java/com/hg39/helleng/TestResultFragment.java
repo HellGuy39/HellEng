@@ -145,7 +145,8 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
 
     private void disableUselessContainers() {
 
-        if (countOfTasks == 3) {
+        if (countOfTasks == 3)
+        {
             container4.setVisibility(View.GONE);
             container5.setVisibility(View.GONE);
             container6.setVisibility(View.GONE);
@@ -156,8 +157,8 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
             container11.setVisibility(View.GONE);
             container12.setVisibility(View.GONE);
         }
-
-        if (countOfTasks == 5) {
+        else if (countOfTasks == 5)
+        {
             container6.setVisibility(View.GONE);
             container7.setVisibility(View.GONE);
             container8.setVisibility(View.GONE);
@@ -166,8 +167,16 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
             container11.setVisibility(View.GONE);
             container12.setVisibility(View.GONE);
         }
-
-        if (countOfTasks == 10) {
+        else if (countOfTasks == 7)
+        {
+            container8.setVisibility(View.GONE);
+            container9.setVisibility(View.GONE);
+            container10.setVisibility(View.GONE);
+            container11.setVisibility(View.GONE);
+            container12.setVisibility(View.GONE);
+        }
+        else if (countOfTasks == 10)
+        {
             container11.setVisibility(View.GONE);
             container12.setVisibility(View.GONE);
         }
@@ -204,7 +213,7 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
         if (testName.equals(humor) || testName.equals(superman)) {
             tvCompleted.setText(completed + "/" + countOfTasks);
         } else {
-            tvCompleted.setText(completed + "%");
+            tvCompleted.setText(completed + "/" + countOfTasks);//"%");
         }
 
     }
@@ -213,21 +222,27 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         if (v.getId() == R.id.btnOk) {
 
-            if (testName.equals("null")) {
+            if (testName.equals("null"))
+            {
                 Toast.makeText(getContext(),"Something wrong!",Toast.LENGTH_SHORT).show();
             }
-
-            if (testName.equals(furniture) || testName.equals(food) ||testName.equals(schoolSupplies)) {
+            else if (testName.equals(furniture) || testName.equals(food) ||testName.equals(schoolSupplies))
+            {
                 startActivity(new Intent(getContext(), MainActivity.class));
                     ((VocabularyActivity)getContext()).finishActivity();
             }
-            if (testName.equals(presentSimple) || testName.equals(pastSimple) || testName.equals(futureSimple)) {
+            else if (testName.equals(presentSimple) || testName.equals(pastSimple) || testName.equals(futureSimple))
+            {
                 startActivity(new Intent(getContext(), MainActivity.class));
                     ((GrammarActivity)getContext()).finishActivity();
             }
-            if (testName.equals(humor) || testName.equals(superman)) {
+            else if (testName.equals(humor) || testName.equals(superman))
+            {
                 startActivity(new Intent(getContext(), MainActivity.class));
                     ((AuditionActivity)getContext()).finishActivity();
+            } else {
+                //startActivity(new Intent(getContext(), MainActivity.class));
+                ((TestMakerActivity)getContext()).finish();
             }
         }
     }

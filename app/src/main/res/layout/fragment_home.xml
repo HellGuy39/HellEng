@@ -43,7 +43,7 @@
                 android:layout_marginEnd="10dp"
                 android:checkable="true"
                 android:focusable="true"
-                app:cardElevation="1dp"
+                app:cardElevation="5dp"
                 app:strokeWidth="1dp">
 
                 <TextView
@@ -67,11 +67,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
                     android:checkable="true"
                     android:clickable="false"
                     android:focusable="true"
-                    app:cardElevation="1dp"
+                    app:cardElevation="5dp"
                     app:strokeWidth="1dp">
 
                     <LinearLayout
@@ -113,6 +113,79 @@
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:checkable="true"
+                android:focusable="true"
+                android:visibility="gone"
+                app:cardElevation="1dp"
+                app:strokeWidth="1dp"
+                tools:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/textViewModules"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Modules"
+                        android:textSize="24sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_md1"
+                            style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            app:icon="@drawable/ic_baseline_videogame_asset_24" />
+
+                        <Button
+                            android:id="@+id/btn_md2"
+                            style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            app:icon="@drawable/ic_baseline_calculate_24" />
+
+                        <Button
+                            android:id="@+id/btn_md3"
+                            style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            app:icon="@drawable/ic_baseline_inventory_24" />
+
+                        <Button
+                            android:id="@+id/btn_md4"
+                            style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp" />
+
+                        <Button
+                            android:id="@+id/btn_md5"
+                            style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

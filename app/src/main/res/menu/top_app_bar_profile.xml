@@ -18,11 +18,6 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/reference"
-        android:title="@string/reference"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/aboutTheApp"
         android:title="@string/about_the_app"
         app:showAsAction="never" />
