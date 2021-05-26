@@ -179,20 +179,20 @@ public class ProfileFragment extends Fragment {
         if (userId == null)
             userId = "";
 
-        if (city == null)
-            textViewCity.setVisibility(View.GONE);
-        else
+        if (city != null)
             textViewCity.setText("City: " + city);
-
-        if (birthday == null)
-            textViewBirthday.setVisibility(View.GONE);
         else
+            textViewCity.setVisibility(View.GONE);
+
+        if (birthday != null)
             textViewBirthday.setText("Birthday: " + birthday);
-
-        if (aboutMe == null)
-            textViewAboutMe.setVisibility(View.GONE);
         else
+            textViewBirthday.setVisibility(View.GONE);
+
+        if (aboutMe != null)
             textViewAboutMe.setText("About me: " + aboutMe);
+        else
+            textViewAboutMe.setVisibility(View.GONE);
 
         textViewWebStatus.setText(webStatus);
         textViewReg.setText("Registered since " + regDate);

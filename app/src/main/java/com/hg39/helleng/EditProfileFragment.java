@@ -50,7 +50,13 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import id.zelory.compressor.Compressor;
 
@@ -74,7 +80,7 @@ public class EditProfileFragment extends Fragment {
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
     String firstNStr,lastNStr,statusStr;
-    Long birthday;
+    String birthday;
     String city, aboutMe;
 
     ProgressDialog loadingBar;
@@ -106,7 +112,7 @@ public class EditProfileFragment extends Fragment {
                 profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
 
                 if (dataSnapshot.hasChild("birthday")) {
-                    birthday = dataSnapshot.child("birthday").getValue(Long.class);
+                    birthday = dataSnapshot.child("birthday").getValue(String.class);
                 }
 
                 if (dataSnapshot.hasChild("city")) {
@@ -273,7 +279,9 @@ public class EditProfileFragment extends Fragment {
             editTextCity.setText(city);
 
         if (birthday != null)
-            tvBirthday.setText(birthday.toString());
+            tvBirthday.setText("Birthday: " + birthday);
+        else
+            tvBirthday.setText("Birthday: " + "not selected");
 
         if (profileImageUri != null) {
             Picasso.get().load(profileImageUri).into(profileImage);
@@ -293,7 +301,12 @@ public class EditProfileFragment extends Fragment {
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
             @Override
             public void onPositiveButtonClick(Long selection) {
-                birthday = selection;
+                //birthday = selection;
+                Date date = new Date(selection);
+                //Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                //calendar.setTime(date);
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                birthday = dateFormat.format(date);
                 updateUI();
             }
         });
@@ -472,6 +485,9 @@ public class EditProfileFragment extends Fragment {
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("firstName").setValue(user.getFirstName());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastName").setValue(user.getLastName());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("status").setValue(user.getStatus());
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("birthday").setValue(birthday);
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("city").setValue(city);
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("aboutMe").setValue(aboutMe);
 
         Toast.makeText(getActivity(),
                 "What a save!",

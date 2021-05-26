@@ -51,11 +51,11 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/textView10"
+                        android:id="@+id/textViewGeneral"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="General"
-                        android:textSize="18sp"
+                        android:textSize="24sp"
                         android:layout_marginTop="10dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"/>
@@ -149,6 +149,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textViewAdditional"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Additional info"
+                        android:textSize="24sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"/>
 
                     <LinearLayout
                         android:layout_marginStart="10dp"
