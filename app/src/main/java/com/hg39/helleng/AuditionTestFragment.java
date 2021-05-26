@@ -8,10 +8,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
@@ -19,25 +16,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.type.TimeOfDayOrBuilder;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static com.hg39.helleng.MainActivity.futureSimple;
 import static com.hg39.helleng.MainActivity.groupAudition;
-import static com.hg39.helleng.MainActivity.groupGrammar;
 import static com.hg39.helleng.MainActivity.humor;
-import static com.hg39.helleng.MainActivity.pastSimple;
-import static com.hg39.helleng.MainActivity.presentSimple;
 import static com.hg39.helleng.MainActivity.superman;
 
 public class AuditionTestFragment extends Fragment {
@@ -83,7 +75,6 @@ public class AuditionTestFragment extends Fragment {
 
     boolean isPlay, isVolumeOn;
 
-    FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
     DatabaseReference tests;
@@ -113,7 +104,7 @@ public class AuditionTestFragment extends Fragment {
         humourSound = MediaPlayer.create(getContext(), R.raw.humour);
         supermanSound = MediaPlayer.create(getContext(), R.raw.superman);
 
-        testName = getArguments().getString("testName", "null");
+        testName = Objects.requireNonNull(getArguments()).getString("testName", "null");
 
         if (testName.equals(humor)) {
             actualSound = humourSound;
@@ -140,14 +131,14 @@ public class AuditionTestFragment extends Fragment {
 
                 } else if (testName.equals(superman)) {
 
-                    questionsBefore[0] = snapshot.child("Variants").child("Before").child("0").getValue(String.class);;
-                    questionsAfter[0] = snapshot.child("Variants").child("After").child("0").getValue(String.class);;
+                    questionsBefore[0] = snapshot.child("Variants").child("Before").child("0").getValue(String.class);
+                    questionsAfter[0] = snapshot.child("Variants").child("After").child("0").getValue(String.class);
 
-                    questionsBefore[1] = snapshot.child("Variants").child("Before").child("1").getValue(String.class);;
-                    questionsAfter[1] = snapshot.child("Variants").child("After").child("1").getValue(String.class);;
+                    questionsBefore[1] = snapshot.child("Variants").child("Before").child("1").getValue(String.class);
+                    questionsAfter[1] = snapshot.child("Variants").child("After").child("1").getValue(String.class);
 
-                    questionsBefore[2] = snapshot.child("Variants").child("Before").child("2").getValue(String.class);;
-                    questionsAfter[2] = snapshot.child("Variants").child("After").child("2").getValue(String.class);;
+                    questionsBefore[2] = snapshot.child("Variants").child("Before").child("2").getValue(String.class);
+                    questionsAfter[2] = snapshot.child("Variants").child("After").child("2").getValue(String.class);
 
                 }
 
@@ -253,15 +244,13 @@ public class AuditionTestFragment extends Fragment {
         seekBar.setProgress(actualSound.getCurrentPosition());
 
         mediaProgress.setText(String.format("%02d:%02d",
-                TimeUnit.MILLISECONDS.toMinutes((long) actualSound.getCurrentPosition()),
-                TimeUnit.MILLISECONDS.toSeconds((long) actualSound.getCurrentPosition()) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                                actualSound.getCurrentPosition()))) + " / " +
+                TimeUnit.MILLISECONDS.toMinutes(actualSound.getCurrentPosition()),
+                TimeUnit.MILLISECONDS.toSeconds(actualSound.getCurrentPosition()) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(actualSound.getCurrentPosition()))) + " / " +
                 String.format("%02d:%02d",
-                        TimeUnit.MILLISECONDS.toMinutes((long) actualSound.getDuration()),
-                        TimeUnit.MILLISECONDS.toSeconds((long) actualSound.getDuration()) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                        actualSound.getDuration()))));
+                        TimeUnit.MILLISECONDS.toMinutes(actualSound.getDuration()),
+                        TimeUnit.MILLISECONDS.toSeconds(actualSound.getDuration()) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(actualSound.getDuration()))));
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -270,15 +259,13 @@ public class AuditionTestFragment extends Fragment {
                     soundPlay(actualSound, "change track pos");
                 }
                     mediaProgress.setText(String.format("%02d:%02d",
-                            TimeUnit.MILLISECONDS.toMinutes((long) actualSound.getCurrentPosition()),
-                            TimeUnit.MILLISECONDS.toSeconds((long) actualSound.getCurrentPosition()) -
-                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                            actualSound.getCurrentPosition()))) + " / " +
+                            TimeUnit.MILLISECONDS.toMinutes(actualSound.getCurrentPosition()),
+                            TimeUnit.MILLISECONDS.toSeconds(actualSound.getCurrentPosition()) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(actualSound.getCurrentPosition()))) + " / " +
                             String.format("%02d:%02d",
-                                    TimeUnit.MILLISECONDS.toMinutes((long) actualSound.getDuration()),
-                                    TimeUnit.MILLISECONDS.toSeconds((long) actualSound.getDuration()) -
-                                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                                    actualSound.getDuration()))));
+                                    TimeUnit.MILLISECONDS.toMinutes(actualSound.getDuration()),
+                                    TimeUnit.MILLISECONDS.toSeconds(actualSound.getDuration()) -
+                                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(actualSound.getDuration()))));
 
             }
 
@@ -305,20 +292,17 @@ public class AuditionTestFragment extends Fragment {
         textViewHint2 = rootView.findViewById(R.id.textViewHint2);
 
         //updateUI();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (actualSound != null) {
-                    try {
-                        if (actualSound.isPlaying()) {
-                            Message message = new Message();
-                            message.what = actualSound.getCurrentPosition();
-                            handler.sendMessage(message);
-                            Thread.sleep(100);
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+        new Thread(() -> {
+            while (actualSound != null) {
+                try {
+                    if (actualSound.isPlaying()) {
+                        Message message = new Message();
+                        message.what = actualSound.getCurrentPosition();
+                        handler.sendMessage(message);
+                        Thread.sleep(100);
                     }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -346,7 +330,7 @@ public class AuditionTestFragment extends Fragment {
         super.onStop();
         soundPlay(actualSound, "pause");
         isPlay = false;
-        btnPlayOrPause.setIcon(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+        btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));//getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
     }
 
     @Override
@@ -354,7 +338,7 @@ public class AuditionTestFragment extends Fragment {
         super.onDestroy();
         soundPlay(actualSound, "pause");
         isPlay = false;
-        btnPlayOrPause.setIcon(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+        btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));//getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
     }
 
     @Override
@@ -362,7 +346,7 @@ public class AuditionTestFragment extends Fragment {
         super.onPause();
         soundPlay(actualSound, "pause");
         isPlay = false;
-        btnPlayOrPause.setIcon(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+        btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));//getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
     }
 
     private void soundPlay(MediaPlayer sound, String ToDo) {
@@ -391,27 +375,36 @@ public class AuditionTestFragment extends Fragment {
 
     private void onClickControls(View view) {
 
-        if (view.getId() == R.id.btnPlayOrPause) {
-            if (isPlay) {
+        if (view.getId() == R.id.btnPlayOrPause)
+        {
+            if (isPlay)
+            {
                 soundPlay(actualSound, "pause");
                 isPlay = false;
-                btnPlayOrPause.setIcon(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
-            } else if (!isPlay) {
+                btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));//getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+            }
+            else {
                 soundPlay(actualSound, "play");
                 isPlay = true;
-                btnPlayOrPause.setIcon(getResources().getDrawable(R.drawable.ic_baseline_pause_24));
+                btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_pause_24, null));//getResources().getDrawable(R.drawable.ic_baseline_pause_24));
             }
-        } else if (view.getId() == R.id.btnReplay) {
+        }
+        else if (view.getId() == R.id.btnReplay)
+        {
                 soundPlay(actualSound, "replay");
-        } else if (view.getId() == R.id.btnVolumeOnOrOff) {
-            if (isVolumeOn) {
+        }
+        else if (view.getId() == R.id.btnVolumeOnOrOff)
+        {
+            if (isVolumeOn)
+            {
                 soundPlay(actualSound, "volumeOff");
                 isVolumeOn = false;
-                btnVolumeOnOrOff.setIcon(getResources().getDrawable(R.drawable.ic_baseline_volume_off_24));
-            } else if (isVolumeOn == false) {
+                btnVolumeOnOrOff.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_volume_off_24, null));//getResources().getDrawable(R.drawable.ic_baseline_volume_off_24));
+            }
+            else {
                 soundPlay(actualSound, "volumeOn");
                 isVolumeOn = true;
-                btnVolumeOnOrOff.setIcon(getResources().getDrawable(R.drawable.ic_baseline_volume_up_24));
+                btnVolumeOnOrOff.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_volume_up_24, null));//getResources().getDrawable(R.drawable.ic_baseline_volume_up_24));
             }
         }
 
@@ -430,6 +423,7 @@ public class AuditionTestFragment extends Fragment {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void textViewsSetText() {
 
         taskView1.setText(questionsBefore[0] + "  _ _ _  " + questionsAfter[0]);
@@ -440,6 +434,7 @@ public class AuditionTestFragment extends Fragment {
 
     private void radioButtonsSetListeners() {
         group1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
@@ -457,6 +452,7 @@ public class AuditionTestFragment extends Fragment {
         });
 
         group2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
@@ -474,6 +470,7 @@ public class AuditionTestFragment extends Fragment {
         });
 
         group3.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
@@ -513,9 +510,9 @@ public class AuditionTestFragment extends Fragment {
 
         if (testName.equals(superman)) {
 
-            userAnswer1 = etAnswer1.getText().toString();
-            userAnswer2 = etAnswer2.getText().toString();
-            userAnswer3 = etAnswer3.getText().toString();
+            userAnswer1 = Objects.requireNonNull(etAnswer1.getText()).toString().trim();
+            userAnswer2 = Objects.requireNonNull(etAnswer2.getText()).toString().trim();
+            userAnswer3 = Objects.requireNonNull(etAnswer3.getText()).toString().trim();
         }
 
         //КостыльTechnologies

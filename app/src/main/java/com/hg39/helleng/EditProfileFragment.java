@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,12 +56,13 @@ import id.zelory.compressor.Compressor;
 
 public class EditProfileFragment extends Fragment {
 
-    EditText editTextFirstName,editTextLastName,editTextUserStatus;
+    EditText editTextFirstName,editTextLastName,editTextUserStatus,editTextCity,editTextAboutMe;
+    TextView tvBirthday;
     ImageView profileImage;
 
     String profileImageUri;
 
-    Button btnDeleteProfileImage;
+    Button btnDeleteProfileImage, btnChangeBirthday;
 
     com.google.android.material.floatingactionbutton.FloatingActionButton fltBtnSave;
 
@@ -69,6 +74,8 @@ public class EditProfileFragment extends Fragment {
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
     String firstNStr,lastNStr,statusStr;
+    Long birthday;
+    String city, aboutMe;
 
     ProgressDialog loadingBar;
 
@@ -90,13 +97,25 @@ public class EditProfileFragment extends Fragment {
 
         users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 firstNStr = dataSnapshot.child("firstName").getValue(String.class);
                 lastNStr = dataSnapshot.child("lastName").getValue(String.class);
                 statusStr = dataSnapshot.child("status").getValue(String.class);
 
                 profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
+
+                if (dataSnapshot.hasChild("birthday")) {
+                    birthday = dataSnapshot.child("birthday").getValue(Long.class);
+                }
+
+                if (dataSnapshot.hasChild("city")) {
+                    city = dataSnapshot.child("city").getValue(String.class);
+                }
+
+                if (dataSnapshot.hasChild("aboutMe")) {
+                    aboutMe = dataSnapshot.child("aboutMe").getValue(String.class);
+                }
 
                 updateUI();
 
@@ -134,7 +153,9 @@ public class EditProfileFragment extends Fragment {
         btnDeleteProfileImage = rootView.findViewById(R.id.btnDeleteProfileImage);
 
         fltBtnSave = rootView.findViewById(R.id.floatingButtonSave);
+        btnChangeBirthday = rootView.findViewById(R.id.btnChangeBirthday);
 
+        btnChangeBirthday.setOnClickListener(this::onClickChangeBirthday);
         btnDeleteProfileImage.setOnClickListener(this::onClickDeleteProfileImage);
         fltBtnSave.setOnClickListener(this::onClickBtnSave);
         profileImage.setOnClickListener(this::onClickChangeProfileImage);
@@ -142,6 +163,8 @@ public class EditProfileFragment extends Fragment {
         editTextFirstName = rootView.findViewById(R.id.editTextFirstName);
         editTextLastName = rootView.findViewById(R.id.editTextLastName);
         editTextUserStatus = rootView.findViewById(R.id.editTextUserStatus);
+
+        tvBirthday = rootView.findViewById(R.id.textViewDate);
 
         editTextFirstName.setText(firstNStr);
         editTextLastName.setText(lastNStr);
@@ -243,11 +266,44 @@ public class EditProfileFragment extends Fragment {
         editTextLastName.setText(lastNStr);
         editTextUserStatus.setText(statusStr);
 
+        if (aboutMe != null)
+            editTextAboutMe.setText(aboutMe);
+
+        if (city != null)
+            editTextCity.setText(city);
+
+        if (birthday != null)
+            tvBirthday.setText(birthday.toString());
+
         if (profileImageUri != null) {
             Picasso.get().load(profileImageUri).into(profileImage);
         } else {
             profileImage.setImageResource(R.drawable.no_avatar);
         }
+
+    }
+
+    protected void onClickChangeBirthday(View view) {
+        MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select date")
+                .build();
+
+        datePicker.show(getActivity().getSupportFragmentManager(), "tag");
+
+        datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+            @Override
+            public void onPositiveButtonClick(Long selection) {
+                birthday = selection;
+                updateUI();
+            }
+        });
+
+        datePicker.addOnNegativeButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 

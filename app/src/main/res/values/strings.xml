@@ -38,5 +38,6 @@
 
     <!-- Settings -->
     <string name="language">Language</string>
+    <string name="default_notification_channel_id">Channel ID</string>
 
 </resources>

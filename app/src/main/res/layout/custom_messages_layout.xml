@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/message_profile_image"
@@ -17,29 +17,69 @@
         android:visibility="gone"
         tools:visibility="gone" />
 
-    <TextView
-        style="@style/receiverMessageTheme"
-        android:id="@+id/receiver_message_text"
+    <LinearLayout
+        android:id="@+id/container_receiver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/message_profile_image"
-        android:background="@drawable/receiver_messages_layout"
-        android:text="receiver messages here"
-        android:layout_marginEnd="40dp"
-        android:padding="10dp"
-        android:textSize="16sp"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        style="@style/senderMessageTheme"
-        android:id="@+id/sender_message_text"
+        <TextView
+            android:id="@+id/receiver_message_text"
+            style="@style/receiverMessageTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/receiver_messages_layout"
+            android:padding="10dp"
+            android:text="receiver messages here"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/time_Receiver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="00:00"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/container_sender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="@+id/receiver_message_text"
-        android:background="@drawable/sender_messages_layout"
-        android:text="sender messages"
-        android:textSize="16sp"
-        android:padding="10dp"/>
-</RelativeLayout>
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/sender_message_text"
+            style="@style/senderMessageTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:background="@drawable/sender_messages_layout"
+            android:padding="10dp"
+            android:text="sender messages"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/time_Sender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="00:00"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,11 +10,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -51,11 +54,20 @@ public class CreateTestFragment extends Fragment {
     //Step 1
     com.google.android.material.textfield.TextInputEditText etTestId, etTestName;
     AutoCompleteTextView timeDropdown,tasksDropdown;
+    Button btnStep1ExpandMore;
+    boolean isVisibleStep1;
+    LinearLayout containerStep1;
 
     //Step 2
-
+    Spinner spinTask1, spinTask2, spinTask3, spinTask4, spinTask5, spinTask6, spinTask7;
+    Button btnStep2ExpandMore;
+    boolean isVisibleStep2;
+    LinearLayout containerStep2;
 
     //Step 3
+    Button btnStep3ExpandMore;
+    boolean isVisibleStep3;
+    LinearLayout containerStep3;
     com.google.android.material.textfield.TextInputEditText etTask1Description, etTask1Question, etTask1Answer;
     com.google.android.material.textfield.TextInputEditText etTask2Description, etTask2Question, etTask2Answer;
     com.google.android.material.textfield.TextInputEditText etTask3Description, etTask3Question, etTask3Answer;
@@ -68,6 +80,7 @@ public class CreateTestFragment extends Fragment {
             containerTask6, containerTask7;
 
     View viewStroke1,viewStroke2,viewStroke3,viewStroke4,viewStroke5,viewStroke6,viewStroke7,viewStroke8;
+    View viewStroke2_1,viewStroke2_2,viewStroke2_3,viewStroke2_4,viewStroke2_5,viewStroke2_6,viewStroke2_7,viewStroke2_8;
 
     //General
     com.google.android.material.appbar.MaterialToolbar toolbar;
@@ -94,6 +107,7 @@ public class CreateTestFragment extends Fragment {
 
     String[] countOfTasks = { "3", "5", "7" };
     String[] time = {"Unlimited"};//,"10:00", "15:00", "20:00", "30:00", "40:00", "50:00", "60:00", "120:00", "180:00", "240:00"};
+    String[] tasksType = {"TextField", "RadioGroup"};
 
     String testTimeRes, countOfTasksRes;
 
@@ -116,6 +130,10 @@ public class CreateTestFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         dateText = dateFormat.format(currentDate);
 
+        isVisibleStep1 = true;
+        isVisibleStep2 = true;
+        isVisibleStep3 = true;
+
     }
 
     @Override
@@ -135,6 +153,12 @@ public class CreateTestFragment extends Fragment {
         timeDropdown = rootView.findViewById(R.id.timeDropdown);
         tasksDropdown = rootView.findViewById(R.id.tasksDropdown);
 
+        containerStep1 = rootView.findViewById(R.id.containerStep1);
+
+        btnStep1ExpandMore = rootView.findViewById(R.id.btnStep1ExpandMore);
+        btnStep1ExpandMore.setOnClickListener(this::onClickExpand);
+        btnStep1ExpandMore.setRotation(180);
+
         ArrayAdapter<String> adapterTasks = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, countOfTasks);
         adapterTasks.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tasksDropdown.setAdapter(adapterTasks);
@@ -145,7 +169,58 @@ public class CreateTestFragment extends Fragment {
 
         //Step 2
 
+        viewStroke2_1 = rootView.findViewById(R.id.viewStrokeStep2_1);
+        viewStroke2_2 = rootView.findViewById(R.id.viewStrokeStep2_2);
+        viewStroke2_3 = rootView.findViewById(R.id.viewStrokeStep2_3);
+        viewStroke2_4 = rootView.findViewById(R.id.viewStrokeStep2_4);
+        viewStroke2_5 = rootView.findViewById(R.id.viewStrokeStep2_5);
+        viewStroke2_6 = rootView.findViewById(R.id.viewStrokeStep2_6);
+        viewStroke2_7 = rootView.findViewById(R.id.viewStrokeStep2_7);
+        viewStroke2_8 = rootView.findViewById(R.id.viewStrokeStep2_8);
+
+        btnStep2ExpandMore = rootView.findViewById(R.id.btnStep2ExpandMore);
+        btnStep2ExpandMore.setOnClickListener(this::onClickExpand);
+        btnStep2ExpandMore.setRotation(180);
+
+        containerStep2 = rootView.findViewById(R.id.containerStep2);
+
+        spinTask1 = rootView.findViewById(R.id.spinTask1);
+        spinTask2 = rootView.findViewById(R.id.spinTask2);
+        spinTask3 = rootView.findViewById(R.id.spinTask3);
+        spinTask4 = rootView.findViewById(R.id.spinTask4);
+        spinTask5 = rootView.findViewById(R.id.spinTask5);
+        spinTask6 = rootView.findViewById(R.id.spinTask6);
+        spinTask7 = rootView.findViewById(R.id.spinTask7);
+
+        setSpinListeners();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, tasksType);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinTask1.setAdapter(adapter);
+        spinTask2.setAdapter(adapter);
+        spinTask3.setAdapter(adapter);
+        spinTask4.setAdapter(adapter);
+        spinTask5.setAdapter(adapter);
+        spinTask6.setAdapter(adapter);
+        spinTask7.setAdapter(adapter);
+
+        spinTask1.setSelection(0);
+        spinTask2.setSelection(0);
+        spinTask3.setSelection(0);
+        spinTask4.setSelection(0);
+        spinTask5.setSelection(0);
+        spinTask6.setSelection(0);
+        spinTask7.setSelection(0);
+
         //Step 3
+
+        containerStep3 = rootView.findViewById(R.id.containerStep3);
+
+        btnStep3ExpandMore = rootView.findViewById(R.id.btnStep3ExpandMore);
+        btnStep3ExpandMore.setOnClickListener(this::onClickExpand);
+        btnStep3ExpandMore.setRotation(180);
+
         viewStroke1 = rootView.findViewById(R.id.viewStroke1);
         viewStroke2 = rootView.findViewById(R.id.viewStroke2);
         viewStroke3 = rootView.findViewById(R.id.viewStroke3);
@@ -224,6 +299,133 @@ public class CreateTestFragment extends Fragment {
         }
     }
 
+    private void setSpinListeners() {
+
+        spinTask1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String selected = tasksType[position];
+
+                if (selected.equals("TextField"))
+                {
+
+                }
+                else if (selected.equals("RadioGroup"))
+                {
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinTask2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String selected = tasksType[position];
+
+                if (selected.equals("TextField"))
+                {
+
+                }
+                else if (selected.equals("RadioGroup"))
+                {
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinTask3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String selected = tasksType[position];
+
+                if (selected.equals("TextField"))
+                {
+
+                }
+                else if (selected.equals("RadioGroup"))
+                {
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void onClickExpand(View view) {
+
+        /*final Animation animationRotateCorner = AnimationUtils.loadAnimation(
+                getContext(), R.anim.rotate180);
+        view.startAnimation(animationRotateCorner);*/
+
+        if (view.getId() == R.id.btnStep1ExpandMore)
+        {
+
+            if (isVisibleStep1)
+            {
+                view.setRotation(0);
+                containerStep1.setVisibility(View.GONE);
+                isVisibleStep1 = false;
+            }
+            else
+            {
+                view.setRotation(180);
+                containerStep1.setVisibility(View.VISIBLE);
+                isVisibleStep1 = true;
+            }
+
+        }
+        else if (view.getId() == R.id.btnStep2ExpandMore)
+        {
+            if (isVisibleStep2)
+            {
+                view.setRotation(0);
+                containerStep2.setVisibility(View.GONE);
+                isVisibleStep2 = false;
+            }
+            else
+            {
+                view.setRotation(180);
+                containerStep2.setVisibility(View.VISIBLE);
+                isVisibleStep2 = true;
+            }
+        }
+        else if (view.getId() == R.id.btnStep3ExpandMore)
+        {
+            if (isVisibleStep3)
+            {
+                view.setRotation(0);
+                containerStep3.setVisibility(View.GONE);
+                isVisibleStep3 = false;
+            }
+            else
+            {
+                view.setRotation(180);
+                containerStep3.setVisibility(View.VISIBLE);
+                isVisibleStep3 = true;
+            }
+        }
+    }
+
     private void changingTasksCount(String countOfTasks) {
         switch (countOfTasks) {
             case "3":
@@ -294,6 +496,13 @@ public class CreateTestFragment extends Fragment {
                 viewStroke7.setVisibility(View.VISIBLE);
                 break;
         }
+
+        switch (countOfTasks) {
+            case "5":
+
+                break;
+        }
+
     }
 
     private void checkSteps() {
@@ -662,7 +871,9 @@ public class CreateTestFragment extends Fragment {
 
         testId = Objects.requireNonNull(etTestId.getText()).toString();
         testName = Objects.requireNonNull(etTestName.getText()).toString();
-
+        if (spinTask1.getSelectedItem().equals("TextField")) {
+            Toast.makeText(getContext(), "Bruh!", Toast.LENGTH_SHORT).show();
+        }
         task1Description = Objects.requireNonNull(etTask1Description.getText()).toString();
         task1Question = Objects.requireNonNull(etTask1Question.getText()).toString();
         task1Answer = Objects.requireNonNull(etTask1Answer.getText()).toString();

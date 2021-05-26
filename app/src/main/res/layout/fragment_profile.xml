@@ -136,6 +136,24 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/textViewCity"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="City: "
+                                android:textSize="16sp"
+                                android:textIsSelectable="true"/>
+
+                            <TextView
+                                android:id="@+id/textViewBirthday"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="Birthday: "
+                                android:textSize="16sp"
+                                android:textIsSelectable="true"/>
+
+                            <TextView
                                 android:id="@+id/textViewReg"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -152,6 +170,16 @@
                                 android:text="Id: "
                                 android:textSize="16sp"
                                 android:textIsSelectable="true"/>
+
+                            <TextView
+                                android:id="@+id/textViewAboutMe"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="About me: "
+                                android:textSize="16sp"
+                                android:textIsSelectable="true"/>
+
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

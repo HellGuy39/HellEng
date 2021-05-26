@@ -2,14 +2,23 @@ package com.hg39.helleng.Models;
 
 public class Messages {
 
-    private String from, message, type;
+    private String from, message, type, time;
 
     public Messages() {}
 
-    public Messages(String from, String message, String type) {
+    public Messages(String from, String message, String type, String time) {
         this.from = from;
         this.message = message;
         this.type = type;
+        this.time = time;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getFrom() {

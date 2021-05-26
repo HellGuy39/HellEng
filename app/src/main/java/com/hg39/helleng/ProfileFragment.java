@@ -42,6 +42,9 @@ public class ProfileFragment extends Fragment {
     TextView textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted,textViewUserId;
     TextView textViewFullName;
     TextView textViewWebStatus;
+    TextView textViewBirthday;
+    TextView textViewCity;
+    TextView textViewAboutMe;
     CircleImageView profileImage;
     com.google.android.material.appbar.MaterialToolbar topAppBar;
     FirebaseAuth mAuth;
@@ -53,6 +56,7 @@ public class ProfileFragment extends Fragment {
     String firstNStr,lastNStr,statusStr,regDate,userId;
     String profileImageUri;
     String webStatus;
+    String birthday, city, aboutMe;
 
     @Override
     public void onAttachFragment(@NonNull Fragment childFragment) {
@@ -101,6 +105,9 @@ public class ProfileFragment extends Fragment {
         topAppBar = rootView.findViewById(R.id.topAppBar);
         textViewUserId = rootView.findViewById(R.id.textViewUserId);
         textViewReg = rootView.findViewById(R.id.textViewReg);
+        textViewAboutMe = rootView.findViewById(R.id.textViewAboutMe);
+        textViewCity = rootView.findViewById(R.id.textViewCity);
+        textViewBirthday = rootView.findViewById(R.id.textViewBirthday);
         //textViewTestsFullCompleted = rootView.findViewById(R.id.textViewTestFullCompleted);
         //textViewTestsStarted = rootView.findViewById(R.id.textViewTestStarted);
         textViewFullName = rootView.findViewById(R.id.textViewFullName);
@@ -172,20 +179,29 @@ public class ProfileFragment extends Fragment {
         if (userId == null)
             userId = "";
 
+        if (city == null)
+            textViewCity.setVisibility(View.GONE);
+        else
+            textViewCity.setText("City: " + city);
+
+        if (birthday == null)
+            textViewBirthday.setVisibility(View.GONE);
+        else
+            textViewBirthday.setText("Birthday: " + birthday);
+
+        if (aboutMe == null)
+            textViewAboutMe.setVisibility(View.GONE);
+        else
+            textViewAboutMe.setText("About me: " + aboutMe);
+
         textViewWebStatus.setText(webStatus);
         textViewReg.setText("Registered since " + regDate);
         textViewFullName.setText(firstNStr + " " + lastNStr);
         textViewUserStatus.setText(statusStr);
         textViewUserId.setText("Id: " + userId);
 
-        /*if (webStatus.equalsIgnoreCase("Online")) {
-            textViewWebStatus.setTextColor(getResources().getColor(R.color.blue));
-        } else {
-            textViewWebStatus.setTextColor(getResources().getColor(R.color.gray));
-        }*/
-
         if (profileImageUri != null) {
-            Picasso.get().load(profileImageUri).into(profileImage);
+            Picasso.get().load(profileImageUri).placeholder(R.drawable.no_avatar).into(profileImage);
         } else {
             //profileImage.setImageDrawable(getResources().getDrawable(R.drawable.no_avatar));
             profileImage.setImageResource(R.drawable.no_avatar);
@@ -213,6 +229,19 @@ public class ProfileFragment extends Fragment {
                 //testsFullCompleted = dataSnapshot.child("testsFullCompleted").getValue(int.class);
                 //testsStarted = dataSnapshot.child("testsStarted").getValue(int.class);
                 profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
+
+                if (dataSnapshot.hasChild("birthday")) {
+                    birthday = dataSnapshot.child("birthday").getValue(String.class);
+                }
+
+                if (dataSnapshot.hasChild("city")) {
+                    city = dataSnapshot.child("city").getValue(String.class);
+                }
+
+                if (dataSnapshot.hasChild("aboutMe")) {
+                    aboutMe = dataSnapshot.child("aboutMe").getValue(String.class);
+                }
+
                 updateUI();
 
             }

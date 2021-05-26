@@ -28,10 +28,12 @@
 
     <style name="senderMessageTheme">
         <item name="backgroundTint">@color/senderMessageDarkTheme</item>
+        <item name="background">@color/senderMessageDarkTheme</item>
     </style>
 
     <style name="receiverMessageTheme">
         <item name="backgroundTint">@color/receiverMessageDarkTheme</item>
+        <item name="background">@color/receiverMessageDarkTheme</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">

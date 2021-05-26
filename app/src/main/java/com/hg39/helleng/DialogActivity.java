@@ -38,7 +38,10 @@ import com.hg39.helleng.Models.MessageAdapter;
 import com.hg39.helleng.Models.Messages;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -188,28 +191,34 @@ public class DialogActivity extends AppCompatActivity {
 
             String messagePushID = userMessageKeyRef.getKey();
 
+            Date currentDate = new Date();
+            // Форматирование времени как "день.месяц.год"
+            //DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            //String dateText = dateFormat.format(currentDate);
+            // Форматирование времени как "часы:минуты:секунды"
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            String timeText = timeFormat.format(currentDate);
+
             Map messageTextBody = new HashMap();
             messageTextBody.put("message", messageText);
             messageTextBody.put("type", "text");
             messageTextBody.put("from", messageSenderID);
+            messageTextBody.put("time", timeText);
 
             Map messageBodyDetails = new HashMap();
             messageBodyDetails.put(messageSenderRef + "/" + messagePushID, messageTextBody);
             messageBodyDetails.put(messageReceiverRef + "/" + messagePushID, messageTextBody);
 
-            rootRef.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(@NonNull Task task) {
-                    if (task.isSuccessful())
-                    {
-                        //Toast.makeText(DialogActivity.this, "Yep!", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        Toast.makeText(DialogActivity.this, "Something wrong, we haven't sent a message", Toast.LENGTH_SHORT).show();
-                    }
-                    messageInputText.setText("");
+            rootRef.updateChildren(messageBodyDetails).addOnCompleteListener(task -> {
+                if (task.isSuccessful())
+                {
+                    //Toast.makeText(DialogActivity.this, "Yep!", Toast.LENGTH_SHORT).show();
                 }
+                else
+                {
+                    Toast.makeText(DialogActivity.this, "Something wrong, we haven't sent a message", Toast.LENGTH_SHORT).show();
+                }
+                messageInputText.setText("");
             });
         }
     }
