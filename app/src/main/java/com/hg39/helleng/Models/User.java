@@ -8,11 +8,14 @@ public class User {
     private String username;
     private String profileImage,profileImageUri;
     private String userStatus;
+    private String birthday;
+    private String city;
+    private String aboutMe;
     private int testsStarted,testsFullCompleted;
 
     public User(String email, String password, String registerDate, String firstName, String username,
                 String lastName, String status, String webStatus, String profileImage,
-                String userStatus, String profileImageUri,
+                String userStatus, String profileImageUri, String city, String aboutMe, String birthday,
                 int testsFullCompleted, int testsStarted ) {
         this.email = email;
         this.password = password;
@@ -27,6 +30,9 @@ public class User {
         this.profileImageUri = profileImageUri;
         this.testsStarted = testsStarted;
         this.testsFullCompleted = testsFullCompleted;
+        this.city = city;
+        this.aboutMe = aboutMe;
+        this.birthday = birthday;
     }
 
     public User() {}
@@ -133,5 +139,29 @@ public class User {
 
     public void setTestsFullCompleted(int testsFullCompleted) {
         this.testsFullCompleted = testsFullCompleted;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
     }
 }

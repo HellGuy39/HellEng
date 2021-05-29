@@ -32,6 +32,9 @@ public class TestMakerActivity extends AppCompatActivity {
     public static final String TASK_QUESTION = "Question";
     public static final String TASK_ANSWER = "Answer";
 
+    public static final String ACTION_CREATE_TEST = "Create";
+    public static final String ACTION_EDIT_TEST = "Edit";
+
     SharedPreferences sp;
 
     Fragment createTestFragment;
@@ -46,26 +49,30 @@ public class TestMakerActivity extends AppCompatActivity {
         setLanguage();
         setContentView(R.layout.activity_test_maker);
 
-        createTestFragment = new CreateTestFragment();
         findOtherTestFragment = new FindUserTestFragment();
         completeOtherTestFragment = new CompleteOtherTestFragment();
         testPreviewFragment = new TestPreviewFragment();
 
         Bundle bundle = getIntent().getExtras();
         String action = bundle.getString("Action");
+        String testID = bundle.getString("testID");
 
-        if (action.equals("CreateTest"))
-        {
-            setFragCreateTest();
-        }
-        else if (action.equals("ViewOtherTest"))
-        {
-            setFragFindTest();
-        }
-        else if (action.equals("TestPreview"))
-        {
-            String testID = bundle.getString("testID");
-            setFragTestPreview(testID);
+        switch (action) {
+            case "CreateTest":
+                setFragCreateTest(ACTION_CREATE_TEST,null);
+                break;
+
+            case "ViewOtherTest":
+                setFragFindTest();
+                break;
+
+            case "TestPreview":
+                setFragTestPreview(testID);
+                break;
+
+            case ACTION_EDIT_TEST:
+                setFragCreateTest(ACTION_EDIT_TEST, testID);
+                break;
         }
     }
 
@@ -80,7 +87,16 @@ public class TestMakerActivity extends AppCompatActivity {
                 .commit();
     }
 
-    protected void setFragCreateTest() {
+    protected void setFragCreateTest(String action, String testID) {
+
+        createTestFragment = new CreateTestFragment();
+
+        Bundle arguments = new Bundle();
+        arguments.putString("action", action);
+        arguments.putString("testID", testID);
+
+        createTestFragment.setArguments(arguments);
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack(null)
@@ -143,35 +159,34 @@ public class TestMakerActivity extends AppCompatActivity {
         testArguments.putString("task2TrueAnswer", task2TrueRes);
         testArguments.putString("task3TrueAnswer", task3TrueRes);
 
-        if (countOfTasks.equals("3"))
-        {
-            countOfTasksInt = 3;
-        }
-        else if (countOfTasks.equals("5"))
-        {
-            countOfTasksInt = 5;
+        switch (countOfTasks) {
+            case "3":
+                countOfTasksInt = 3;
+                break;
+            case "5":
+                countOfTasksInt = 5;
 
-            testArguments.putString("task4UserAnswer", task4UserRes);
-            testArguments.putString("task5UserAnswer", task5UserRes);
+                testArguments.putString("task4UserAnswer", task4UserRes);
+                testArguments.putString("task5UserAnswer", task5UserRes);
 
-            testArguments.putString("task4TrueAnswer", task4TrueRes);
-            testArguments.putString("task5TrueAnswer", task5TrueRes);
-        }
-        else if (countOfTasks.equals("7"))
-        {
-            testArguments.putString("task4UserAnswer", task4UserRes);
-            testArguments.putString("task5UserAnswer", task5UserRes);
+                testArguments.putString("task4TrueAnswer", task4TrueRes);
+                testArguments.putString("task5TrueAnswer", task5TrueRes);
+                break;
+            case "7":
+                testArguments.putString("task4UserAnswer", task4UserRes);
+                testArguments.putString("task5UserAnswer", task5UserRes);
 
-            testArguments.putString("task4TrueAnswer", task4TrueRes);
-            testArguments.putString("task5TrueAnswer", task5TrueRes);
+                testArguments.putString("task4TrueAnswer", task4TrueRes);
+                testArguments.putString("task5TrueAnswer", task5TrueRes);
 
-            testArguments.putString("task6UserAnswer", task6UserRes);
-            testArguments.putString("task7UserAnswer", task7UserRes);
+                testArguments.putString("task6UserAnswer", task6UserRes);
+                testArguments.putString("task7UserAnswer", task7UserRes);
 
-            testArguments.putString("task6TrueAnswer", task6TrueRes);
-            testArguments.putString("task7TrueAnswer", task7TrueRes);
+                testArguments.putString("task6TrueAnswer", task6TrueRes);
+                testArguments.putString("task7TrueAnswer", task7TrueRes);
 
-            countOfTasksInt = 7;
+                countOfTasksInt = 7;
+                break;
         }
 
         testArguments.putInt("completedInt", completed);

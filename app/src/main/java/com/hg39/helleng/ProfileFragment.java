@@ -87,10 +87,7 @@ public class ProfileFragment extends Fragment {
             userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         }
 
-        loadData();
-
-        //Context context = MyContextWrapper.wrap(Objects.requireNonNull(getContext())/*in fragment use getContext() instead of this*/, "en");
-        //getResources().updateConfiguration(context.getResources().getConfiguration(), context.getResources().getDisplayMetrics());
+        //loadData();
 
     }
 
@@ -212,7 +209,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        updateUI();
+        loadData();
+        //updateUI();
     }
 
     private void loadData() {
@@ -229,18 +227,10 @@ public class ProfileFragment extends Fragment {
                 //testsFullCompleted = dataSnapshot.child("testsFullCompleted").getValue(int.class);
                 //testsStarted = dataSnapshot.child("testsStarted").getValue(int.class);
                 profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
+                birthday = dataSnapshot.child("birthday").getValue(String.class);
+                city = dataSnapshot.child("city").getValue(String.class);
+                aboutMe = dataSnapshot.child("aboutMe").getValue(String.class);
 
-                if (dataSnapshot.hasChild("birthday")) {
-                    birthday = dataSnapshot.child("birthday").getValue(String.class);
-                }
-
-                if (dataSnapshot.hasChild("city")) {
-                    city = dataSnapshot.child("city").getValue(String.class);
-                }
-
-                if (dataSnapshot.hasChild("aboutMe")) {
-                    aboutMe = dataSnapshot.child("aboutMe").getValue(String.class);
-                }
 
                 updateUI();
 

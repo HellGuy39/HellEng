@@ -39,6 +39,7 @@ import static com.hg39.helleng.MainActivity.futureSimple;
 import static com.hg39.helleng.MainActivity.groupGrammar;
 import static com.hg39.helleng.MainActivity.pastSimple;
 import static com.hg39.helleng.MainActivity.presentSimple;
+import static com.hg39.helleng.TestMakerActivity.ACTION_EDIT_TEST;
 
 public class CreateTestSelectedFragment extends Fragment implements View.OnClickListener{
 
@@ -135,7 +136,10 @@ public class CreateTestSelectedFragment extends Fragment implements View.OnClick
                 holder.btnEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(), "Not avalible in BETA" , Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Not avalible in BETA" , Toast.LENGTH_SHORT).show();
+                        intent.putExtra("testID", list_user_ID);
+                        intent.putExtra("Action", ACTION_EDIT_TEST);
+                        startActivity(intent);
                     }
                 });
 

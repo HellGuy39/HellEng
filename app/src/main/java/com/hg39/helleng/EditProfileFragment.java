@@ -129,6 +129,7 @@ public class EditProfileFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError error) {
+
             }
         });
 
@@ -169,6 +170,9 @@ public class EditProfileFragment extends Fragment {
         editTextFirstName = rootView.findViewById(R.id.editTextFirstName);
         editTextLastName = rootView.findViewById(R.id.editTextLastName);
         editTextUserStatus = rootView.findViewById(R.id.editTextUserStatus);
+
+        editTextAboutMe = rootView.findViewById(R.id.etAboutMe);
+        editTextCity = rootView.findViewById(R.id.etCity);
 
         tvBirthday = rootView.findViewById(R.id.textViewDate);
 
@@ -480,14 +484,19 @@ public class EditProfileFragment extends Fragment {
         user.setFirstName(editTextFirstName.getText().toString());
         user.setLastName(editTextLastName.getText().toString());
         user.setStatus(editTextUserStatus.getText().toString());
+        user.setAboutMe(editTextAboutMe.getText().toString());
+        user.setBirthday(birthday);
+        user.setCity(editTextCity.getText().toString());
+        //city = editTextCity.getText().toString();
+        //aboutMe = editTextAboutMe.getText().toString();
 
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("fullName").setValue(user.getFirstName() + " " +user.getLastName());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("firstName").setValue(user.getFirstName());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastName").setValue(user.getLastName());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("status").setValue(user.getStatus());
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("birthday").setValue(birthday);
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("city").setValue(city);
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("aboutMe").setValue(aboutMe);
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("birthday").setValue(user.getBirthday());
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("city").setValue(user.getCity());
+        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("aboutMe").setValue(user.getAboutMe());
 
         Toast.makeText(getActivity(),
                 "What a save!",

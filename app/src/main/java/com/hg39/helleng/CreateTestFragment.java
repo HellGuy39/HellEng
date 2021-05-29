@@ -36,6 +36,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.hg39.helleng.TestMakerActivity.ACTION_CREATE_TEST;
+import static com.hg39.helleng.TestMakerActivity.ACTION_EDIT_TEST;
 import static com.hg39.helleng.TestMakerActivity.TASK_1;
 import static com.hg39.helleng.TestMakerActivity.TASK_2;
 import static com.hg39.helleng.TestMakerActivity.TASK_3;
@@ -109,6 +111,8 @@ public class CreateTestFragment extends Fragment {
     String[] time = {"Unlimited"};//,"10:00", "15:00", "20:00", "30:00", "40:00", "50:00", "60:00", "120:00", "180:00", "240:00"};
     String[] tasksType = {"TextField", "RadioGroup"};
 
+    String action;
+
     String testTimeRes, countOfTasksRes;
 
     public CreateTestFragment() {
@@ -133,6 +137,19 @@ public class CreateTestFragment extends Fragment {
         isVisibleStep1 = true;
         isVisibleStep2 = true;
         isVisibleStep3 = true;
+
+        assert getArguments() != null;
+        action = getArguments().getString("action","Action is indefinite");
+
+        if (action.equals(ACTION_EDIT_TEST))
+        {
+            testId = getArguments().getString("testID", null);
+            loadTestData(testId);
+        }
+
+    }
+
+    private void loadTestData(String testID) {
 
     }
 
@@ -267,6 +284,13 @@ public class CreateTestFragment extends Fragment {
 
         toolbar = rootView.findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(v -> ((TestMakerActivity)getContext()).onBackPressed());
+
+        if (action.equals(ACTION_CREATE_TEST))
+            toolbar.setTitle("Create Test");
+        else if (action.equals(ACTION_EDIT_TEST))
+            toolbar.setTitle("Edit Test");
+        else
+            toolbar.setTitle("Action is indefinite");
 
         countOfTasksRes = countOfTasks[1];
         testTimeRes = time[0];

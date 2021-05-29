@@ -20,6 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
+import static com.hg39.helleng.TestMakerActivity.ACTION_EDIT_TEST;
 import static com.hg39.helleng.TestMakerActivity.TASK_1;
 import static com.hg39.helleng.TestMakerActivity.TASK_2;
 import static com.hg39.helleng.TestMakerActivity.TASK_3;
@@ -252,7 +255,8 @@ public class TestPreviewFragment extends Fragment {
         fltEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Not avalible in BETA", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Not avalible in BETA", Toast.LENGTH_SHORT).show();
+                ((TestMakerActivity) Objects.requireNonNull(getContext())).setFragCreateTest(ACTION_EDIT_TEST, testID);
             }
         });
 
