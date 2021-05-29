@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -166,6 +167,7 @@ public class DialogActivity extends AppCompatActivity {
 
                     }
                 });
+
     }
 
     @Override
@@ -272,5 +274,4 @@ public class DialogActivity extends AppCompatActivity {
                 getResources().getDisplayMetrics()
         );
     }
-
 }

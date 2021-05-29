@@ -212,8 +212,11 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
 
         if (testName.equals(humor) || testName.equals(superman)) {
             tvCompleted.setText(completed + "/" + countOfTasks);
-        } else {
-            tvCompleted.setText(completed + "/" + countOfTasks);//"%");
+        } else if (testName.equals(presentSimple) || testName.equals(pastSimple) || testName.equals(futureSimple) ||
+                testName.equals(schoolSupplies) || testName.equals(furniture) || testName.equals(food)){
+            tvCompleted.setText(completed + "%");
+        } else{
+            tvCompleted.setText(completed + "/" + countOfTasks);
         }
 
     }

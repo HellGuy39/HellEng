@@ -273,19 +273,19 @@ public class GrammarTestFragment extends Fragment {
         //Cringe
 
         if (slot1Res.equalsIgnoreCase(answers1)) {
-            completed+=1;//20;
+            completed+=20;
         }
         if (slot2Res.equalsIgnoreCase(answers2)) {
-            completed+=1;//20;
+            completed+=20;
         }
         if (slot3Res.equalsIgnoreCase(answers3)) {
-            completed+=1;//20;
+            completed+=20;
         }
         if (slot4Res.equalsIgnoreCase(answers4)) {
-            completed+=1;//20;
+            completed+=20;
         }
         if (slot5Res.equalsIgnoreCase(answers5)) {
-            completed+=1;//20;
+            completed+=20;
         }
 
         completedString = Integer.toString(completed);

@@ -20,15 +20,20 @@
         <activity android:name=".TestMakerActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".ChillZoneActivty" />
+        <activity android:name=".ChillZoneActivty"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".ResetPasswordActivity"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".AuditionActivity" />
+        <activity android:name=".AuditionActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".RegisterActivity"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".AboutTheAppActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".DialogActivity" />
+        <activity android:name=".AboutTheAppActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".SettingsActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".DialogActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".SplashScreen"
             android:theme="@style/SplashTheme">
