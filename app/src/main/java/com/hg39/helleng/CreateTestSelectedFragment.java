@@ -43,18 +43,11 @@ import static com.hg39.helleng.TestMakerActivity.ACTION_EDIT_TEST;
 
 public class CreateTestSelectedFragment extends Fragment implements View.OnClickListener{
 
-    //TextView tvCompletedPrSimple,tvCompletedPsSimple,tvCompletedFtSimple;
-    //TextView tvPrSimple,tvPsSimple,tvRFtSimple;
-    //String completedPrSimple,completedPsSimple,completedFrSimple;
-    //Intent intentTenses;
-
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference usersTestsProgress, userTestsIDRef, userTestsStorageRef;
-
-    com.google.android.material.card.MaterialCardView cardCreateTest, cardOtherTest;
 
     RecyclerView recyclerView;
 
@@ -67,7 +60,6 @@ public class CreateTestSelectedFragment extends Fragment implements View.OnClick
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //intentTenses = new Intent(getContext(), GrammarActivity.class);
         intent = new Intent(getContext(), TestMakerActivity.class);
 
         mAuth = FirebaseAuth.getInstance();
@@ -82,7 +74,7 @@ public class CreateTestSelectedFragment extends Fragment implements View.OnClick
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
+
         View rootView =
                 inflater.inflate(R.layout.fragment_create_test_selected,container,false);
 
@@ -142,11 +134,11 @@ public class CreateTestSelectedFragment extends Fragment implements View.OnClick
                         startActivity(intent);
                     }
                 });
-
+                holder.btnStat.setVisibility(View.GONE);
                 holder.btnStat.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(), "Not avalible in BETA" , Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Not avalible in BETA" , Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -217,22 +209,6 @@ public class CreateTestSelectedFragment extends Fragment implements View.OnClick
 
     private void updateUI(){
 
-        /*if (completedFrSimple == null) {
-            completedFrSimple = "0";
-        }
-
-        if (completedPsSimple == null) {
-            completedPsSimple = "0";
-        }
-
-        if (completedPrSimple == null) {
-            completedPrSimple = "0";
-        }
-
-        tvCompletedPrSimple.setText(completedPrSimple + " %");
-        tvCompletedPsSimple.setText(completedPsSimple + " %");
-        tvCompletedFtSimple.setText(completedFrSimple + " %");*/
-
     }
 
     public static class CustomTestViewHolder extends RecyclerView.ViewHolder {
@@ -259,7 +235,6 @@ public class CreateTestSelectedFragment extends Fragment implements View.OnClick
     public void onClick(View v) {
         if (v.getId() == R.id.btnCreate)
         {
-            //Toast.makeText(getContext(), "Create Test!", Toast.LENGTH_SHORT).show();
             intent.putExtra("Action", "CreateTest");
             startActivity(intent);
         }
@@ -267,7 +242,6 @@ public class CreateTestSelectedFragment extends Fragment implements View.OnClick
         {
             intent.putExtra("Action", "ViewOtherTest");
             startActivity(intent);
-            //Toast.makeText(getContext(), "Other Test!", Toast.LENGTH_SHORT).show();
         }
     }
 }

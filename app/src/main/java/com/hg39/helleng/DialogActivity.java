@@ -126,6 +126,7 @@ public class DialogActivity extends AppCompatActivity {
         }*/
 
         //chatToolBar = findViewById(R.id.topAppBar);
+
         chatToolBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

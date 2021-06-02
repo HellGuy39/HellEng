@@ -231,17 +231,17 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
             }
             else if (testName.equals(furniture) || testName.equals(food) ||testName.equals(schoolSupplies))
             {
-                startActivity(new Intent(getContext(), MainActivity.class));
+                //startActivity(new Intent(getContext(), MainActivity.class));
                     ((VocabularyActivity)getContext()).finishActivity();
             }
             else if (testName.equals(presentSimple) || testName.equals(pastSimple) || testName.equals(futureSimple))
             {
-                startActivity(new Intent(getContext(), MainActivity.class));
+               // startActivity(new Intent(getContext(), MainActivity.class));
                     ((GrammarActivity)getContext()).finishActivity();
             }
             else if (testName.equals(humor) || testName.equals(superman))
             {
-                startActivity(new Intent(getContext(), MainActivity.class));
+                //startActivity(new Intent(getContext(), MainActivity.class));
                     ((AuditionActivity)getContext()).finishActivity();
             } else {
                 //startActivity(new Intent(getContext(), MainActivity.class));

@@ -49,6 +49,7 @@ import static com.hg39.helleng.TestMakerActivity.TASK_ANSWER;
 import static com.hg39.helleng.TestMakerActivity.TASK_DESCRIPTION;
 import static com.hg39.helleng.TestMakerActivity.TASK_QUESTION;
 import static com.hg39.helleng.TestMakerActivity.TASK_TYPE;
+import static com.hg39.helleng.TestMakerActivity.TYPE_RADIO_GROUP;
 import static com.hg39.helleng.TestMakerActivity.TYPE_TEXT_FIELD;
 
 public class CreateTestFragment extends Fragment {
@@ -60,29 +61,38 @@ public class CreateTestFragment extends Fragment {
     boolean isVisibleStep1;
     LinearLayout containerStep1;
 
+    com.google.android.material.textfield.TextInputLayout layoutTestId;
+
     //Step 2
-    Spinner spinTask1, spinTask2, spinTask3, spinTask4, spinTask5, spinTask6, spinTask7;
-    Button btnStep2ExpandMore;
-    boolean isVisibleStep2;
-    LinearLayout containerStep2;
+    //Button btnStep2ExpandMore;
+    //boolean isVisibleStep2;
+    //LinearLayout containerStep2;
 
     //Step 3
-    Button btnStep3ExpandMore;
-    boolean isVisibleStep3;
-    LinearLayout containerStep3;
-    com.google.android.material.textfield.TextInputEditText etTask1Description, etTask1Question, etTask1Answer;
-    com.google.android.material.textfield.TextInputEditText etTask2Description, etTask2Question, etTask2Answer;
-    com.google.android.material.textfield.TextInputEditText etTask3Description, etTask3Question, etTask3Answer;
-    com.google.android.material.textfield.TextInputEditText etTask4Description, etTask4Question, etTask4Answer;
-    com.google.android.material.textfield.TextInputEditText etTask5Description, etTask5Question, etTask5Answer;
-    com.google.android.material.textfield.TextInputEditText etTask6Description, etTask6Question, etTask6Answer;
-    com.google.android.material.textfield.TextInputEditText etTask7Description, etTask7Question, etTask7Answer;
+    //Button btnStep3ExpandMore;
+
+    LinearLayout containerTextFieldTask1,containerTextFieldTask2,containerTextFieldTask3,containerTextFieldTask4,
+            containerTextFieldTask5,containerTextFieldTask6,containerTextFieldTask7;
+
+    com.google.android.material.textfield.TextInputEditText
+            etTask1Description, etTask1Question, etTask1Answer;
+    com.google.android.material.textfield.TextInputEditText
+            etTask2Description, etTask2Question, etTask2Answer;
+    com.google.android.material.textfield.TextInputEditText
+            etTask3Description, etTask3Question, etTask3Answer;
+    com.google.android.material.textfield.TextInputEditText
+            etTask4Description, etTask4Question, etTask4Answer;
+    com.google.android.material.textfield.TextInputEditText
+            etTask5Description, etTask5Question, etTask5Answer;
+    com.google.android.material.textfield.TextInputEditText
+            etTask6Description, etTask6Question, etTask6Answer;
+    com.google.android.material.textfield.TextInputEditText
+            etTask7Description, etTask7Question, etTask7Answer;
 
     LinearLayout containerTask1, containerTask2, containerTask3, containerTask4, containerTask5,
             containerTask6, containerTask7;
 
-    View viewStroke1,viewStroke2,viewStroke3,viewStroke4,viewStroke5,viewStroke6,viewStroke7,viewStroke8;
-    View viewStroke2_1,viewStroke2_2,viewStroke2_3,viewStroke2_4,viewStroke2_5,viewStroke2_6,viewStroke2_7,viewStroke2_8;
+    //View viewStroke1,viewStroke2,viewStroke3,viewStroke4,viewStroke5,viewStroke6,viewStroke7,viewStroke8;
 
     //General
     com.google.android.material.appbar.MaterialToolbar toolbar;
@@ -94,6 +104,9 @@ public class CreateTestFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference userTestsIDRef, userTestsStorageRef;
+
+    ArrayAdapter<String> adapterTasks;
+    ArrayAdapter<String> adapterTime;
 
     //Saved data
     String testId, testName;
@@ -135,8 +148,6 @@ public class CreateTestFragment extends Fragment {
         dateText = dateFormat.format(currentDate);
 
         isVisibleStep1 = true;
-        isVisibleStep2 = true;
-        isVisibleStep3 = true;
 
         assert getArguments() != null;
         action = getArguments().getString("action","Action is indefinite");
@@ -144,12 +155,7 @@ public class CreateTestFragment extends Fragment {
         if (action.equals(ACTION_EDIT_TEST))
         {
             testId = getArguments().getString("testID", null);
-            loadTestData(testId);
         }
-
-    }
-
-    private void loadTestData(String testID) {
 
     }
 
@@ -157,6 +163,16 @@ public class CreateTestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_create_test, container, false);
+
+        containerTextFieldTask1 = rootView.findViewById(R.id.containerTextFieldTask1);
+        containerTextFieldTask2 = rootView.findViewById(R.id.containerTextFieldTask2);
+        containerTextFieldTask3 = rootView.findViewById(R.id.containerTextFieldTask3);
+        containerTextFieldTask4 = rootView.findViewById(R.id.containerTextFieldTask4);
+        containerTextFieldTask5 = rootView.findViewById(R.id.containerTextFieldTask5);
+        containerTextFieldTask6 = rootView.findViewById(R.id.containerTextFieldTask6);
+        containerTextFieldTask7 = rootView.findViewById(R.id.containerTextFieldTask7);
+
+        layoutTestId = rootView.findViewById(R.id.layoutTestId);
 
         //General
         btnSave = rootView.findViewById(R.id.btn_save);
@@ -176,76 +192,16 @@ public class CreateTestFragment extends Fragment {
         btnStep1ExpandMore.setOnClickListener(this::onClickExpand);
         btnStep1ExpandMore.setRotation(180);
 
-        ArrayAdapter<String> adapterTasks = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, countOfTasks);
+        adapterTasks = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, countOfTasks);
         adapterTasks.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tasksDropdown.setAdapter(adapterTasks);
 
-        ArrayAdapter<String> adapterTime = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, time);
+        adapterTime = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, time);
         adapterTime.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeDropdown.setAdapter(adapterTime);
 
-        //Step 2
-
-        viewStroke2_1 = rootView.findViewById(R.id.viewStrokeStep2_1);
-        viewStroke2_2 = rootView.findViewById(R.id.viewStrokeStep2_2);
-        viewStroke2_3 = rootView.findViewById(R.id.viewStrokeStep2_3);
-        viewStroke2_4 = rootView.findViewById(R.id.viewStrokeStep2_4);
-        viewStroke2_5 = rootView.findViewById(R.id.viewStrokeStep2_5);
-        viewStroke2_6 = rootView.findViewById(R.id.viewStrokeStep2_6);
-        viewStroke2_7 = rootView.findViewById(R.id.viewStrokeStep2_7);
-        viewStroke2_8 = rootView.findViewById(R.id.viewStrokeStep2_8);
-
-        btnStep2ExpandMore = rootView.findViewById(R.id.btnStep2ExpandMore);
-        btnStep2ExpandMore.setOnClickListener(this::onClickExpand);
-        btnStep2ExpandMore.setRotation(180);
-
-        containerStep2 = rootView.findViewById(R.id.containerStep2);
-
-        spinTask1 = rootView.findViewById(R.id.spinTask1);
-        spinTask2 = rootView.findViewById(R.id.spinTask2);
-        spinTask3 = rootView.findViewById(R.id.spinTask3);
-        spinTask4 = rootView.findViewById(R.id.spinTask4);
-        spinTask5 = rootView.findViewById(R.id.spinTask5);
-        spinTask6 = rootView.findViewById(R.id.spinTask6);
-        spinTask7 = rootView.findViewById(R.id.spinTask7);
-
-        setSpinListeners();
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, tasksType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinTask1.setAdapter(adapter);
-        spinTask2.setAdapter(adapter);
-        spinTask3.setAdapter(adapter);
-        spinTask4.setAdapter(adapter);
-        spinTask5.setAdapter(adapter);
-        spinTask6.setAdapter(adapter);
-        spinTask7.setAdapter(adapter);
-
-        spinTask1.setSelection(0);
-        spinTask2.setSelection(0);
-        spinTask3.setSelection(0);
-        spinTask4.setSelection(0);
-        spinTask5.setSelection(0);
-        spinTask6.setSelection(0);
-        spinTask7.setSelection(0);
-
-        //Step 3
-
-        containerStep3 = rootView.findViewById(R.id.containerStep3);
-
-        btnStep3ExpandMore = rootView.findViewById(R.id.btnStep3ExpandMore);
-        btnStep3ExpandMore.setOnClickListener(this::onClickExpand);
-        btnStep3ExpandMore.setRotation(180);
-
-        viewStroke1 = rootView.findViewById(R.id.viewStroke1);
-        viewStroke2 = rootView.findViewById(R.id.viewStroke2);
-        viewStroke3 = rootView.findViewById(R.id.viewStroke3);
-        viewStroke4 = rootView.findViewById(R.id.viewStroke4);
-        viewStroke5 = rootView.findViewById(R.id.viewStroke5);
-        viewStroke6 = rootView.findViewById(R.id.viewStroke6);
-        viewStroke7 = rootView.findViewById(R.id.viewStroke7);
-        viewStroke8 = rootView.findViewById(R.id.viewStroke8);
 
         etTask1Description = rootView.findViewById(R.id.etTask1Description);
         etTask1Question = rootView.findViewById(R.id.etTask1Question);
@@ -307,6 +263,11 @@ public class CreateTestFragment extends Fragment {
         tasksDropdown.setText(adapterTasks.getItem(1), false);
         timeDropdown.setText(adapterTime.getItem(0), false);
 
+        if (action.equals(ACTION_EDIT_TEST))
+        {
+            loadTestData(testId);
+        }
+
         return rootView;
     }
 
@@ -323,83 +284,141 @@ public class CreateTestFragment extends Fragment {
         }
     }
 
-    private void setSpinListeners() {
+    private void loadTestData(String testID) {
 
-        spinTask1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        etTestId.setEnabled(false);
+        layoutTestId.setEnabled(false);
+
+        ValueEventListener testData = new ValueEventListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                String selected = tasksType[position];
+                testName = snapshot.child("testName").getValue(String.class);
+                countOfTasksRes = snapshot.child("countOfTasks").getValue(String.class);
+                testTimeRes = snapshot.child("time").getValue(String.class);
 
-                if (selected.equals("TextField"))
-                {
+                //userTestsStorageRef.child(testId).child(TASK_1).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                task1Description = snapshot.child(TASK_1).child(TASK_DESCRIPTION).getValue(String.class);
+                task1Question = snapshot.child(TASK_1).child(TASK_QUESTION).getValue(String.class);
+                task1Answer = snapshot.child(TASK_1).child(TASK_ANSWER).getValue(String.class);
 
+                //userTestsStorageRef.child(testId).child(TASK_2).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                task2Description = snapshot.child(TASK_2).child(TASK_DESCRIPTION).getValue(String.class);
+                task2Question = snapshot.child(TASK_2).child(TASK_QUESTION).getValue(String.class);
+                task2Answer = snapshot.child(TASK_2).child(TASK_ANSWER).getValue(String.class);
+
+                //userTestsStorageRef.child(testId).child(TASK_4).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                task3Description = snapshot.child(TASK_3).child(TASK_DESCRIPTION).getValue(String.class);
+                task3Question = snapshot.child(TASK_3).child(TASK_QUESTION).getValue(String.class);
+                task3Answer = snapshot.child(TASK_3).child(TASK_ANSWER).getValue(String.class);
+
+                if (countOfTasksRes.equals("5")) {
+                    //userTestsStorageRef.child(testId).child(TASK_4).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                    task4Description = snapshot.child(TASK_4).child(TASK_DESCRIPTION).getValue(String.class);
+                    task4Question = snapshot.child(TASK_4).child(TASK_QUESTION).getValue(String.class);
+                    task4Answer = snapshot.child(TASK_4).child(TASK_ANSWER).getValue(String.class);
+
+                    //userTestsStorageRef.child(testId).child(TASK_4).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                    task5Description = snapshot.child(TASK_5).child(TASK_DESCRIPTION).getValue(String.class);
+                    task5Question = snapshot.child(TASK_5).child(TASK_QUESTION).getValue(String.class);
+                    task5Answer = snapshot.child(TASK_5).child(TASK_ANSWER).getValue(String.class);
                 }
-                else if (selected.equals("RadioGroup"))
+                else if (countOfTasksRes.equals("7"))
                 {
+                    //userTestsStorageRef.child(testId).child(TASK_4).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                    task4Description = snapshot.child(TASK_4).child(TASK_DESCRIPTION).getValue(String.class);
+                    task4Question = snapshot.child(TASK_4).child(TASK_QUESTION).getValue(String.class);
+                    task4Answer = snapshot.child(TASK_4).child(TASK_ANSWER).getValue(String.class);
 
+                    //userTestsStorageRef.child(testId).child(TASK_5).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                    task5Description = snapshot.child(TASK_5).child(TASK_DESCRIPTION).getValue(String.class);
+                    task5Question = snapshot.child(TASK_5).child(TASK_QUESTION).getValue(String.class);
+                    task5Answer = snapshot.child(TASK_5).child(TASK_ANSWER).getValue(String.class);
+
+                    //userTestsStorageRef.child(testId).child(TASK_6).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                    task6Description = snapshot.child(TASK_6).child(TASK_DESCRIPTION).getValue(String.class);
+                    task6Question = snapshot.child(TASK_6).child(TASK_QUESTION).getValue(String.class);
+                    task6Answer = snapshot.child(TASK_6).child(TASK_ANSWER).getValue(String.class);
+
+                    //userTestsStorageRef.child(testId).child(TASK_7).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                    task7Description = snapshot.child(TASK_7).child(TASK_DESCRIPTION).getValue(String.class);
+                    task7Question = snapshot.child(TASK_7).child(TASK_QUESTION).getValue(String.class);
+                    task7Answer = snapshot.child(TASK_7).child(TASK_ANSWER).getValue(String.class);
                 }
+                changingTasksCount(countOfTasksRes);
+                setLoadedTestData();
 
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
 
-        spinTask2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        userTestsStorageRef.child(testID).addValueEventListener(testData);
 
-                String selected = tasksType[position];
 
-                if (selected.equals("TextField"))
-                {
+    }
 
-                }
-                else if (selected.equals("RadioGroup"))
-                {
+    private void setLoadedTestData() {
 
-                }
+        etTestName.setText(testName);
+        etTestId.setText(testId);
 
-            }
+        etTask1Answer.setText(task1Answer);
+        etTask1Description.setText(task1Description);
+        etTask1Question.setText(task1Question);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+        etTask2Answer.setText(task2Answer);
+        etTask2Description.setText(task2Description);
+        etTask2Question.setText(task2Question);
 
-            }
-        });
+        etTask3Answer.setText(task3Answer);
+        etTask3Description.setText(task3Description);
+        etTask3Question.setText(task3Question);
 
-        spinTask3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (countOfTasksRes.equals("3"))
+        {
+            tasksDropdown.setText(adapterTasks.getItem(0), false);
+        }
+        else if (countOfTasksRes.equals("5"))
+        {
+            etTask4Answer.setText(task4Answer);
+            etTask4Description.setText(task4Description);
+            etTask4Question.setText(task4Question);
 
-                String selected = tasksType[position];
+            etTask5Answer.setText(task5Answer);
+            etTask5Description.setText(task5Description);
+            etTask5Question.setText(task5Question);
 
-                if (selected.equals("TextField"))
-                {
+            tasksDropdown.setText(adapterTasks.getItem(1), false);
 
-                }
-                else if (selected.equals("RadioGroup"))
-                {
+        }
+        else if (countOfTasksRes.equals("7"))
+        {
+            etTask4Answer.setText(task4Answer);
+            etTask4Description.setText(task4Description);
+            etTask4Question.setText(task4Question);
 
-                }
+            etTask5Answer.setText(task5Answer);
+            etTask5Description.setText(task5Description);
+            etTask5Question.setText(task5Question);
 
-            }
+            etTask6Answer.setText(task6Answer);
+            etTask6Description.setText(task6Description);
+            etTask6Question.setText(task6Question);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            etTask7Answer.setText(task7Answer);
+            etTask7Description.setText(task7Description);
+            etTask7Question.setText(task7Question);
 
-            }
-        });
+            tasksDropdown.setText(adapterTasks.getItem(2), false);
+        }
+
     }
 
     private void onClickExpand(View view) {
-
-        /*final Animation animationRotateCorner = AnimationUtils.loadAnimation(
-                getContext(), R.anim.rotate180);
-        view.startAnimation(animationRotateCorner);*/
 
         if (view.getId() == R.id.btnStep1ExpandMore)
         {
@@ -418,7 +437,7 @@ public class CreateTestFragment extends Fragment {
             }
 
         }
-        else if (view.getId() == R.id.btnStep2ExpandMore)
+        /*else if (view.getId() == R.id.btnStep2ExpandMore)
         {
             if (isVisibleStep2)
             {
@@ -432,8 +451,8 @@ public class CreateTestFragment extends Fragment {
                 containerStep2.setVisibility(View.VISIBLE);
                 isVisibleStep2 = true;
             }
-        }
-        else if (view.getId() == R.id.btnStep3ExpandMore)
+        }*/
+        /*else if (view.getId() == R.id.btnStep3ExpandMore)
         {
             if (isVisibleStep3)
             {
@@ -447,82 +466,39 @@ public class CreateTestFragment extends Fragment {
                 containerStep3.setVisibility(View.VISIBLE);
                 isVisibleStep3 = true;
             }
-        }
+        }*/
     }
 
     private void changingTasksCount(String countOfTasks) {
         switch (countOfTasks) {
             case "3":
                 containerTask1.setVisibility(View.VISIBLE);
-                viewStroke1.setVisibility(View.VISIBLE);
-
                 containerTask2.setVisibility(View.VISIBLE);
-                viewStroke2.setVisibility(View.VISIBLE);
-
                 containerTask3.setVisibility(View.VISIBLE);
-                viewStroke3.setVisibility(View.VISIBLE);
-
-                viewStroke4.setVisibility(View.GONE);
                 containerTask4.setVisibility(View.GONE);
-
-                viewStroke5.setVisibility(View.GONE);
                 containerTask5.setVisibility(View.GONE);
-
-                viewStroke6.setVisibility(View.GONE);
                 containerTask6.setVisibility(View.GONE);
-
-                viewStroke7.setVisibility(View.GONE);
                 containerTask7.setVisibility(View.GONE);
                 break;
             case "5":
 
                 containerTask1.setVisibility(View.VISIBLE);
-                viewStroke1.setVisibility(View.VISIBLE);
-
                 containerTask2.setVisibility(View.VISIBLE);
-                viewStroke2.setVisibility(View.VISIBLE);
-
                 containerTask3.setVisibility(View.VISIBLE);
-                viewStroke3.setVisibility(View.VISIBLE);
-
                 containerTask4.setVisibility(View.VISIBLE);
-                viewStroke4.setVisibility(View.VISIBLE);
-
                 containerTask5.setVisibility(View.VISIBLE);
-                viewStroke5.setVisibility(View.VISIBLE);
-
                 containerTask6.setVisibility(View.GONE);
-                viewStroke6.setVisibility(View.GONE);
-
                 containerTask7.setVisibility(View.GONE);
-                viewStroke7.setVisibility(View.GONE);
+
                 break;
             case "7":
                 containerTask1.setVisibility(View.VISIBLE);
-                viewStroke1.setVisibility(View.VISIBLE);
-
                 containerTask2.setVisibility(View.VISIBLE);
-                viewStroke2.setVisibility(View.VISIBLE);
-
                 containerTask3.setVisibility(View.VISIBLE);
-                viewStroke3.setVisibility(View.VISIBLE);
-
                 containerTask4.setVisibility(View.VISIBLE);
-                viewStroke4.setVisibility(View.VISIBLE);
-
                 containerTask5.setVisibility(View.VISIBLE);
-                viewStroke5.setVisibility(View.VISIBLE);
-
                 containerTask6.setVisibility(View.VISIBLE);
-                viewStroke6.setVisibility(View.VISIBLE);
-
                 containerTask7.setVisibility(View.VISIBLE);
-                viewStroke7.setVisibility(View.VISIBLE);
-                break;
-        }
-
-        switch (countOfTasks) {
-            case "5":
 
                 break;
         }
@@ -895,9 +871,7 @@ public class CreateTestFragment extends Fragment {
 
         testId = Objects.requireNonNull(etTestId.getText()).toString();
         testName = Objects.requireNonNull(etTestName.getText()).toString();
-        if (spinTask1.getSelectedItem().equals("TextField")) {
-            Toast.makeText(getContext(), "Bruh!", Toast.LENGTH_SHORT).show();
-        }
+
         task1Description = Objects.requireNonNull(etTask1Description.getText()).toString();
         task1Question = Objects.requireNonNull(etTask1Question.getText()).toString();
         task1Answer = Objects.requireNonNull(etTask1Answer.getText()).toString();
@@ -987,10 +961,10 @@ public class CreateTestFragment extends Fragment {
 
     private void saveTest() {
 
-        userTestsStorageRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        userTestsStorageRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild(testId)) {
+                if (snapshot.hasChild(testId) && action.equals(ACTION_CREATE_TEST)) {
                     Snackbar.make(root,"This ID is already used",Snackbar.LENGTH_LONG).show();
                     loadingBar.dismiss();
                 }
@@ -999,78 +973,75 @@ public class CreateTestFragment extends Fragment {
                     userTestsIDRef.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(testId).child("testID").setValue(testId);
                     //userTestsIDRef.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(testId).child("testName").setValue(testName);
 
-                    userTestsStorageRef.child(testId).child("testName").setValue(testName).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
+                    userTestsStorageRef.child(testId).child("testName").setValue(testName).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
 
-                                userTestsStorageRef.child(testId).child("creatorID").setValue(mAuth.getCurrentUser().getUid());
-                                userTestsStorageRef.child(testId).child("dateОfCreation").setValue(dateText);
-                                userTestsStorageRef.child(testId).child("countOfTasks").setValue(countOfTasksRes);
-                                userTestsStorageRef.child(testId).child("time").setValue(testTimeRes);
+                            userTestsStorageRef.child(testId).child("creatorID").setValue(mAuth.getCurrentUser().getUid());
+                            userTestsStorageRef.child(testId).child("dateОfCreation").setValue(dateText);
+                            userTestsStorageRef.child(testId).child("countOfTasks").setValue(countOfTasksRes);
+                            userTestsStorageRef.child(testId).child("time").setValue(testTimeRes);
 
-                                userTestsStorageRef.child(testId).child(TASK_1).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
-                                userTestsStorageRef.child(testId).child(TASK_1).child(TASK_DESCRIPTION).setValue(task1Description);
-                                userTestsStorageRef.child(testId).child(TASK_1).child(TASK_QUESTION).setValue(task1Question);
-                                userTestsStorageRef.child(testId).child(TASK_1).child(TASK_ANSWER).setValue(task1Answer);
+                            userTestsStorageRef.child(testId).child(TASK_1).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                            userTestsStorageRef.child(testId).child(TASK_1).child(TASK_DESCRIPTION).setValue(task1Description);
+                            userTestsStorageRef.child(testId).child(TASK_1).child(TASK_QUESTION).setValue(task1Question);
+                            userTestsStorageRef.child(testId).child(TASK_1).child(TASK_ANSWER).setValue(task1Answer);
 
-                                userTestsStorageRef.child(testId).child(TASK_2).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
-                                userTestsStorageRef.child(testId).child(TASK_2).child(TASK_DESCRIPTION).setValue(task2Description);
-                                userTestsStorageRef.child(testId).child(TASK_2).child(TASK_QUESTION).setValue(task2Question);
-                                userTestsStorageRef.child(testId).child(TASK_2).child(TASK_ANSWER).setValue(task2Answer);
+                            userTestsStorageRef.child(testId).child(TASK_2).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                            userTestsStorageRef.child(testId).child(TASK_2).child(TASK_DESCRIPTION).setValue(task2Description);
+                            userTestsStorageRef.child(testId).child(TASK_2).child(TASK_QUESTION).setValue(task2Question);
+                            userTestsStorageRef.child(testId).child(TASK_2).child(TASK_ANSWER).setValue(task2Answer);
 
-                                userTestsStorageRef.child(testId).child(TASK_4).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
-                                userTestsStorageRef.child(testId).child(TASK_3).child(TASK_DESCRIPTION).setValue(task3Description);
-                                userTestsStorageRef.child(testId).child(TASK_3).child(TASK_QUESTION).setValue(task3Question);
-                                userTestsStorageRef.child(testId).child(TASK_3).child(TASK_ANSWER).setValue(task3Answer);
+                            userTestsStorageRef.child(testId).child(TASK_3).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                            userTestsStorageRef.child(testId).child(TASK_3).child(TASK_DESCRIPTION).setValue(task3Description);
+                            userTestsStorageRef.child(testId).child(TASK_3).child(TASK_QUESTION).setValue(task3Question);
+                            userTestsStorageRef.child(testId).child(TASK_3).child(TASK_ANSWER).setValue(task3Answer);
 
-                                if (countOfTasksRes.equals("5"))
-                                {
-                                    userTestsStorageRef.child(testId).child(TASK_4).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
-                                    userTestsStorageRef.child(testId).child(TASK_4).child(TASK_DESCRIPTION).setValue(task4Description);
-                                    userTestsStorageRef.child(testId).child(TASK_4).child(TASK_QUESTION).setValue(task4Question);
-                                    userTestsStorageRef.child(testId).child(TASK_4).child(TASK_ANSWER).setValue(task4Answer);
-
-                                    userTestsStorageRef.child(testId).child(TASK_4).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
-                                    userTestsStorageRef.child(testId).child(TASK_5).child(TASK_DESCRIPTION).setValue(task5Description);
-                                    userTestsStorageRef.child(testId).child(TASK_5).child(TASK_QUESTION).setValue(task5Question);
-                                    userTestsStorageRef.child(testId).child(TASK_5).child(TASK_ANSWER).setValue(task5Answer);
-                                }
-
-                                if (countOfTasksRes.equals("7"))
-                                {
-                                    userTestsStorageRef.child(testId).child(TASK_4).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
-                                    userTestsStorageRef.child(testId).child(TASK_4).child(TASK_DESCRIPTION).setValue(task4Description);
-                                    userTestsStorageRef.child(testId).child(TASK_4).child(TASK_QUESTION).setValue(task4Question);
-                                    userTestsStorageRef.child(testId).child(TASK_4).child(TASK_ANSWER).setValue(task4Answer);
-
-                                    userTestsStorageRef.child(testId).child(TASK_5).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
-                                    userTestsStorageRef.child(testId).child(TASK_5).child(TASK_DESCRIPTION).setValue(task5Description);
-                                    userTestsStorageRef.child(testId).child(TASK_5).child(TASK_QUESTION).setValue(task5Question);
-                                    userTestsStorageRef.child(testId).child(TASK_5).child(TASK_ANSWER).setValue(task5Answer);
-
-                                    userTestsStorageRef.child(testId).child(TASK_6).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
-                                    userTestsStorageRef.child(testId).child(TASK_6).child(TASK_DESCRIPTION).setValue(task6Description);
-                                    userTestsStorageRef.child(testId).child(TASK_6).child(TASK_QUESTION).setValue(task6Question);
-                                    userTestsStorageRef.child(testId).child(TASK_6).child(TASK_ANSWER).setValue(task6Answer);
-
-                                    userTestsStorageRef.child(testId).child(TASK_7).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
-                                    userTestsStorageRef.child(testId).child(TASK_7).child(TASK_DESCRIPTION).setValue(task7Description);
-                                    userTestsStorageRef.child(testId).child(TASK_7).child(TASK_QUESTION).setValue(task7Question);
-                                    userTestsStorageRef.child(testId).child(TASK_7).child(TASK_ANSWER).setValue(task7Answer);
-                                }
-
-                                loadingBar.dismiss();
-
-                                Toast.makeText(getContext(), "Test Succsefull created!", Toast.LENGTH_SHORT).show();
-                                ((TestMakerActivity)getContext()).finish();
-
-                            }
-                            else
+                            if (countOfTasksRes.equals("5"))
                             {
-                                Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
+                                userTestsStorageRef.child(testId).child(TASK_4).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                                userTestsStorageRef.child(testId).child(TASK_4).child(TASK_DESCRIPTION).setValue(task4Description);
+                                userTestsStorageRef.child(testId).child(TASK_4).child(TASK_QUESTION).setValue(task4Question);
+                                userTestsStorageRef.child(testId).child(TASK_4).child(TASK_ANSWER).setValue(task4Answer);
+
+                                userTestsStorageRef.child(testId).child(TASK_5).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                                userTestsStorageRef.child(testId).child(TASK_5).child(TASK_DESCRIPTION).setValue(task5Description);
+                                userTestsStorageRef.child(testId).child(TASK_5).child(TASK_QUESTION).setValue(task5Question);
+                                userTestsStorageRef.child(testId).child(TASK_5).child(TASK_ANSWER).setValue(task5Answer);
                             }
+
+                            if (countOfTasksRes.equals("7"))
+                            {
+                                userTestsStorageRef.child(testId).child(TASK_4).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                                userTestsStorageRef.child(testId).child(TASK_4).child(TASK_DESCRIPTION).setValue(task4Description);
+                                userTestsStorageRef.child(testId).child(TASK_4).child(TASK_QUESTION).setValue(task4Question);
+                                userTestsStorageRef.child(testId).child(TASK_4).child(TASK_ANSWER).setValue(task4Answer);
+
+                                userTestsStorageRef.child(testId).child(TASK_5).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                                userTestsStorageRef.child(testId).child(TASK_5).child(TASK_DESCRIPTION).setValue(task5Description);
+                                userTestsStorageRef.child(testId).child(TASK_5).child(TASK_QUESTION).setValue(task5Question);
+                                userTestsStorageRef.child(testId).child(TASK_5).child(TASK_ANSWER).setValue(task5Answer);
+
+                                userTestsStorageRef.child(testId).child(TASK_6).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                                userTestsStorageRef.child(testId).child(TASK_6).child(TASK_DESCRIPTION).setValue(task6Description);
+                                userTestsStorageRef.child(testId).child(TASK_6).child(TASK_QUESTION).setValue(task6Question);
+                                userTestsStorageRef.child(testId).child(TASK_6).child(TASK_ANSWER).setValue(task6Answer);
+
+                                userTestsStorageRef.child(testId).child(TASK_7).child(TASK_TYPE).setValue(TYPE_TEXT_FIELD);
+                                userTestsStorageRef.child(testId).child(TASK_7).child(TASK_DESCRIPTION).setValue(task7Description);
+                                userTestsStorageRef.child(testId).child(TASK_7).child(TASK_QUESTION).setValue(task7Question);
+                                userTestsStorageRef.child(testId).child(TASK_7).child(TASK_ANSWER).setValue(task7Answer);
+                            }
+
+                            loadingBar.dismiss();
+
+                            Toast.makeText(getContext(), "Test Succsefull created!", Toast.LENGTH_SHORT).show();
+                            ((TestMakerActivity)getContext()).finish();
+
+                        }
+                        else
+                        {
+                            Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
                         }
                     });
                 }

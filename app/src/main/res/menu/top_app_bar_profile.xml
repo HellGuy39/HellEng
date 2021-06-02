@@ -9,7 +9,7 @@
     <item
         android:id="@+id/editProfile"
         android:icon="@drawable/ic_baseline_mode_edit_24"
-        android:title="Edit"
+        android:title=""
         app:showAsAction="ifRoom" />
 
     <item

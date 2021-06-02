@@ -25,6 +25,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Note: A RecyclerView can also be used -->
+    <ImageView
+        android:id="@+id/imageBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@color/fui_transparent" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,15 +42,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             tools:layout_editor_absoluteX="10dp"
-            tools:layout_editor_absoluteY="10dp"
-            android:padding="5dp">
+            tools:layout_editor_absoluteY="10dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
                 android:checkable="true"
+                android:clickable="false"
                 android:focusable="true"
-                app:cardElevation="1dp"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -63,21 +75,32 @@
                             android:layout_margin="10dp"
                             android:background="@android:color/transparent"
                             android:contentDescription="@string/content_description_media"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_baseline_image_24" />
+                            android:scaleType="centerCrop" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="10dp"
                             android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textViewWebStatus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:text="web status"
+                                android:textColor="?android:attr/textColorSecondary" />
 
                             <TextView
                                 android:id="@+id/textViewFullName"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Username"
+                                android:text="FName LName"
                                 android:textSize="20sp" />
 
                             <TextView
@@ -89,107 +112,159 @@
                                 android:textColor="?android:attr/textColorSecondary"
                                 android:textSize="16sp" />
 
-                            <TextView
-                                android:id="@+id/textViewWebStatus"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:text="~Online~"
-                                android:textColor="?android:attr/textColorSecondary" />
-
                         </LinearLayout>
                     </LinearLayout>
 
-                    <View
-                        android:id="@+id/viewStroke2"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/window_design"
-                        android:text=" " />
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:checkable="true"
+                android:clickable="false"
+                android:focusable="true"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnPerform"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:text="Send Request"
+                        app:cornerRadius="15dp"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/btnDecline"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="1"
+                        app:cornerRadius="15dp"
+                        android:text="Decline Request"
+                        android:textAllCaps="false" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:checkable="true"
+                android:clickable="false"
+                android:focusable="true"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:id="@+id/textViewStat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Information"
+                        android:textSize="24sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="10dp"
-                        android:orientation="horizontal">
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="vertical">
 
-                        <Button
-                            android:id="@+id/btnPerform"
+                        <View
+                            android:id="@+id/viewStroke"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="5dp"
-                            android:text="Send Request"
-                            android:textAllCaps="false"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                            android:layout_height="1dp"
 
-                        <Button
-                            android:id="@+id/btnDecline"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginStart="5dp"
-                            android:text="Decline Request"
-                            android:textAllCaps="false"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
-                    </LinearLayout>
-
-                    <View
-                        android:id="@+id/viewStroke"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/window_design"
-                        android:text=" " />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="5dp">
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/window_design"
+                            android:text=" " />
 
                         <TextView
-                            android:id="@+id/textViewStat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:text="Information"
-                            android:textSize="24sp" />
-
-                        <LinearLayout
+                            android:id="@+id/textViewCity"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="City: "
+                            android:textIsSelectable="true"
+                            android:textSize="16sp" />
 
-                            <TextView
-                                android:id="@+id/textViewReg"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Registered since ~date~"
-                                android:textSize="16sp"
-                                android:textIsSelectable="true"/>
+                        <TextView
+                            android:id="@+id/textViewBirthday"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Birthday: "
+                            android:textIsSelectable="true"
+                            android:textSize="16sp" />
 
-                            <TextView
-                                android:id="@+id/textViewUserId"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Id: ~id~"
-                                android:textSize="16sp"
-                                android:textIsSelectable="true"/>
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/textViewReg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Registered since "
+                            android:textIsSelectable="true"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/textViewUserId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Id: "
+                            android:textIsSelectable="true"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            tools:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textViewAboutMe"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="About me: "
+                            android:textIsSelectable="true"
+                            android:textSize="16sp" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewMicroBlog"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

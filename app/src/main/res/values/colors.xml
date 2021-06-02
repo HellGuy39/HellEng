@@ -29,4 +29,13 @@
     <color name="light_red">#CCFF1744</color>
     <color name="light_green">#CC76FF03</color>
 
+    <color name="red_glitch">#CCfe0405</color>
+    <color name="black_glaze">#CC080812</color>
+    <color name="incredible_blue">#CC190b6a</color>
+    <color name="purple_galaxy">#CC6800b7</color>
+
+    <color name="blur25">#25000000</color>
+    <color name="blur50">#50000000</color>
+    <color name="blur75">#75000000</color>
+
 </resources>

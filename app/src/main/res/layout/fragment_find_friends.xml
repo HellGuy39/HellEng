@@ -20,7 +20,7 @@
             app:menu="@menu/search_menu"
             app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             app:navigationIconTint="?attr/navigationIconTint"
-            app:title="Find friends"
+            app:title="@string/find_users"
             app:titleTextColor="?attr/titleTextColor" />
 
     </com.google.android.material.appbar.AppBarLayout>

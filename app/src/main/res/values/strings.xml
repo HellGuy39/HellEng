@@ -7,16 +7,23 @@
     <string name="app_courses">Courses</string>
     <string name="app_profile">Profile</string>
 
+    <string name="app_friends_list">Friends</string>
+    <string name="app_friend_requests">Friend Requests</string>
+    <string name="app_find_users">Find Users</string>
+
+
     <!-- Buttons Text -->
     <string name="start">Begin</string>
     <string name="more">More..</string>
 
     <!-- Tittles -->
+    <string name="hell_test_maker" translatable="false">Hell\'s Test Maker</string>
     <string name="vocabulary">Vocabulary</string>
     <string name="grammar">Grammar</string>
     <string name="audition">Audition</string>
 
     <!-- Secondary Texts -->
+    <string name="second_text_test_maker">Create and share your tests</string>
     <string name="second_text_vocabulary">Expand your speech with new words</string>
     <string name="second_text_grammar">Learn grammar to build sentences correctly</string>
     <string name="second_text_audition">Improve your listening comprehension</string>
@@ -35,9 +42,13 @@
     <string name="reference">Reference</string>
     <string name="about_the_app">About the app</string>
     <string name="sign_out">Sign out</string>
+    <string name="friends_list">Friends List</string>
+    <string name="find_users">Find Users</string>
+    <string name="friend_requests">Friend Requests</string>
 
     <!-- Settings -->
     <string name="language">Language</string>
-    <string name="default_notification_channel_id">Channel ID</string>
+    <string name="starting_fragment">Starting Fragment</string>
+    <string name="default_notification_channel_id" translatable="false">Channel ID</string>
 
 </resources>

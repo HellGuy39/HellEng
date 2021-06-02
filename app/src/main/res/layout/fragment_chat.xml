@@ -69,21 +69,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_icon="@drawable/ic_baseline_person_add_24"
-            app:label_text="Friend Requests" />
+            app:label_text="@string/friend_requests" />
 
         <com.nambimobile.widgets.efab.FabOption
             android:id="@+id/fabFriendsList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_icon="@drawable/ic_baseline_group_24"
-            app:label_text="Friends List" />
+            app:label_text="@string/friends_list" />
 
         <com.nambimobile.widgets.efab.FabOption
             android:id="@+id/fabFindUsers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_icon="@drawable/ic_baseline_person_search_24"
-            app:label_text="Find Users" />
+            app:label_text="@string/find_users" />
 
     </com.nambimobile.widgets.efab.ExpandableFabLayout>
 

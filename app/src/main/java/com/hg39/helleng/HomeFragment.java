@@ -40,17 +40,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     FirebaseDatabase database;
     DatabaseReference users;
 
+    ValueEventListener dataListener;
+
     //com.google.android.material.card.MaterialCardView cardViewFriends;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Context context = MyContextWrapper.wrap(Objects.requireNonNull(getContext())/*in fragment use getContext() instead of this*/, "en");
+        //getResources().updateConfiguration(context.getResources().getConfiguration(), context.getResources().getDisplayMetrics());
+
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
         mAuth = FirebaseAuth.getInstance();
         //FirebaseUser userF = mAuth.getInstance().getCurrentUser();
-        users.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        dataListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userName = dataSnapshot.child("firstName").getValue(String.class);
@@ -63,16 +74,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onCancelled(DatabaseError error) {
 
             }
-        });
-
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        //Context context = MyContextWrapper.wrap(Objects.requireNonNull(getContext())/*in fragment use getContext() instead of this*/, "en");
-        //getResources().updateConfiguration(context.getResources().getConfiguration(), context.getResources().getDisplayMetrics());
+        };
+        users.child(mAuth.getCurrentUser().getUid()).addValueEventListener(dataListener);
 
     }
 
@@ -106,8 +109,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         date.setText(dateText);
         //textViewTime.setText(timeText);
-
-        textViewGreeting.setText("Welcome back, " + userName + "!");
+        users.child(mAuth.getCurrentUser().getUid()).addValueEventListener(dataListener);
+        //textViewGreeting.setText("Welcome back, " + userName + "!");
 
         return rootView;
     }
@@ -116,6 +119,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         textViewGreeting.setText("Welcome back, " + userName + "!");
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        users.child(mAuth.getCurrentUser().getUid()).removeEventListener(dataListener);
+    }
 
     @Override
     public void onClick(View v) {

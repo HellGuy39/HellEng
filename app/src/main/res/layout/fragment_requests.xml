@@ -20,7 +20,7 @@
             app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             app:navigationIconTint="?attr/navigationIconTint"
-            app:title="Friend requests"
+            app:title="@string/friend_requests"
             app:titleTextColor="?attr/titleTextColor" />
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -72,6 +72,8 @@ public class TestPreviewFragment extends Fragment {
     String countOfTasks, time, testName;
     ProgressDialog loadingBar;
 
+    ValueEventListener loadData;
+
     public TestPreviewFragment() {
         // Required empty public constructor
     }
@@ -83,22 +85,22 @@ public class TestPreviewFragment extends Fragment {
 
         assert getArguments() != null;
         testID = getArguments().getString("testID");
-
+        System.out.println(testID);
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
         userTestsIDRef = database.getReference("User Tests ID");
         userTestsStorageRef = database.getReference("User Tests Storage");
 
-        loadingBar = new ProgressDialog(getContext());
-        loadingBar.setTitle("Loading...");
-        loadingBar.setMessage("Getting information about a test...");
-        loadingBar.setCanceledOnTouchOutside(false);
-        loadingBar.show();
-
-        userTestsStorageRef.child(testID).addValueEventListener(new ValueEventListener() {
+        loadData = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                loadingBar = new ProgressDialog(getContext());
+                loadingBar.setTitle("Loading...");
+                loadingBar.setMessage("Getting information about a test...");
+                loadingBar.setCanceledOnTouchOutside(false);
+                loadingBar.show();
 
                 countOfTasks = snapshot.child("countOfTasks").getValue(String.class);
                 time = snapshot.child("time").getValue(String.class);
@@ -155,56 +157,11 @@ public class TestPreviewFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 loadingBar.dismiss();
             }
-        });
+        };
+
 
     }
 
-    private void updateUI() {
-
-        tvTestID.setText("ID: " + testID);
-        tvTestName.setText(testName);
-        tvTime.setText("Time left: " + time);
-
-        tvTask1Question.setText(question1);
-        tvTask2Question.setText(question2);
-        tvTask3Question.setText(question3);
-        tvTask1SecondaryText.setText(description1);
-        tvTask2SecondaryText.setText(description2);
-        tvTask3SecondaryText.setText(description3);
-
-        if (countOfTasks.equals("5"))
-        {
-            tvTask4Question.setText(question4);
-            tvTask5Question.setText(question5);
-            tvTask4SecondaryText.setText(description4);
-            tvTask5SecondaryText.setText(description5);
-        }
-        else if (countOfTasks.equals("7"))
-        {
-            tvTask4Question.setText(question4);
-            tvTask5Question.setText(question5);
-            tvTask6Question.setText(question6);
-            tvTask7Question.setText(question7);
-            tvTask4SecondaryText.setText(description4);
-            tvTask5SecondaryText.setText(description5);
-            tvTask6SecondaryText.setText(description6);
-            tvTask7SecondaryText.setText(description7);
-        }
-
-        if (countOfTasks.equals("3"))
-        {
-            cardTask4.setVisibility(View.GONE);
-            cardTask5.setVisibility(View.GONE);
-            cardTask6.setVisibility(View.GONE);
-            cardTask7.setVisibility(View.GONE);
-        }
-        else if (countOfTasks.equals("5"))
-        {
-            cardTask6.setVisibility(View.GONE);
-            cardTask7.setVisibility(View.GONE);
-        }
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -263,7 +220,62 @@ public class TestPreviewFragment extends Fragment {
         toolbar = rootView.findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(v -> ((TestMakerActivity)getContext()).onBackPressed());
 
+        userTestsStorageRef.child(testID).addValueEventListener(loadData);
+
         return rootView;
+    }
+
+    private void updateUI() {
+
+        tvTestID.setText("ID: " + testID);
+        tvTestName.setText(testName);
+        tvTime.setText("Time left: " + time);
+
+        tvTask1Question.setText(question1);
+        tvTask2Question.setText(question2);
+        tvTask3Question.setText(question3);
+        tvTask1SecondaryText.setText(description1);
+        tvTask2SecondaryText.setText(description2);
+        tvTask3SecondaryText.setText(description3);
+
+        if (countOfTasks.equals("5"))
+        {
+            tvTask4Question.setText(question4);
+            tvTask5Question.setText(question5);
+            tvTask4SecondaryText.setText(description4);
+            tvTask5SecondaryText.setText(description5);
+        }
+        else if (countOfTasks.equals("7"))
+        {
+            tvTask4Question.setText(question4);
+            tvTask5Question.setText(question5);
+            tvTask6Question.setText(question6);
+            tvTask7Question.setText(question7);
+            tvTask4SecondaryText.setText(description4);
+            tvTask5SecondaryText.setText(description5);
+            tvTask6SecondaryText.setText(description6);
+            tvTask7SecondaryText.setText(description7);
+        }
+
+        if (countOfTasks.equals("3"))
+        {
+            cardTask4.setVisibility(View.GONE);
+            cardTask5.setVisibility(View.GONE);
+            cardTask6.setVisibility(View.GONE);
+            cardTask7.setVisibility(View.GONE);
+        }
+        else if (countOfTasks.equals("5"))
+        {
+            cardTask6.setVisibility(View.GONE);
+            cardTask7.setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        userTestsStorageRef.child(testID).removeEventListener(loadData);
     }
 
     private void onClickEndTest(View v) {

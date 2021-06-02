@@ -6,17 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,9 +29,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.hg39.helleng.Models.Post;
+import com.hg39.helleng.Models.PostAdapter;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -50,7 +59,7 @@ public class ViewOtherProfileFragment extends Fragment {
     StorageReference profileRef;
     //DatabaseReference requestRef,friendRef;
 
-    DatabaseReference userRef, requestRef, friendRef, notificationRef;
+    DatabaseReference userRef, requestRef, friendRef, notificationRef,  postsRef;
 
     //String firstNStr,lastNStr,statusStr,regDate;
     //String profileImageUri;
@@ -65,6 +74,29 @@ public class ViewOtherProfileFragment extends Fragment {
 
     String receiverUsername, receiverStatus, receiverRegDate,
             receiverProfileImage, receiverWebStatus;
+
+
+    TextView textViewBirthday;
+    TextView textViewCity;
+    TextView textViewAboutMe;
+
+    String selectedBackground;
+    String postAuthorID;
+
+    String birthday, city, aboutMe;
+
+    ImageView imageBackground;
+
+    Button btnCreatePost,btnAttachments;
+    EditText editTextNewPost;
+    RecyclerView recyclerViewMicroBlog;
+    LinearLayoutManager linearLayoutManager;
+    PostAdapter postAdapter;
+
+    ValueEventListener dataListener;
+
+    final List<Post> postsList = new ArrayList<>();
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,56 +123,11 @@ public class ViewOtherProfileFragment extends Fragment {
 
         database = FirebaseDatabase.getInstance();
 
-        /*mUserRef = database.getReference("Users").child(userID);
-        mThisUserRef = database.getReference("Users").child(mAuth.getCurrentUser().getUid().toString());*/
         notificationRef = database.getReference().child("Notifications");
 
-        /*requestRef = database.getReference().child("Requests");
-        friendRef = database.getReference().child("Friends");
+        postAuthorID = userID;//Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
-
-        mThisUserRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                thisProfileImageUri = snapshot.child("profileImage").getValue(String.class);
-                thisFirstNStr = snapshot.child("firstName").getValue(String.class);
-                thisLastNStr = snapshot.child("lastName").getValue(String.class);
-                thisStatusStr = snapshot.child("status").getValue(String.class);
-                thisRegDate = snapshot.child("registerDate").getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        mUserRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists())
-                {
-                    profileImageUri = snapshot.child("profileImage").getValue(String.class);
-                    firstNStr = snapshot.child("firstName").getValue(String.class);
-                    lastNStr = snapshot.child("lastName").getValue(String.class);
-                    statusStr = snapshot.child("status").getValue(String.class);
-                    regDate = snapshot.child("registerDate").getValue(String.class);
-                    webStatus = snapshot.child("webStatus").getValue(String.class);
-
-                    updateUI();
-
-                }
-                else
-                {
-                    Toast.makeText(getContext(),"Data not found",Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
+        postsRef = FirebaseDatabase.getInstance().getReference();
 
     }
 
@@ -160,6 +147,18 @@ public class ViewOtherProfileFragment extends Fragment {
         profileImageView = rootView.findViewById(R.id.profileImage);
         textViewWebStatus = rootView.findViewById(R.id.textViewWebStatus);
 
+        imageBackground = rootView.findViewById(R.id.imageBackground);
+
+        textViewBirthday = rootView.findViewById(R.id.textViewBirthday);
+        textViewCity = rootView.findViewById(R.id.textViewCity);
+        textViewAboutMe = rootView.findViewById(R.id.textViewAboutMe);
+
+        recyclerViewMicroBlog = rootView.findViewById(R.id.recyclerViewMicroBlog);
+        postAdapter = new PostAdapter(postsList);
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerViewMicroBlog.setLayoutManager(linearLayoutManager);
+        recyclerViewMicroBlog.setAdapter(postAdapter);
+
         btnPerform = rootView.findViewById(R.id.btnPerform);
         btnDecline = rootView.findViewById(R.id.btnDecline);
 
@@ -173,9 +172,9 @@ public class ViewOtherProfileFragment extends Fragment {
         btnPerform.setText("Send Friend Request");
         btnDecline.setVisibility(View.GONE);
 
-        retrieveUserInfo();
+        //retrieveUserInfo();
 
-        updateUI();
+        //updateUI();
 
         return rootView;
     }
@@ -184,7 +183,7 @@ public class ViewOtherProfileFragment extends Fragment {
     public void onStart() {
         super.onStart();
         retrieveUserInfo();
-        updateUI();
+        //updateUI();
     }
 
     private void retrieveUserInfo() {
@@ -197,6 +196,11 @@ public class ViewOtherProfileFragment extends Fragment {
                 receiverProfileImage = snapshot.child("profileImage").getValue(String.class);
                 receiverRegDate = snapshot.child("registerDate").getValue(String.class);
                 receiverWebStatus = snapshot.child("webStatus").getValue(String.class);
+
+                birthday = snapshot.child("birthday").getValue(String.class);
+                city = snapshot.child("city").getValue(String.class);
+                aboutMe = snapshot.child("aboutMe").getValue(String.class);
+                selectedBackground = snapshot.child("background").getValue(String.class);
 
                 updateUI();
                 manageChatRequests();
@@ -270,6 +274,12 @@ public class ViewOtherProfileFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        postsList.clear();
+    }
+
     protected void onClickDeclineBtn(View view) {
 
         if (currentState.equals("new")) {
@@ -292,17 +302,9 @@ public class ViewOtherProfileFragment extends Fragment {
     }
 
     protected void message() {
-        /*final String[] retImage = {"default_image"};
-
-        if (receiverProfileImage != null) {
-            retImage[0] = receiverProfileImage;
-        }*/
-
         Intent intent = new Intent(getContext(),DialogActivity.class);
 
         intent.putExtra("visit_user_id", receiverUserID);
-        //intent.putExtra("visit_user_name", receiverUsername);
-        //intent.putExtra("visit_user_image", retImage[0]);
 
         startActivity(intent);
     }
@@ -474,274 +476,6 @@ public class ViewOtherProfileFragment extends Fragment {
         });
     }
 
-    //protected void onClickDeclineBtn(View view) {}
-
-
-    /*private void UnFriend(String userID) {
-
-        if (currentState.equals("friend"))
-        {
-            friendRef.child(mUser.getUid()).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful())
-                    {
-                        friendRef.child(userID).child(mUser.getUid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(getContext(), "UnFriend", Toast.LENGTH_SHORT).show();
-                                currentState = "nothing_happen";
-                                btnPerform.setText("Sent Friend Request");
-                                btnDecline.setVisibility(View.GONE);
-                            }
-                        });
-                    }
-                }
-            });
-        }
-
-        if (currentState.equals("he_sent_pending"))
-        {
-            HashMap hashMap = new HashMap();
-            hashMap.put("status","decline");
-            requestRef.child(userID).child(mUser.getUid()).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(@NonNull Task task) {
-                    Toast.makeText(getContext(), "Declined", Toast.LENGTH_SHORT).show();
-                    currentState = "he_sent_decline";
-                    //Сомнительное решение
-                    btnPerform.setVisibility(View.GONE);
-                    btnDecline.setVisibility(View.GONE);
-                }
-            });
-        }
-    }*/
-
-    /*private void checkUserExistence(String userID) {
-        friendRef.child(mUser.getUid()).child(userID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists())
-                {
-                    currentState = "friend";
-                    btnPerform.setText("Message");
-                    btnDecline.setText("UnFriend");
-                    btnDecline.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        friendRef.child(userID).child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists())
-                {
-                    currentState = "friend";
-                    btnPerform.setText("Message");
-                    btnDecline.setText("UnFriend");
-                    btnDecline.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        requestRef.child(mUser.getUid()).child(userID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists())
-                {
-                    if (snapshot.child("status").getValue().toString().equals("pending"))
-                    {
-                        currentState = "I_sent_pending";
-                        btnPerform.setText("Cancel Friend Request");
-                        btnDecline.setVisibility(View.GONE);
-                    }
-
-                    if (snapshot.child("status").getValue().toString().equals("decline"))
-                    {
-                        currentState = "I_sent_decline";
-                        btnPerform.setText("Cancel Friend Request");
-                        btnDecline.setVisibility(View.GONE);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        requestRef.child(userID).child(mUser.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists())
-                {
-                    if (snapshot.child("status").getValue().toString().equals("pending"))
-                    {
-                        currentState = "he_sent_pending";
-                        btnPerform.setText("Accept Friend Request");
-                        btnDecline.setText("Decline Friend Request");
-                        btnDecline.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        if (currentState.equals("nothing_happen")) {
-            currentState = "nothing_happen";
-            btnPerform.setText("Sent Friend Request");
-            btnDecline.setVisibility(View.GONE);
-        }
-    }*/
-
-    /*private void PerformAction(String userID) {
-
-        if (currentState.equals("nothing_happen")) {
-
-            HashMap hashMap = new HashMap();
-            hashMap.put("status","pending");
-
-            requestRef.child(mUser.getUid()).child(userID).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
-                @Override
-                public void onComplete(@NonNull Task task) {
-                    if (task.isSuccessful())
-                    {
-                        /*Toast.makeText(getContext(), "Friend Request sent.", Toast.LENGTH_SHORT).show();
-
-                        currentState = "I_sent_pending";
-
-                        btnDecline.setVisibility(View.GONE);
-                        btnPerform.setText("Cancel Friend Request");*/
-
-                        //Notification
-                        /*HashMap<String, String> chatNotificationMap = new HashMap<>();
-                        chatNotificationMap.put("from", mAuth.getUid());
-                        chatNotificationMap.put("type", "request");
-
-                        notificationRef.child(userID).push()
-                                .setValue(chatNotificationMap)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful())
-                                        {
-                                            Toast.makeText(getContext(), "Friend Request sent.", Toast.LENGTH_SHORT).show();
-
-                                            currentState = "I_sent_pending";
-
-                                            btnDecline.setVisibility(View.GONE);
-                                            btnPerform.setText("Cancel Friend Request");
-                                        }
-                                    }
-                                });
-
-
-                    } 
-                    else 
-                    {
-                        Toast.makeText(getContext(), "" + task.getException().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
-        }
-
-        if (currentState.equals("I_sent_pending") || currentState.equals("I_sent_decline"))
-        {
-            requestRef.child(mUser.getUid()).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                         if (task.isSuccessful()) 
-                         {
-                             Toast.makeText(getContext(), "Friend Request Cancelled", Toast.LENGTH_SHORT).show();
-                             currentState = "nothing_happen";
-
-                             btnPerform.setText("Sent Friend Request");
-                             btnDecline.setVisibility(View.GONE);
-
-                         }
-                         else
-                         {
-                             Toast.makeText(getContext(), "" + task.getException().toString(), Toast.LENGTH_SHORT).show();
-                         }
-                }
-            });
-        }
-        //! //! //!
-        if (currentState.equals("he_sent_pending")) {
-            requestRef.child(userID).child(mUser.getUid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    //Хэш мап просматриваемого юзера
-                    final HashMap hashMap = new HashMap();
-                    hashMap.put("status","friend");
-                    hashMap.put("userStatus", statusStr);
-                    hashMap.put("username", firstNStr + " " + lastNStr);
-                    hashMap.put("profileImageUri", profileImageUri);
-
-                    friendRef.child(mUser.getUid()).child(userID).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
-
-                            //Хэш мап юзера текущего аккаунта
-                            final HashMap thisHashMap = new HashMap();
-                            thisHashMap.put("status","friend");
-                            thisHashMap.put("userStatus", thisStatusStr);
-                            thisHashMap.put("username", thisFirstNStr + " " + thisLastNStr);
-                            thisHashMap.put("profileImageUri", thisProfileImageUri);
-
-                            if (task.isSuccessful())
-                            {
-                                friendRef.child(userID).child(mUser.getUid()).updateChildren(thisHashMap).addOnCompleteListener(new OnCompleteListener() {
-                                    @Override
-                                    public void onComplete(@NonNull Task task) {
-                                        Toast.makeText(getContext(), "Friend Added", Toast.LENGTH_SHORT).show();
-                                        currentState = "friend";
-                                        btnPerform.setText("Message");
-                                        btnDecline.setText("UnFriend");
-                                        btnDecline.setVisibility(View.VISIBLE);
-                                    }
-                                });
-                            }
-                        }
-                    });
-                }
-            });
-        }
-
-        if (currentState.equals("friend")) {
-
-            final String[] retImage = {"default_image"};
-
-            if (profileImageUri != null) {
-                retImage[0] = profileImageUri;
-            }
-
-            Intent intent = new Intent(getContext(),DialogActivity.class);
-
-            intent.putExtra("visit_user_id", userID);
-            intent.putExtra("visit_user_name", firstNStr + " " + lastNStr);
-            intent.putExtra("visit_user_image", retImage[0]);
-
-            startActivity(intent);
-
-        }
-
-    }*/
-
     private void updateUI() {
 
         textViewWebStatus.setText(receiverWebStatus);
@@ -750,12 +484,92 @@ public class ViewOtherProfileFragment extends Fragment {
         textViewUserStatus.setText(receiverStatus);
         textViewUserId.setText("Id: " + receiverUserID);//Warning!
 
+        if (city != null)
+            textViewCity.setText("City: " + city);
+        else
+            textViewCity.setVisibility(View.GONE);
+
+        if (birthday != null)
+            textViewBirthday.setText("Birthday: " + birthday);
+        else
+            textViewBirthday.setVisibility(View.GONE);
+
+        if (aboutMe != null)
+            textViewAboutMe.setText("About me: " + aboutMe);
+        else
+            textViewAboutMe.setVisibility(View.GONE);
+
+        if (selectedBackground != null)
+            setBackground(selectedBackground);
+
         if (receiverProfileImage != null) {
             Picasso.get().load(receiverProfileImage).placeholder(R.drawable.no_avatar).into(profileImageView);
         } else {
             profileImageView.setImageResource(R.drawable.no_avatar);
         }
 
+        postsRef.child("Users").child(postAuthorID).child("Posts").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Post post = snapshot.getValue(Post.class);
+                postsList.add(post);
+                postAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void setBackground(String selectedBackground) {
+        switch (selectedBackground) {
+
+            case "Default":
+                imageBackground.setImageResource(R.color.fui_transparent);
+                break;
+
+            case "Red Glitch":
+                imageBackground.setImageResource(R.drawable.red_glitch);
+                topAppBar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.red_glitch, null));
+
+                break;
+
+            case "Black Glaze":
+                imageBackground.setImageResource(R.drawable.black_glaze);
+                topAppBar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.black_glaze, null));
+                break;
+
+            case "Incredible Blue":
+                imageBackground.setImageResource(R.drawable.incredible_blue);
+                topAppBar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.incredible_blue, null));
+
+                break;
+
+            case "Purple Galaxy":
+                imageBackground.setImageResource(R.drawable.purple_galaxy);
+                topAppBar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_galaxy, null));
+
+                break;
+        }
     }
 
     @Override

@@ -12,6 +12,9 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCanceledListener;
@@ -56,6 +60,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.TimeZone;
 
 import id.zelory.compressor.Compressor;
@@ -65,6 +70,8 @@ public class EditProfileFragment extends Fragment {
     EditText editTextFirstName,editTextLastName,editTextUserStatus,editTextCity,editTextAboutMe;
     TextView tvBirthday;
     ImageView profileImage;
+
+    AutoCompleteTextView backgroundDropdown;
 
     String profileImageUri;
 
@@ -82,12 +89,24 @@ public class EditProfileFragment extends Fragment {
     String firstNStr,lastNStr,statusStr;
     String birthday;
     String city, aboutMe;
+    String selectedBackground;
+
+    ImageView imageBackgroundExample;
+
+    ArrayAdapter<String> adapterBackgrounds;
 
     ProgressDialog loadingBar;
 
     FirebaseUser userF;
 
     androidx.coordinatorlayout.widget.CoordinatorLayout root;
+
+    /*String[] backgrounds =
+            {"Default",
+                    "Perfect Blue", "Natural Green", "Holo Red", "Orange Lollipop", "Mysterious Violet",
+                    "Jet Black", "Space Gray", "Abstract Gradient",
+                    "Japanese Sunset", "Japanese Sunrise"};*/
+    String[] backgrounds = {"Default", "Red Glitch", "Black Glaze", "Incredible Blue", "Purple Galaxy"};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,38 +119,6 @@ public class EditProfileFragment extends Fragment {
         storageReference = FirebaseStorage.getInstance().getReference();
 
         userF = mAuth.getCurrentUser();
-
-        users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                firstNStr = dataSnapshot.child("firstName").getValue(String.class);
-                lastNStr = dataSnapshot.child("lastName").getValue(String.class);
-                statusStr = dataSnapshot.child("status").getValue(String.class);
-
-                profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
-
-                if (dataSnapshot.hasChild("birthday")) {
-                    birthday = dataSnapshot.child("birthday").getValue(String.class);
-                }
-
-                if (dataSnapshot.hasChild("city")) {
-                    city = dataSnapshot.child("city").getValue(String.class);
-                }
-
-                if (dataSnapshot.hasChild("aboutMe")) {
-                    aboutMe = dataSnapshot.child("aboutMe").getValue(String.class);
-                }
-
-                updateUI();
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-
-            }
-        });
 
     }
 
@@ -146,6 +133,7 @@ public class EditProfileFragment extends Fragment {
         root = rootView.findViewById(R.id.root);
 
         profileImage = rootView.findViewById(R.id.profileImage);
+        imageBackgroundExample = rootView.findViewById(R.id.imageBackgroundExample);
 
         toolbar = rootView.findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -153,6 +141,14 @@ public class EditProfileFragment extends Fragment {
             public void onClick(View v) {
                 ((MainActivity)getContext()).onBackPressed();
             }
+        });
+
+        backgroundDropdown = rootView.findViewById(R.id.backgroundDropdown);
+        adapterBackgrounds = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, backgrounds);
+
+        backgroundDropdown.setOnItemClickListener((parent, view, position, id) -> {
+            selectedBackground = (String)parent.getItemAtPosition(position);
+            setExampleImage(selectedBackground);
         });
 
         loadingBar = new ProgressDialog(getContext());
@@ -180,9 +176,35 @@ public class EditProfileFragment extends Fragment {
         editTextLastName.setText(lastNStr);
         editTextUserStatus.setText(statusStr);
 
-        updateUI();
+        //updateUI();
 
         return rootView;
+    }
+
+    private void setExampleImage(String selectedBackground) {
+        switch (selectedBackground) {
+
+            case "Default":
+                imageBackgroundExample.setImageResource(R.color.fui_transparent);
+                break;
+
+            case "Red Glitch":
+                imageBackgroundExample.setImageResource(R.drawable.red_glitch);
+                break;
+
+            case "Black Glaze":
+                imageBackgroundExample.setImageResource(R.drawable.black_glaze);
+                break;
+
+            case "Incredible Blue":
+                imageBackgroundExample.setImageResource(R.drawable.incredible_blue);
+                break;
+
+            case "Purple Galaxy":
+                imageBackgroundExample.setImageResource(R.drawable.purple_galaxy);
+                break;
+
+        }
     }
 
     private void onClickDeleteProfileImage(View view) {
@@ -268,7 +290,50 @@ public class EditProfileFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        updateUI();
+        adapterBackgrounds.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        backgroundDropdown.setAdapter(adapterBackgrounds);
+
+        loadData();
+        //updateUI();
+    }
+
+    private void loadData() {
+        users.child(userF.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                firstNStr = dataSnapshot.child("firstName").getValue(String.class);
+                lastNStr = dataSnapshot.child("lastName").getValue(String.class);
+                statusStr = dataSnapshot.child("status").getValue(String.class);
+
+                profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
+
+                if (dataSnapshot.hasChild("birthday")) {
+                    birthday = dataSnapshot.child("birthday").getValue(String.class);
+                }
+
+                if (dataSnapshot.hasChild("city")) {
+                    city = dataSnapshot.child("city").getValue(String.class);
+                }
+
+                if (dataSnapshot.hasChild("aboutMe")) {
+                    aboutMe = dataSnapshot.child("aboutMe").getValue(String.class);
+                }
+
+                if (dataSnapshot.hasChild("background")) {
+                    selectedBackground = dataSnapshot.child("background").getValue(String.class);
+                    setExampleImage(Objects.requireNonNull(selectedBackground));
+                }
+
+                updateUI();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
     }
 
     private void updateUI() {
@@ -288,9 +353,31 @@ public class EditProfileFragment extends Fragment {
             tvBirthday.setText("Birthday: " + "not selected");
 
         if (profileImageUri != null) {
-            Picasso.get().load(profileImageUri).into(profileImage);
+            Picasso.get().load(profileImageUri).placeholder(R.drawable.no_avatar).into(profileImage);
         } else {
             profileImage.setImageResource(R.drawable.no_avatar);
+        }
+
+        if (selectedBackground != null) {
+            switch (selectedBackground) {
+                case "Red Glitch":
+                    backgroundDropdown.setText(adapterBackgrounds.getItem(1), false);
+                    break;
+                case "Black Glaze":
+                    backgroundDropdown.setText(adapterBackgrounds.getItem(2), false);
+                    break;
+                case "Incredible Blue":
+                    backgroundDropdown.setText(adapterBackgrounds.getItem(3), false);
+                    break;
+                case "Purple Galaxy":
+                    backgroundDropdown.setText(adapterBackgrounds.getItem(4), false);
+                    break;
+                default:
+                    break;
+            }
+
+        } else {
+            backgroundDropdown.setText(adapterBackgrounds.getItem(0), false);
         }
 
     }
@@ -302,24 +389,18 @@ public class EditProfileFragment extends Fragment {
 
         datePicker.show(getActivity().getSupportFragmentManager(), "tag");
 
-        datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-            @Override
-            public void onPositiveButtonClick(Long selection) {
-                //birthday = selection;
-                Date date = new Date(selection);
-                //Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                //calendar.setTime(date);
-                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                birthday = dateFormat.format(date);
-                updateUI();
-            }
+        datePicker.addOnPositiveButtonClickListener(selection -> {
+            //birthday = selection;
+            Date date = new Date(selection);
+            //Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+            //calendar.setTime(date);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            birthday = dateFormat.format(date);
+            updateUI();
         });
 
-        datePicker.addOnNegativeButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        datePicker.addOnNegativeButtonClickListener(v -> {
 
-            }
         });
 
     }
@@ -380,58 +461,33 @@ public class EditProfileFragment extends Fragment {
                         Picasso.get().load(uri).into(profileImage);
                         HashMap hashMap = new HashMap();
                         hashMap.put("profileImage",uri.toString());
-                        users.child(mAuth.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener()
-                        {
-                            @Override
-                            public void onSuccess(Object o)
-                            {
-                                Snackbar.make(root,"Image Uploaded\nYou don't need to press save button repeatedly", Snackbar.LENGTH_LONG).show();
-                                //Toast.makeText(getContext(),"Image Uploaded\nYou don't need to press save button repeatedly", Toast.LENGTH_LONG).show();
-                                loadingBar.dismiss();
-                            }
-                        }).addOnFailureListener(new OnFailureListener()
-                        {
-                            @Override
-                            public void onFailure(@NonNull Exception e)
-                            {
-                                Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
+                        users.child(mAuth.getUid()).updateChildren(hashMap).addOnSuccessListener(o -> {
+                            Snackbar.make(root,"Image Uploaded\nYou don't need to press save button repeatedly", Snackbar.LENGTH_LONG).show();
+                            //Toast.makeText(getContext(),"Image Uploaded\nYou don't need to press save button repeatedly", Toast.LENGTH_LONG).show();
+                            loadingBar.dismiss();
+                        }).addOnFailureListener(e -> {
+                            Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
 
-                                dialogBuilder();
+                            dialogBuilder();
 
-                            }
-                        }).addOnCanceledListener(new OnCanceledListener()
-                        {
-                            @Override
-                            public void onCanceled()
-                            {
-                                Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
+                        }).addOnCanceledListener(() -> {
+                            Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
 
-                                dialogBuilder();
-                            }
+                            dialogBuilder();
                         });
                     }
                 });
             }
-        }).addOnFailureListener(new OnFailureListener()
-        {
-            @Override
-            public void onFailure(@NonNull Exception e)
-            {
-                loadingBar.dismiss();
-                Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
-                dialogBuilder();
-            }
-        }).addOnCanceledListener(new OnCanceledListener()
-        {
-            @Override
-            public void onCanceled()
-            {
-                loadingBar.dismiss();
-                Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
-                dialogBuilder();
-            }
+        }).addOnFailureListener(e -> {
+            loadingBar.dismiss();
+            Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+            dialogBuilder();
+        }).addOnCanceledListener(() -> {
+            loadingBar.dismiss();
+            Toast.makeText(getContext(),"Failed. Check your internet connection.", Toast.LENGTH_SHORT).show();
+            dialogBuilder();
         });
     }
 
@@ -449,13 +505,9 @@ public class EditProfileFragment extends Fragment {
 
     protected void onClickBtnSave(View view) {
 
-        String strStatus = editTextUserStatus.getText().toString();
-        String strFName = editTextFirstName.getText().toString();
-        String strLName = editTextLastName.getText().toString();
-
-        strFName = strFName.trim();
-        strLName = strLName.trim();
-        statusStr = strStatus.trim();
+        String strStatus = editTextUserStatus.getText().toString().trim();
+        String strFName = editTextFirstName.getText().toString().trim();
+        String strLName = editTextLastName.getText().toString().trim();
 
         if (strFName.length() > 32) {
             Toast.makeText(getActivity(),"First name must be no more than 32 characters",Toast.LENGTH_SHORT).show();
@@ -487,22 +539,37 @@ public class EditProfileFragment extends Fragment {
         user.setAboutMe(editTextAboutMe.getText().toString());
         user.setBirthday(birthday);
         user.setCity(editTextCity.getText().toString());
-        //city = editTextCity.getText().toString();
-        //aboutMe = editTextAboutMe.getText().toString();
+        user.setBackground(selectedBackground);
 
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("fullName").setValue(user.getFirstName() + " " +user.getLastName());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("firstName").setValue(user.getFirstName());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("lastName").setValue(user.getLastName());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("status").setValue(user.getStatus());
         users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("birthday").setValue(user.getBirthday());
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("city").setValue(user.getCity());
-        users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("aboutMe").setValue(user.getAboutMe());
 
-        Toast.makeText(getActivity(),
+        if (!user.getCity().equals("")) {
+            users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("city").setValue(user.getCity());
+        } else {
+            users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("city").removeValue();
+        }
+
+        if (!user.getAboutMe().equals("")) {
+            users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("aboutMe").setValue(user.getAboutMe());
+        } else {
+            users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("aboutMe").removeValue();
+        }
+
+        if (!user.getBackground().equals("Default") || !user.getBackground().equals("")) {
+            users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("background").setValue(user.getBackground());
+        } else {
+            users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("background").removeValue();
+        }
+
+        Toast.makeText(getContext(),
                 "What a save!",
                 Toast.LENGTH_SHORT).show();
 
-        ((MainActivity)getActivity())
+        ((MainActivity)getContext())
                 .onBackPressed();
                 //.outEditProfileFragment();
     }

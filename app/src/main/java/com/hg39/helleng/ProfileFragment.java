@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,10 +22,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,16 +36,28 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.hg39.helleng.Models.MessageAdapter;
+import com.hg39.helleng.Models.Messages;
+import com.hg39.helleng.Models.Post;
+import com.hg39.helleng.Models.PostAdapter;
 import com.hg39.helleng.Models.User;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment {
 
-    TextView textViewUserStatus,textViewReg,textViewTestsStarted,textViewTestsFullCompleted,textViewUserId;
+    TextView textViewUserStatus,textViewReg,textViewUserId;
     TextView textViewFullName;
     TextView textViewWebStatus;
     TextView textViewBirthday;
@@ -49,7 +67,7 @@ public class ProfileFragment extends Fragment {
     com.google.android.material.appbar.MaterialToolbar topAppBar;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
-    DatabaseReference users;
+    DatabaseReference users, postsRef;
     StorageReference storageReference;
     StorageReference profileRef;
 
@@ -57,6 +75,22 @@ public class ProfileFragment extends Fragment {
     String profileImageUri;
     String webStatus;
     String birthday, city, aboutMe;
+    String selectedBackground;
+    String postAuthorID;
+
+    ImageView imageBackground;
+
+    Button btnCreatePost,btnAttachments;
+    EditText editTextNewPost;
+    RecyclerView recyclerViewMicroBlog;
+    LinearLayoutManager linearLayoutManager;
+    PostAdapter postAdapter;
+
+    ValueEventListener dataListener;
+
+    final List<Post> postsList = new ArrayList<>();
+
+    boolean isLeaving = false;
 
     @Override
     public void onAttachFragment(@NonNull Fragment childFragment) {
@@ -76,6 +110,10 @@ public class ProfileFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        postAuthorID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+
+        postsRef = FirebaseDatabase.getInstance().getReference();
 
         profileRef = storageReference.child("users/" + mAuth.getCurrentUser().getUid() +"/profile.jpg");
 
@@ -99,6 +137,13 @@ public class ProfileFragment extends Fragment {
         View rootView =
                 inflater.inflate(R.layout.fragment_profile,container,false);
 
+        imageBackground = rootView.findViewById(R.id.imageBackground);
+
+        btnCreatePost = rootView.findViewById(R.id.btnCreatePost);
+        btnAttachments = rootView.findViewById(R.id.btnAttachments);
+        editTextNewPost = rootView.findViewById(R.id.editTextNewPost);
+        recyclerViewMicroBlog = rootView.findViewById(R.id.recyclerViewMicroBlog);
+
         topAppBar = rootView.findViewById(R.id.topAppBar);
         textViewUserId = rootView.findViewById(R.id.textViewUserId);
         textViewReg = rootView.findViewById(R.id.textViewReg);
@@ -112,14 +157,22 @@ public class ProfileFragment extends Fragment {
         profileImage = rootView.findViewById(R.id.profileImage);
         textViewWebStatus = rootView.findViewById(R.id.textViewWebStatus);
 
+        recyclerViewMicroBlog = rootView.findViewById(R.id.recyclerViewMicroBlog);
+        postAdapter = new PostAdapter(postsList);
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerViewMicroBlog.setLayoutManager(linearLayoutManager);
+        recyclerViewMicroBlog.setAdapter(postAdapter);
+
+
         //btnEdit = rootView.findViewById(R.id.btnEdit);
         //btnSignOut = rootView.findViewById(R.id.btnSingOut);
 
         //btnSignOut.setOnClickListener(this::onClick);
         //btnEdit.setOnClickListener(this::onClick);
 
-        topAppBar.setOverflowIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_baseline_settings_24,null));
+        btnCreatePost.setOnClickListener(this::onClickCreatePost);
 
+        topAppBar.setOverflowIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_baseline_menu_24,null));
         topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @SuppressLint("NonConstantResourceId")
             @Override
@@ -128,20 +181,32 @@ public class ProfileFragment extends Fragment {
                 switch (item.getItemId()) {
 
                     case R.id.editProfile:
+                        removeDataListeners();
                         ((MainActivity) Objects.requireNonNull(getActivity()))
                                 .setEditProfileFragment();
                         break;
 
                     case R.id.settings:
+                        removeDataListeners();
                         startActivity(new Intent(getContext(),SettingsActivity.class));
                         break;
 
                     case R.id.aboutTheApp:
+                        removeDataListeners();
                         startActivity(new Intent(getContext(),AboutTheAppActivity.class));
                         break;
 
                     case R.id.signOut:
-                        ((MainActivity) Objects.requireNonNull(getContext()))
+
+                        //<Костыль Technologies>
+                        postAdapter = null;
+                        //</>
+                        isLeaving = true;
+
+                        users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).removeEventListener(dataListener);
+
+                        ((MainActivity)
+                                Objects.requireNonNull(getContext()))
                                 .signOut();
                         break;
                 }
@@ -150,6 +215,7 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        loadPosts();
         //updateUI();
 
         return rootView;
@@ -191,6 +257,9 @@ public class ProfileFragment extends Fragment {
         else
             textViewAboutMe.setVisibility(View.GONE);
 
+        if (selectedBackground != null)
+            setBackground(selectedBackground);
+
         textViewWebStatus.setText(webStatus);
         textViewReg.setText("Registered since " + regDate);
         textViewFullName.setText(firstNStr + " " + lastNStr);
@@ -206,6 +275,124 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    private void loadPosts() {
+        postsRef.child("Users").child(postAuthorID).child("Posts").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                Post post = snapshot.getValue(Post.class);
+                postsList.add(post);
+                postAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void onClickCreatePost(View view) {
+
+        String postText = editTextNewPost.getText().toString().trim();
+
+        if (TextUtils.isEmpty(postText))
+        {
+            //Nothing do
+        }
+        else
+        {
+
+            String postAuthorRef = "Users/" + postAuthorID + "/Posts";
+
+            DatabaseReference userPostKeyRef = postsRef.child("Users")
+                    .child(postAuthorID).child("Posts").push();
+
+            String postsPushID = userPostKeyRef.getKey();
+
+            Date currentDate = new Date();
+            // Форматирование времени как "день.месяц.год"
+            DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            String dateText = dateFormat.format(currentDate);
+
+            // Форматирование времени как "часы:минуты:секунды"
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            String timeText = timeFormat.format(currentDate);
+
+            String date = dateText + " in " + timeText;
+
+            Map postBody = new HashMap();
+            postBody.put("text", postText);
+            postBody.put("type", "text");
+            postBody.put("author", postAuthorID);
+            postBody.put("date", date);
+
+            Map postBodyDetails = new HashMap();
+            postBodyDetails.put(postAuthorRef + "/" + postsPushID, postBody);
+            //postBodyDetails.put(messageReceiverRef + "/" + messagePushID, messageTextBody);
+
+            postsRef.updateChildren(postBodyDetails).addOnCompleteListener(task -> {
+                if (task.isSuccessful())
+                {
+                    Toast.makeText(getContext(), "New post created!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "Something wrong, we can't create new post", Toast.LENGTH_SHORT).show();
+                }
+                editTextNewPost.setText("");
+            });
+
+        }
+    }
+
+    private void setBackground(String selectedBackground) {
+        switch (selectedBackground) {
+
+            case "Default":
+                imageBackground.setImageResource(R.color.fui_transparent);
+                break;
+
+            case "Red Glitch":
+                imageBackground.setImageResource(R.drawable.red_glitch);
+                topAppBar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.red_glitch, null));
+
+                break;
+
+            case "Black Glaze":
+                imageBackground.setImageResource(R.drawable.black_glaze);
+                topAppBar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.black_glaze, null));
+                break;
+
+            case "Incredible Blue":
+                imageBackground.setImageResource(R.drawable.incredible_blue);
+                topAppBar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.incredible_blue, null));
+
+                break;
+
+            case "Purple Galaxy":
+                imageBackground.setImageResource(R.drawable.purple_galaxy);
+                topAppBar.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.purple_galaxy, null));
+
+                break;
+        }
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -214,7 +401,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadData() {
-        users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).addValueEventListener(new ValueEventListener() {
+
+        dataListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -230,7 +418,7 @@ public class ProfileFragment extends Fragment {
                 birthday = dataSnapshot.child("birthday").getValue(String.class);
                 city = dataSnapshot.child("city").getValue(String.class);
                 aboutMe = dataSnapshot.child("aboutMe").getValue(String.class);
-
+                selectedBackground = dataSnapshot.child("background").getValue(String.class);
 
                 updateUI();
 
@@ -242,12 +430,46 @@ public class ProfileFragment extends Fragment {
                 // Failed to read value
                 //Log.w(TAG, "Failed to read value.", error.toException());
             }
-        });
+        };
+
+        users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).addValueEventListener(dataListener);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (!isLeaving)
+        {
+            removeDataListeners();
+        }
+        postsList.clear();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+    }
+
+    protected void removeDataListeners() {
+        users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).removeEventListener(dataListener);
     }
 
 }

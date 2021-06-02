@@ -6,6 +6,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -19,7 +20,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.ChangeBounds;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,9 +34,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.hg39.helleng.Helpers.DetailsTransition;
 import com.zeugmasolutions.localehelper.LocaleAwareCompatActivity;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import static com.hg39.helleng.App.CHANNEL_1_ID;
 import static com.hg39.helleng.App.CHANNEL_2_ID;
@@ -60,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String CHANNEL_NAME = "msg_channel";
     public static final String CHANNEL_DESC = "Messages";
 
-    public static final String version = "0.2.1";
+    public static final String version = "0.2.2";
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
@@ -86,12 +95,15 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences sp;
 
+    FrameLayout frameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLanguage();
         setContentView(R.layout.activity_main);
 
+        frameLayout = findViewById(R.id.fragment_container);
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -117,34 +129,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        //Вызов фрагмента home по умолчанию со старта приложения
-        //Fragment fragHome = new HomeFragment();
-        /*getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragHome)
-                .commit();*/
-
         setStartingFragment();
-        /*notificationManagerCompat = NotificationManagerCompat.from(this);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_baseline_chat_24)
-                .setContentTitle("Channel 1")
-                .setContentText("Are you gay?")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .build();
 
-        notificationManagerCompat.notify(1, notification);
-
-        Notification notification2 = new NotificationCompat.Builder(this, CHANNEL_2_ID)
-                .setSmallIcon(R.drawable.ic_baseline_chat_24)
-                .setContentTitle("Channel 2")
-                .setContentText("No, I don't!")
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .build();
-
-        notificationManagerCompat.notify(2, notification2);*/
 
         FirebaseMessaging.getInstance().subscribeToTopic("topic");
 
@@ -154,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel1);
         }
-        //displayNotification();
+
     }
 
     @Override
@@ -181,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 @SuppressLint("NonConstantResourceId")
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                     Fragment selectedFragment = null;
 
                     switch (item.getItemId()) {
@@ -199,6 +186,11 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     assert selectedFragment != null;
+                    //selectedFragment.setSharedElementEnterTransition(new DetailsTransition());
+                    //selectedFragment.setEnterTransition(new Fade(Fade.IN));
+                    //selectedFragment.setExitTransition(new Fade(Fade.OUT));
+                    //selectedFragment.setSharedElementReturnTransition(new DetailsTransition());
+
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, selectedFragment)
@@ -273,17 +265,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             getFragmentManager().popBackStack();
         }
-
-        /*if (userOnMainMenu) {
-            finish();
-        } else if (userOnEditProfile) {
-            outEditProfileFragment();
-        } else if (userOnCoursesSelection) {
-            setFragCourses();
-        } else {
-            super.onBackPressed();
-        }*/
-
     }
 
     protected void setFragSelectedCreateTest() {
@@ -323,6 +304,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setFragSelectedVocabulary() {
+
+        fragSelectedVocabulary.setSharedElementEnterTransition(new DetailsTransition());
+        fragSelectedVocabulary.setEnterTransition(new Fade(Fade.IN));
+        fragSelectedVocabulary.setExitTransition(new Fade(Fade.OUT));
+        fragSelectedVocabulary.setSharedElementReturnTransition(new DetailsTransition());
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack(null)
@@ -331,6 +318,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setFragSelectedAudition() {
+
+        fragSelectedAudition.setSharedElementEnterTransition(new DetailsTransition());
+        fragSelectedAudition.setEnterTransition(new Fade(Fade.IN));
+        fragSelectedAudition.setExitTransition(new Fade(Fade.OUT));
+        fragSelectedAudition.setSharedElementReturnTransition(new DetailsTransition());
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack(null)
@@ -363,6 +356,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setFragSelectedGrammar() {
+
+        fragSelectedGrammar.setSharedElementEnterTransition(new DetailsTransition());
+        fragSelectedGrammar.setEnterTransition(new Fade(Fade.IN));
+        fragSelectedGrammar.setExitTransition(new Fade(Fade.OUT));
+        fragSelectedGrammar.setSharedElementReturnTransition(new DetailsTransition());
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack(null)
@@ -394,14 +393,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signOut() {
+
         webStatusControl.setWebStatus("Offline");
         FirebaseAuth.getInstance().signOut();
-        if (mAuth.getCurrentUser() == null) {
+
+        if (mAuth.getCurrentUser() == null)
+        {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
-        } else {
+        }
+        else
+        {
             Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override

@@ -18,7 +18,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         app:strokeWidth="1dp"
-        app:cardElevation="5dp"
+        app:cardElevation="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -40,6 +40,7 @@
                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:cornerRadius="24dp"
                     app:icon="@drawable/ic_baseline_analytics_24"
                     app:strokeWidth="0dp" />
 
@@ -48,6 +49,7 @@
                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:cornerRadius="24dp"
                     app:icon="@drawable/ic_baseline_mode_edit_24"
                     app:strokeWidth="0dp" />
 
@@ -56,6 +58,7 @@
                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:cornerRadius="24dp"
                     app:icon="@drawable/ic_baseline_delete_outline_24"
                     app:strokeWidth="0dp" />
 

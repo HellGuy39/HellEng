@@ -44,10 +44,11 @@
                 android:checkable="true"
                 android:focusable="true"
                 android:clickable="true"
-                app:cardElevation="10dp"
+                app:cardElevation="5dp"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
+                    android:padding="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -57,16 +58,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:padding="5dp"
-                        android:text="Hell's Test Maker - Beta"
+                        android:text="@string/hell_test_maker"
                         android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/textViewSecondaryCreateTest"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="Сreate and share your tests!"
+                        android:layout_marginTop="5dp"
+                        android:text="@string/second_text_test_maker"
                         android:textColor="?android:attr/textColorSecondary" />
                 </LinearLayout>
 
@@ -80,7 +80,7 @@
                 android:checkable="true"
                 android:focusable="true"
                 android:clickable="true"
-                app:cardElevation="10dp"
+                app:cardElevation="5dp"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -114,34 +114,6 @@
                         android:text="@string/second_text_vocabulary"
                         android:textColor="?android:attr/textColorSecondary" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        tools:visibility="gone">
-
-                        <Button
-                            android:id="@+id/btnVocabulary"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:padding="5dp"
-                            android:text="@string/start" />
-
-                        <Button
-                            android:id="@+id/btnVocabularyMore"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:padding="5dp"
-                            android:text="@string/more" />
-
-                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -153,7 +125,7 @@
                 android:checkable="true"
                 android:focusable="true"
                 android:clickable="true"
-                app:cardElevation="10dp"
+                app:cardElevation="5dp"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -186,35 +158,6 @@
                         android:text="@string/second_text_grammar"
                         android:textColor="?android:attr/textColorSecondary" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        tools:visibility="gone">
-
-                        <Button
-                            android:id="@+id/btnGrammar"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:padding="5dp"
-                            android:text="@string/start" />
-
-                        <Button
-                            android:id="@+id/btnGrammarMore"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:padding="5dp"
-                            android:text="@string/more" />
-
-                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -222,11 +165,14 @@
                 android:id="@+id/cardViewAudition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="15dp"
                 android:checkable="true"
                 android:focusable="true"
                 android:clickable="true"
-                app:cardElevation="10dp"
+                app:cardElevation="5dp"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -259,35 +205,6 @@
                         android:text="@string/second_text_audition"
                         android:textColor="?android:attr/textColorSecondary" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="5dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone"
-                        tools:visibility="gone">
-
-                        <Button
-                            android:id="@+id/btnAudition"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:padding="5dp"
-                            android:text="@string/start" />
-
-                        <Button
-                            android:id="@+id/btnAuditionMore"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:padding="5dp"
-                            android:text="@string/more" />
-
-                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

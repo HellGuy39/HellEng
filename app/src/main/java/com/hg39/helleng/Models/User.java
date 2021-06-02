@@ -11,11 +11,12 @@ public class User {
     private String birthday;
     private String city;
     private String aboutMe;
+    private String background;
     private int testsStarted,testsFullCompleted;
 
     public User(String email, String password, String registerDate, String firstName, String username,
                 String lastName, String status, String webStatus, String profileImage,
-                String userStatus, String profileImageUri, String city, String aboutMe, String birthday,
+                String userStatus, String profileImageUri, String city, String aboutMe, String birthday, String background,
                 int testsFullCompleted, int testsStarted ) {
         this.email = email;
         this.password = password;
@@ -33,6 +34,7 @@ public class User {
         this.city = city;
         this.aboutMe = aboutMe;
         this.birthday = birthday;
+        this.background = background;
     }
 
     public User() {}
@@ -163,5 +165,13 @@ public class User {
 
     public void setAboutMe(String aboutMe) {
         this.aboutMe = aboutMe;
+    }
+
+    public String getBackground() {
+        return background;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
     }
 }

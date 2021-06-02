@@ -18,4 +18,12 @@
     <string name="sign_out">Выйти</string>
     <string name="second_text_audition">Улучши своё понимание на слух</string>
     <string name="language">Язык</string>
+    <string name="second_text_test_maker">Создавайте и делитесь своими тестами</string>
+    <string name="friends_list">Список друзей</string>
+    <string name="find_users">Найти пользователей</string>
+    <string name="friend_requests">Запросы в друзья</string>
+    <string name="app_friends_list">Друзья</string>
+    <string name="app_friend_requests">Запросы в друзья</string>
+    <string name="app_find_users">Найти пользователей</string>
+    <string name="starting_fragment">Стартовый фрагмент</string>
 </resources>
