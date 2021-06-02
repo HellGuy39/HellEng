@@ -964,7 +964,8 @@ public class CreateTestFragment extends Fragment {
         userTestsStorageRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild(testId) && action.equals(ACTION_CREATE_TEST)) {
+                if (snapshot.hasChild(testId) & action.equals(ACTION_CREATE_TEST))
+                {
                     Snackbar.make(root,"This ID is already used",Snackbar.LENGTH_LONG).show();
                     loadingBar.dismiss();
                 }
@@ -1034,7 +1035,7 @@ public class CreateTestFragment extends Fragment {
 
                             loadingBar.dismiss();
 
-                            Toast.makeText(getContext(), "Test Succsefull created!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getContext(), "Test Succsefull created!", Toast.LENGTH_SHORT).show();
                             ((TestMakerActivity)getContext()).finish();
 
                         }
