@@ -7,58 +7,38 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.SQLOutput;
-
-import static com.hg39.helleng.MainActivity.food;
-import static com.hg39.helleng.MainActivity.furniture;
 import static com.hg39.helleng.MainActivity.groupVocabulary;
-import static com.hg39.helleng.MainActivity.schoolSupplies;
 
 public class VocabularyTestFragment extends Fragment {
 
     Button btnNext;
     TextView wordView,taskView;
     EditText editTextField;
-    //int words;
     int completed;
     String completedString;
-    //String userRes1,userRes2,userRes3,userRes4,userRes5,userRes6,userRes7,userRes8,userRes9,userRes10;
-    //String currentAnswer;
-    //String word1,word2,word3,word4,word5,word6,word7,word8,word9,word10;
-    //String word1Ru,word2Ru,word3Ru,word4Ru,word5Ru,word6Ru,word7Ru,word8Ru,word9Ru,word10Ru;
     String testName;
 
     String[] wordArr, wordRuArr, userResArr;
 
-    FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference tests;
-    DatabaseReference users;
 
     boolean first;
 
     TestProgressControl testProgressControl = new TestProgressControl();
 
     int i;
-
-    @Override
-    public void onAttachFragment(@NonNull Fragment childFragment) {
-        super.onAttachFragment(childFragment);
-
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +48,7 @@ public class VocabularyTestFragment extends Fragment {
         wordRuArr = new String[10];
         userResArr = new String[10];
 
+        assert getArguments() != null;
         testName = getArguments().getString("testName");
 
         database = FirebaseDatabase.getInstance();
@@ -109,10 +90,7 @@ public class VocabularyTestFragment extends Fragment {
 
         wordView.setText(wordRuArr[i]);
 
-        //Boyo!
-        //wordView.setText(word1Ru);
         editTextField.setEnabled(true);
-        //words = 1;
         btnNext.setText("Next");
 
     }
@@ -121,15 +99,11 @@ public class VocabularyTestFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        //wordView.setText(word1Ru);
-
     }
 
     protected void onClickBtnNext(View view) {
 
         if (i == 9) {
-            //userResArr[i] = editTextField.getText().toString();
-            //Toast.makeText(getContext(), "That's it!", Toast.LENGTH_SHORT).show();
 
             if (editTextField.getText().toString().equals("")) { return; }
 
@@ -144,7 +118,7 @@ public class VocabularyTestFragment extends Fragment {
             testProgressControl.SaveTestProgress(groupVocabulary,testName,completedString);
 
             System.out.println(testName);
-            ((VocabularyActivity)getContext()).setFragResult(userResArr[0],userResArr[1],userResArr[2],userResArr[3],userResArr[4],userResArr[5],userResArr[6],userResArr[7],userResArr[8],userResArr[9],
+            ((VocabularyActivity) requireContext()).setFragResult(userResArr[0],userResArr[1],userResArr[2],userResArr[3],userResArr[4],userResArr[5],userResArr[6],userResArr[7],userResArr[8],userResArr[9],
                                                             wordArr[0],wordArr[1],wordArr[2],wordArr[3],wordArr[4],wordArr[5],wordArr[6],wordArr[7],wordArr[8],wordArr[9],
                                                             completed,10,testName);
 

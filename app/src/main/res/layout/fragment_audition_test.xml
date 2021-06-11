@@ -114,6 +114,7 @@
                             style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:cornerRadius="24dp"
                             app:icon="@drawable/ic_baseline_replay_24" />
 
                         <com.google.android.material.button.MaterialButton
@@ -123,6 +124,7 @@
                             style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:cornerRadius="24dp"
                             app:icon="@drawable/ic_baseline_play_arrow_24" />
 
                         <com.google.android.material.button.MaterialButton
@@ -130,6 +132,7 @@
                             style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:cornerRadius="24dp"
                             app:icon="@drawable/ic_baseline_volume_up_24" />
                     </LinearLayout>
                 </LinearLayout>
@@ -445,7 +448,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
                 android:textAllCaps="false"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                />
 
         </LinearLayout>
     </ScrollView>

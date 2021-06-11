@@ -37,6 +37,7 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference usersTestsProgress;
+    ValueEventListener loadData;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
         database = FirebaseDatabase.getInstance();
         usersTestsProgress = database.getReference("Users Tests Progress");
 
-        usersTestsProgress.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(groupGrammar).addValueEventListener(new ValueEventListener() {
+        loadData = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -64,11 +65,9 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                //Toast.makeText(getActivity(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
-                // Failed to read value
-                //Log.w(TAG, "Failed to read value.", error.toException());
+
             }
-        });
+        };
     }
 
     @Nullable
@@ -94,14 +93,23 @@ public class GrammarSelectedFragment extends Fragment implements View.OnClickLis
         tvPsSimple = rootView.findViewById(R.id.tvSchoolSupplies);
         tvRFtSimple= rootView.findViewById(R.id.tvFood);
 
+        usersTestsProgress.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(groupGrammar).addValueEventListener(loadData);
+
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        usersTestsProgress.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(groupGrammar).removeEventListener(loadData);
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        updateUI();
+        //updateUI();
 
     }
 

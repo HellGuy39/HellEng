@@ -9,21 +9,16 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Objects;
 
 import static com.hg39.helleng.MainActivity.futureSimple;
 import static com.hg39.helleng.MainActivity.groupGrammar;
@@ -54,11 +49,10 @@ public class GrammarTestFragment extends Fragment {
     String slot4Res;
     String slot5Res;
 
-    String questions1,questions2,questions3,questions4,questions5,questions6,questions7,questions8,questions9,questions10;
+    String questions1,questions2,questions3,questions4,questions5;
     String question1After,question2After,question3After;
-    String answers1,answers2,answers3,answers4,answers5,answers6,answers7,answers8,answers9,answers10;
+    String answers1,answers2,answers3,answers4,answers5;
     String hint1,hint2;
-    String rule;
 
     //private int currentAnswer = 1;
     int completed;
@@ -66,12 +60,13 @@ public class GrammarTestFragment extends Fragment {
     //private int testsStarted;
     String completedString;
 
-    FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference users;
     DatabaseReference tests;
 
     TestProgressControl testProgressControl = new TestProgressControl();
+
+    ValueEventListener loadData;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,7 +84,7 @@ public class GrammarTestFragment extends Fragment {
         slot2 = new String[3];
         slot3 = new String[3];
 
-        tests.child("Tenses").child(testName).addValueEventListener(new ValueEventListener() {
+        loadData = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -115,46 +110,50 @@ public class GrammarTestFragment extends Fragment {
                 hint1 = snapshot.child("Hint").child("0").getValue(String.class);
                 hint2 = snapshot.child("Hint").child("1").getValue(String.class);
 
-                if (testName.equals(pastSimple)) {
+                switch (testName) {
+                    case pastSimple:
 
-                    answers1 = snapshot.child("Answers").child("0").child("1").getValue(String.class);
-                    answers2 = snapshot.child("Answers").child("1").child("0").getValue(String.class);
-                    answers3 = snapshot.child("Answers").child("2").child("1").getValue(String.class);
-                    answers4 = snapshot.child("Answers").child("3").getValue(String.class);
-                    answers5 = snapshot.child("Answers").child("4").getValue(String.class);
+                        answers1 = snapshot.child("Answers").child("0").child("1").getValue(String.class);
+                        answers2 = snapshot.child("Answers").child("1").child("0").getValue(String.class);
+                        answers3 = snapshot.child("Answers").child("2").child("1").getValue(String.class);
+                        answers4 = snapshot.child("Answers").child("3").getValue(String.class);
+                        answers5 = snapshot.child("Answers").child("4").getValue(String.class);
 
-                    slot1[2] = " ";
+                        slot1[2] = " ";
 
-                    slot2[2] = snapshot.child("Answers").child("1").child("2").getValue(String.class);
+                        slot2[2] = snapshot.child("Answers").child("1").child("2").getValue(String.class);
 
-                    slot3[2] = snapshot.child("Answers").child("2").child("2").getValue(String.class);
+                        slot3[2] = snapshot.child("Answers").child("2").child("2").getValue(String.class);
 
-                } else if (testName.equals(presentSimple)) {
+                        break;
+                    case presentSimple:
 
-                    answers1 = snapshot.child("Answers").child("0").child("0").getValue(String.class);
-                    answers2 = snapshot.child("Answers").child("1").child("1").getValue(String.class);
-                    answers3 = snapshot.child("Answers").child("2").child("2").getValue(String.class);
-                    answers4 = snapshot.child("Answers").child("3").getValue(String.class);
-                    answers5 = snapshot.child("Answers").child("4").getValue(String.class);
+                        answers1 = snapshot.child("Answers").child("0").child("0").getValue(String.class);
+                        answers2 = snapshot.child("Answers").child("1").child("1").getValue(String.class);
+                        answers3 = snapshot.child("Answers").child("2").child("2").getValue(String.class);
+                        answers4 = snapshot.child("Answers").child("3").getValue(String.class);
+                        answers5 = snapshot.child("Answers").child("4").getValue(String.class);
 
-                    slot1[2] = snapshot.child("Answers").child("0").child("2").getValue(String.class);
+                        slot1[2] = snapshot.child("Answers").child("0").child("2").getValue(String.class);
 
-                    slot2[2] = snapshot.child("Answers").child("1").child("2").getValue(String.class);
+                        slot2[2] = snapshot.child("Answers").child("1").child("2").getValue(String.class);
 
-                    slot3[2] = snapshot.child("Answers").child("2").child("2").getValue(String.class);
+                        slot3[2] = snapshot.child("Answers").child("2").child("2").getValue(String.class);
 
-                } else if (testName.equals(futureSimple)) {
-                    answers1 = snapshot.child("Answers").child("0").child("0").getValue(String.class);
-                    answers2 = snapshot.child("Answers").child("1").child("0").getValue(String.class);
-                    answers3 = snapshot.child("Answers").child("2").child("1").getValue(String.class);
-                    answers4 = snapshot.child("Answers").child("3").getValue(String.class);
-                    answers5 = snapshot.child("Answers").child("4").getValue(String.class);
+                        break;
+                    case futureSimple:
+                        answers1 = snapshot.child("Answers").child("0").child("0").getValue(String.class);
+                        answers2 = snapshot.child("Answers").child("1").child("0").getValue(String.class);
+                        answers3 = snapshot.child("Answers").child("2").child("1").getValue(String.class);
+                        answers4 = snapshot.child("Answers").child("3").getValue(String.class);
+                        answers5 = snapshot.child("Answers").child("4").getValue(String.class);
 
-                    slot1[2] = " ";
+                        slot1[2] = " ";
 
-                    slot2[2] = " ";
+                        slot2[2] = " ";
 
-                    slot3[2] = " ";
+                        slot3[2] = " ";
+                        break;
                 }
 
                 updateUI();
@@ -166,7 +165,7 @@ public class GrammarTestFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
     }
 
     @Nullable
@@ -208,7 +207,9 @@ public class GrammarTestFragment extends Fragment {
         dropDownMenu2.setOnItemClickListener((parent, view, position, id) -> slot2Res = (String)parent.getItemAtPosition(position));
         dropDownMenu3.setOnItemClickListener((parent, view, position, id) -> slot3Res = (String)parent.getItemAtPosition(position));
 
-        updateUI();
+        //updateUI();
+
+        tests.child("Tenses").child(testName).addValueEventListener(loadData);
 
         return rootView;
     }
@@ -216,21 +217,19 @@ public class GrammarTestFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        updateUI();
+        //updateUI();
     }
 
     private void setArrays() {
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, slot1);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, slot1);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropDownMenu1.setAdapter(adapter1);
-        //dropDownMenu1.setSelection(2);
 
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, slot2);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, slot2);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropDownMenu2.setAdapter(adapter2);
-        //dropDownMenu2.setSelection(2);
 
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, slot3);
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, slot3);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropDownMenu3.setAdapter(adapter3);
 
@@ -247,6 +246,8 @@ public class GrammarTestFragment extends Fragment {
         textViewHint1.setText(hint1);
         textViewHint2.setText(hint2);
 
+        tests.child("Tenses").child(testName).removeEventListener(loadData);
+
     }
 
     private void onClickEnd(View view) {
@@ -255,43 +256,53 @@ public class GrammarTestFragment extends Fragment {
         slot5Res = etAnswer5.getText().toString();
 
         //КостыльTechnologies
-        if (slot1Res == null) {
+        if (slot1Res == null)
+        {
             slot1Res = " ";
         }
-        if (slot2Res == null) {
+        if (slot2Res == null)
+        {
             slot2Res = " ";
         }
-        if (slot3Res == null) {
+        if (slot3Res == null)
+        {
             slot3Res = " ";
         }
-        if (slot4Res == null) {
+        if (slot4Res == null)
+        {
             slot4Res = " ";
         }
-        if (slot5Res == null) {
+        if (slot5Res == null)
+        {
             slot5Res = " ";
         }
         //Cringe
 
-        if (slot1Res.equalsIgnoreCase(answers1)) {
+        if (slot1Res.equalsIgnoreCase(answers1))
+        {
             completed+=20;
         }
-        if (slot2Res.equalsIgnoreCase(answers2)) {
+        if (slot2Res.equalsIgnoreCase(answers2))
+        {
             completed+=20;
         }
-        if (slot3Res.equalsIgnoreCase(answers3)) {
+        if (slot3Res.equalsIgnoreCase(answers3))
+        {
             completed+=20;
         }
-        if (slot4Res.equalsIgnoreCase(answers4)) {
+        if (slot4Res.equalsIgnoreCase(answers4))
+        {
             completed+=20;
         }
-        if (slot5Res.equalsIgnoreCase(answers5)) {
+        if (slot5Res.equalsIgnoreCase(answers5))
+        {
             completed+=20;
         }
 
         completedString = Integer.toString(completed);
         testProgressControl.SaveTestProgress(groupGrammar,testName,completedString);
 
-        ((GrammarActivity) Objects.requireNonNull(getContext())).setFragResult(slot1Res,slot2Res,slot3Res,slot4Res,slot5Res,
+        ((GrammarActivity) requireContext()).setFragResult(slot1Res,slot2Res,slot3Res,slot4Res,slot5Res,
                                                         answers1,answers2,answers3,answers4,answers5,
                                                         completed, 5,testName);
 

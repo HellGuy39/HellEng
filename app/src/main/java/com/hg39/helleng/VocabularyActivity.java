@@ -1,19 +1,12 @@
 package com.hg39.helleng;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.View;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import java.util.Locale;
 
@@ -24,14 +17,7 @@ public class VocabularyActivity extends AppCompatActivity {
 
     boolean wasOnTest;
 
-    FirebaseAuth mAuth;
-    FirebaseDatabase database;
-    DatabaseReference users;
-    DatabaseReference myRef;
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     Fragment fragVocabularyRule,fragVocabularyTest,fragResult;
-
-    WebStatusControl webStatusControl = new WebStatusControl();
 
     String testName;
 
@@ -155,12 +141,7 @@ public class VocabularyActivity extends AppCompatActivity {
                 .setTitle("You are not finished")
                 .setMessage("If you leave the test now, the data will not be saved")
                 .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        //SomeActivity - имя класса Activity для которой переопределяем onBackPressed();
-                        VocabularyActivity.super.onBackPressed();
-                    }
-                }).create().show();
+                .setPositiveButton(android.R.string.yes, (arg0, arg1) -> VocabularyActivity.super.onBackPressed()).create().show();
     }
 
     protected void setLanguage() {

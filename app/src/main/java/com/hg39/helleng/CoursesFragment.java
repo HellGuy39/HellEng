@@ -10,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.util.Objects;
-
 
 public class CoursesFragment extends Fragment implements View.OnClickListener {
 
@@ -48,14 +46,21 @@ public class CoursesFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        if (v.getId() == R.id.cardViewGrammar) {
-            ((MainActivity) Objects.requireNonNull(getContext())).setFragSelectedGrammar();
-        } else if (v.getId() == R.id.cardViewVocabulary) {
-            ((MainActivity) Objects.requireNonNull(getContext())).setFragSelectedVocabulary();
-        } else if (v.getId() == R.id.cardViewAudition) {
-            ((MainActivity) Objects.requireNonNull(getContext())).setFragSelectedAudition();
-        } else if (v.getId() == R.id.cardViewCreateTest) {
-            ((MainActivity) Objects.requireNonNull(getContext())).setFragSelectedCreateTest();
+        if (v.getId() == R.id.cardViewGrammar)
+        {
+            ((MainActivity) requireContext()).setFragSelectedGrammar();
+        }
+        else if (v.getId() == R.id.cardViewVocabulary)
+        {
+            ((MainActivity) requireContext()).setFragSelectedVocabulary();
+        }
+        else if (v.getId() == R.id.cardViewAudition)
+        {
+            ((MainActivity) requireContext()).setFragSelectedAudition();
+        }
+        else if (v.getId() == R.id.cardViewCreateTest)
+        {
+            ((MainActivity) requireContext()).setFragSelectedCreateTest();
         }
     }
 }

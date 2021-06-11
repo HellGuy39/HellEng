@@ -1,19 +1,12 @@
 package com.hg39.helleng;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.widget.Button;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import java.util.Locale;
 
@@ -25,8 +18,6 @@ public class GrammarActivity extends AppCompatActivity {
     boolean wasOnTest;
 
     Fragment fragGrammarRule,fragGrammarTest,fragResult;
-
-    WebStatusControl webStatusControl = new WebStatusControl();
 
     String testName;
 
@@ -144,11 +135,7 @@ public class GrammarActivity extends AppCompatActivity {
                 .setTitle("You are not finished")
                 .setMessage("If you leave the test now, the data will not be saved")
                 .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        GrammarActivity.super.onBackPressed();
-                    }
-                }).create().show();
+                .setPositiveButton(android.R.string.yes, (arg0, arg1) -> GrammarActivity.super.onBackPressed()).create().show();
     }
 
     protected void setLanguage() {

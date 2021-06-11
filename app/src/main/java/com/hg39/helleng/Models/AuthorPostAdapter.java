@@ -1,9 +1,12 @@
 package com.hg39.helleng.Models;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,13 +23,15 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
+import static com.hg39.helleng.MainActivity.LOG_TAG;
+
+public class AuthorPostAdapter extends RecyclerView.Adapter<AuthorPostAdapter.PostViewHolder> {
 
     List<Post> userPostList;
     FirebaseAuth mAuth;
     DatabaseReference usersRef;
 
-    public PostAdapter (List<Post> userPostList) {
+    public AuthorPostAdapter (List<Post> userPostList) {
         this.userPostList = userPostList;
     }
 
@@ -34,6 +39,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         public TextView authorName,date, postText;
         public CircleImageView authorProfileImage;
+        public Button btnDeletePost;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -42,15 +48,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             date = itemView.findViewById(R.id.postDate);
             postText = itemView.findViewById(R.id.tvPostText);
             authorProfileImage = itemView.findViewById(R.id.profileImage);
+            btnDeletePost = itemView.findViewById(R.id.btnDeletePost);
 
         }
     }
 
     @NonNull
     @Override
-    public PostAdapter.PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AuthorPostAdapter.PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_post_view, parent, false);
+                .inflate(R.layout.author_user_post_view, parent, false);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -58,15 +65,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostAdapter.PostViewHolder holder, int position) {
-
-        //String authorID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+    public void onBindViewHolder(@NonNull AuthorPostAdapter.PostViewHolder holder, int position) {
 
         Post post = userPostList.get(position);
 
         //String fromUserID = messages.getFrom();
         String postType = post.getType();
         String authorID  = post.getAuthor();
+        String key = post.getKey();
 
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(authorID);
 
@@ -98,7 +104,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.date.setText(post.getDate());
 
         }
-
+        if (post.getKey() != null)
+        {
+            holder.btnDeletePost.setOnClickListener(
+                    v -> usersRef.child("Posts").child(key).removeValue().addOnCompleteListener(
+                    task -> {
+                        Toast.makeText(v.getContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
+                        userPostList.remove(post);
+                        holder.itemView.setVisibility(View.GONE);
+                    }));
+        }
+        Log.d(LOG_TAG,"Post loaded, key: " + key);
     }
 
     @Override

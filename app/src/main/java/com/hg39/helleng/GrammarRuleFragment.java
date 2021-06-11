@@ -15,8 +15,6 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Objects;
-
 import static com.hg39.helleng.MainActivity.futureSimple;
 import static com.hg39.helleng.MainActivity.pastSimple;
 import static com.hg39.helleng.MainActivity.presentSimple;
@@ -43,13 +41,16 @@ public class GrammarRuleFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         tests = database.getReference("Tests");
 
-        switch (testName) {
+        switch (testName)
+        {
             case presentSimple:
                 setRuleForPresentSimple();
                 break;
+
             case pastSimple:
                 setRuleForPastSimple();
                 break;
+
             case futureSimple:
                 setRuleForFutureSimple();
                 break;
@@ -60,28 +61,23 @@ public class GrammarRuleFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
+
         View rootView =
                 inflater.inflate(R.layout.fragment_grammar_rule,container,false);
 
         fltBtnStart = rootView.findViewById(R.id.fltStartTest);
         ruleTextView = rootView.findViewById(R.id.ruleTextView);
 
-        fltBtnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(Objects.requireNonNull(getContext()))
-                        .setTitle("Continuation confirmation")
-                        .setMessage("Are you sure want to continue?")
-                        .setNegativeButton(android.R.string.no,null)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ((GrammarActivity)getContext()).setFragGrammarTest();
-                            }
-                        }).create().show();
-            }
-        });
+        fltBtnStart.setOnClickListener(v -> new AlertDialog.Builder(requireContext())
+                .setTitle("Continuation confirmation")
+                .setMessage("Are you sure want to continue?")
+                .setNegativeButton(android.R.string.no,null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((GrammarActivity) requireContext()).setFragGrammarTest();
+                    }
+                }).create().show());
 
         updateUI();
 

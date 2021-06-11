@@ -1,16 +1,14 @@
 package com.hg39.helleng;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import java.util.Locale;
-import java.util.Objects;
 
 import static com.hg39.helleng.SettingsActivity.CONFIG_FILE;
 import static com.hg39.helleng.SettingsActivity.CONFIG_LANGUAGE;
@@ -208,11 +206,7 @@ public class TestMakerActivity extends AppCompatActivity {
                 .setTitle("Confirm exit")
                 .setMessage("Do you really want to leave?")
                 .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        finish();
-                    }
-                }).create().show();
+                .setPositiveButton(android.R.string.yes, (arg0, arg1) -> finish()).create().show();
 
         /*int count = getFragmentManager().getBackStackEntryCount();
 

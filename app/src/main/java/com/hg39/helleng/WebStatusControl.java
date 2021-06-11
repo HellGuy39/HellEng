@@ -4,6 +4,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
+
 public class WebStatusControl {
 
     FirebaseAuth mAuth;
@@ -18,9 +20,9 @@ public class WebStatusControl {
 
         if (mAuth.getCurrentUser() != null) {
             if (state.equals("Online")) {
-                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue("Online");
+                users.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("webStatus").setValue("Online");
             } else if (state.equals("Offline")) {
-                users.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("webStatus").setValue("Offline");
+                users.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid()).child("webStatus").setValue("Offline");
             }
         }
     }

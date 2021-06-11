@@ -1,6 +1,5 @@
 package com.hg39.helleng;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,16 +27,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hg39.helleng.Models.CustomTest;
-import com.hg39.helleng.Models.User;
 
 import java.util.Objects;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.hg39.helleng.MainActivity.futureSimple;
-import static com.hg39.helleng.MainActivity.groupGrammar;
-import static com.hg39.helleng.MainActivity.pastSimple;
-import static com.hg39.helleng.MainActivity.presentSimple;
 import static com.hg39.helleng.TestMakerActivity.ACTION_EDIT_TEST;
 
 public class CreateTestSelectedFragment extends Fragment implements View.OnClickListener{
@@ -125,63 +116,39 @@ public class CreateTestSelectedFragment extends Fragment implements View.OnClick
                     }
                 });
 
-                holder.btnEdit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Toast.makeText(getContext(), "Not avalible in BETA" , Toast.LENGTH_SHORT).show();
-                        intent.putExtra("testID", list_user_ID);
-                        intent.putExtra("Action", ACTION_EDIT_TEST);
-                        startActivity(intent);
-                    }
+                holder.btnEdit.setOnClickListener(v -> {
+                    //Toast.makeText(getContext(), "Not avalible in BETA" , Toast.LENGTH_SHORT).show();
+                    intent.putExtra("testID", list_user_ID);
+                    intent.putExtra("Action", ACTION_EDIT_TEST);
+                    startActivity(intent);
                 });
                 holder.btnStat.setVisibility(View.GONE);
-                holder.btnStat.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //Toast.makeText(getContext(), "Not avalible in BETA" , Toast.LENGTH_SHORT).show();
-                    }
+                holder.btnStat.setOnClickListener(v -> {
+                    //Toast.makeText(getContext(), "Not avalible in BETA" , Toast.LENGTH_SHORT).show();
                 });
 
-                holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new AlertDialog.Builder(getContext())
-                                .setTitle("Delete")
-                                .setMessage("Are you sure you want to permanently delete this test?")
-                                .setNegativeButton(android.R.string.no, null)
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        userTestsStorageRef.child(list_user_ID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    userTestsIDRef.child(list_user_ID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                Toast.makeText(getContext(), "Test Suссsefull Deleted" , Toast.LENGTH_SHORT).show();
-                                                            } else {
-                                                                Toast.makeText(getContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        }
-                                                    });
-                                                } else {
-                                                    Toast.makeText(getContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
+                holder.btnDelete.setOnClickListener(v -> new AlertDialog.Builder(requireContext())
+                        .setTitle("Delete")
+                        .setMessage("Are you sure you want to permanently delete this test?")
+                        .setNegativeButton(android.R.string.no, null)
+                        .setPositiveButton(android.R.string.yes, (arg0, arg1) -> userTestsStorageRef.child(list_user_ID).removeValue().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                userTestsIDRef.child(list_user_ID).removeValue().addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        Toast.makeText(getContext(), "Test Suссsefull Deleted" , Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getContext(), "Error: " + Objects.requireNonNull(task1.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                                     }
-                                }).create().show();
-                    }
-                });
+                                });
+                            } else {
+                                Toast.makeText(getContext(), "Error: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })).create().show());
 
-                holder.cardView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        intent.putExtra("testID", list_user_ID);
-                        intent.putExtra("Action", "TestPreview");
-                        startActivity(intent);
-                    }
+                holder.cardView.setOnClickListener(v -> {
+                    intent.putExtra("testID", list_user_ID);
+                    intent.putExtra("Action", "TestPreview");
+                    startActivity(intent);
                 });
 
             }

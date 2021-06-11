@@ -1,14 +1,9 @@
 package com.hg39.helleng;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,26 +11,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.hg39.helleng.Models.RegUser;
-import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -134,72 +122,60 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void registration(String email, String password, String firstName, String lastName) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    //Toast.makeText(RegisterActivity.this, "Welcome!", Toast.LENGTH_SHORT).show();
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                //Toast.makeText(RegisterActivity.this, "Welcome!", Toast.LENGTH_SHORT).show();
 
-                    // Текущее время
-                    Date currentDate = new Date();
-                    // Форматирование времени как "день.месяц.год"
-                    DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-                    String dateText = dateFormat.format(currentDate);
+                // Текущее время
+                Date currentDate = new Date();
+                // Форматирование времени как "день.месяц.год"
+                DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+                String dateText = dateFormat.format(currentDate);
 
-                    regUser.setEmail(email);
-                    regUser.setPassword(password);
-                    regUser.setFirstName(firstName);
-                    regUser.setLastName(lastName);
-                    regUser.setFullName(firstName + " " + lastName);
-                    regUser.setRegisterDate(dateText);
+                regUser.setEmail(email);
+                regUser.setPassword(password);
+                regUser.setFirstName(firstName);
+                regUser.setLastName(lastName);
+                regUser.setFullName(firstName + " " + lastName);
+                regUser.setRegisterDate(dateText);
 
-                    users.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                            .setValue(regUser)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                users.child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                        .setValue(regUser)
+                        .addOnSuccessListener(aVoid -> {
 
-                                    String currentUserId = mAuth.getCurrentUser().getUid();
-                                    final String[] deviceToken = new String[1];
+                            String currentUserId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                            final String[] deviceToken = new String[1];
 
-                                    FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<String> task) {
-                                            if (task.isSuccessful()) {
-                                                deviceToken[0] = task.getResult();
+                            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task12 -> {
+                                if (task12.isSuccessful()) {
+                                    deviceToken[0] = task12.getResult();
 
-                                                users.child(currentUserId).child("deviceToken").setValue(deviceToken[0]).addOnCompleteListener(task1 -> {
-                                                    if (task1.isSuccessful())
-                                                    {
-                                                        loadingBar.dismiss();
-                                                        Toast.makeText(RegisterActivity.this, "Welcome to the club buddy!"/*"Successfully"*/,Toast.LENGTH_SHORT).show();
+                                    users.child(currentUserId).child("deviceToken").setValue(deviceToken[0]).addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful())
+                                        {
+                                            loadingBar.dismiss();
+                                            Toast.makeText(RegisterActivity.this, "Welcome to the club buddy!"/*"Successfully"*/,Toast.LENGTH_SHORT).show();
 
-                                                        startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                                                        finish();
-                                                    }
-                                                });
-
-                                            }
+                                            startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                                            finish();
                                         }
                                     });
 
-                                    //startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                                    //finish();
-
                                 }
                             });
-                } else {
-                    loadingBar.dismiss();
-                    //Toast.makeText(RegisterActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    Snackbar.make(root, "Error: " + task.getException().getMessage(), Snackbar.LENGTH_LONG).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+
+                            //startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                            //finish();
+
+                        });
+            } else {
                 loadingBar.dismiss();
-                Snackbar.make(root, "Error: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(RegisterActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar.make(root, "Error: " + Objects.requireNonNull(task.getException()).getMessage(), Snackbar.LENGTH_LONG).show();
             }
+        }).addOnFailureListener(e -> {
+            loadingBar.dismiss();
+            Snackbar.make(root, "Error: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
         });
     }
 

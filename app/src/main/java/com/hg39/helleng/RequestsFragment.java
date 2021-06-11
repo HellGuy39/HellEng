@@ -16,15 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hg39.helleng.Models.User;
 import com.squareup.picasso.Picasso;
@@ -37,12 +33,9 @@ public class RequestsFragment extends Fragment implements View.OnClickListener{
 
     RecyclerView recyclerView;
 
-    //com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton extendedFloatingActionButtonFind;
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
     FirebaseAuth mAuth;
-    //DatabaseReference mRef;
-    //FirebaseUser mUser;
 
     DatabaseReference friendRequestsRef, usersRef, friendsRef;
     String currentUserID;
@@ -55,7 +48,6 @@ public class RequestsFragment extends Fragment implements View.OnClickListener{
         friendRequestsRef = FirebaseDatabase.getInstance().getReference().child("Requests");
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         friendsRef = FirebaseDatabase.getInstance().getReference().child("Friends");
-        //mUser = mAuth.getCurrentUser();
         currentUserID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
 
@@ -64,7 +56,6 @@ public class RequestsFragment extends Fragment implements View.OnClickListener{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
         View rootView
                 = inflater.inflate(R.layout.fragment_requests,container,false);
 
@@ -72,13 +63,7 @@ public class RequestsFragment extends Fragment implements View.OnClickListener{
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         toolbar = rootView.findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)getContext()).onBackPressed();
-                //((MainActivity)getContext()).setFragChat();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> ((MainActivity) requireContext()).onBackPressed());
 
         FirebaseRecyclerOptions<User> options =
                 new FirebaseRecyclerOptions.Builder<User>()
@@ -124,86 +109,55 @@ public class RequestsFragment extends Fragment implements View.OnClickListener{
                                         holder.username.setText(requestUserName);
                                         holder.status.setText(requestUserStatus);
 
-                                        holder.btn_accept.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                friendsRef.child(currentUserID).child(list_user_ID).child("Friends").setValue("Saved")
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if (task.isSuccessful())
-                                                        {
-                                                        friendsRef.child(list_user_ID).child(currentUserID).child("Friends").setValue("Saved")
-                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                        if (task.isSuccessful())
-                                                                        {
-                                                                            friendRequestsRef.child(currentUserID).child(list_user_ID).removeValue()
-                                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                    @Override
-                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                        if (task.isSuccessful())
-                                                                                        {
-                                                                                        friendRequestsRef.child(list_user_ID).child(currentUserID).removeValue()
-                                                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                                    @Override
-                                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                                        if (task.isSuccessful())
-                                                                                                        {
-                                                                                                            Toast.makeText(getContext(),
-                                                                                                                    "New Friend Added",
-                                                                                                                    Toast.LENGTH_SHORT)
-                                                                                                                    .show();
-                                                                                                        }
-                                                                                                    }
-                                                                                                });
-                                                                                        }
-                                                                                    }
-                                                                                });
-                                                                            }
-                                                                        }
-                                                                    });
-                                                        }
-                                                    }
-                                                });
-                                            }
-                                        });
-
-                                        holder.btn_decline.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                friendRequestsRef.child(currentUserID).child(list_user_ID).removeValue()
-                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if (task.isSuccessful())
+                                        holder.btn_accept.setOnClickListener(v -> friendsRef.child(currentUserID).child(list_user_ID).child("Friends").setValue("Saved")
+                                                .addOnCompleteListener(task -> {
+                                                    if (task.isSuccessful())
+                                                    {
+                                                    friendsRef.child(list_user_ID).child(currentUserID).child("Friends").setValue("Saved")
+                                                            .addOnCompleteListener(task1 -> {
+                                                                if (task1.isSuccessful())
                                                                 {
-                                                                    friendRequestsRef.child(list_user_ID).child(currentUserID).removeValue()
-                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                @Override
-                                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                                    if (task.isSuccessful())
-                                                                                    {
-                                                                                        Toast.makeText(getContext(),
-                                                                                                "Request Declined",
-                                                                                                Toast.LENGTH_SHORT)
-                                                                                                .show();
-                                                                                    }
+                                                                    friendRequestsRef.child(currentUserID).child(list_user_ID).removeValue()
+                                                                            .addOnCompleteListener(task11 -> {
+                                                                                if (task11.isSuccessful())
+                                                                                {
+                                                                                friendRequestsRef.child(list_user_ID).child(currentUserID).removeValue()
+                                                                                        .addOnCompleteListener(task111 -> {
+                                                                                            if (task111.isSuccessful())
+                                                                                            {
+                                                                                                Toast.makeText(getContext(),
+                                                                                                        "New Friend Added",
+                                                                                                        Toast.LENGTH_SHORT)
+                                                                                                        .show();
+                                                                                            }
+                                                                                        });
                                                                                 }
                                                                             });
-                                                                }
-                                                            }
-                                                        });
-                                            }
-                                        });
+                                                                    }
+                                                                });
+                                                    }
+                                                }));
 
-                                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                //!!
-                                                ((MainActivity) Objects.requireNonNull(getContext())).setFragViewOtherProfile(getRef(position).getKey());
-                                            }
+                                        holder.btn_decline.setOnClickListener(v -> friendRequestsRef.child(currentUserID).child(list_user_ID).removeValue()
+                                                .addOnCompleteListener(task -> {
+                                                    if (task.isSuccessful())
+                                                    {
+                                                        friendRequestsRef.child(list_user_ID).child(currentUserID).removeValue()
+                                                                .addOnCompleteListener(task12 -> {
+                                                                    if (task12.isSuccessful())
+                                                                    {
+                                                                        Toast.makeText(getContext(),
+                                                                                "Request Declined",
+                                                                                Toast.LENGTH_SHORT)
+                                                                                .show();
+                                                                    }
+                                                                });
+                                                    }
+                                                }));
+
+                                        holder.itemView.setOnClickListener(v -> {
+                                            //!!
+                                            ((MainActivity) requireContext()).setFragViewOtherProfile(getRef(position).getKey());
                                         });
 
                                     }

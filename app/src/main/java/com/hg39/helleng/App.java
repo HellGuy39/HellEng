@@ -1,12 +1,7 @@
 package com.hg39.helleng;
 
 import android.app.Application;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.os.Build;
-
-import static android.app.NotificationChannel.DEFAULT_CHANNEL_ID;
 
 public class App extends Application {
 

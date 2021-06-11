@@ -3,31 +3,26 @@ package com.hg39.helleng;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,11 +31,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.hg39.helleng.Models.MessageAdapter;
-import com.hg39.helleng.Models.Messages;
+import com.hg39.helleng.Models.AuthorPostAdapter;
 import com.hg39.helleng.Models.Post;
-import com.hg39.helleng.Models.PostAdapter;
-import com.hg39.helleng.Models.User;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -54,6 +46,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.hg39.helleng.MainActivity.LOG_TAG;
 
 public class ProfileFragment extends Fragment {
 
@@ -84,19 +78,14 @@ public class ProfileFragment extends Fragment {
     EditText editTextNewPost;
     RecyclerView recyclerViewMicroBlog;
     LinearLayoutManager linearLayoutManager;
-    PostAdapter postAdapter;
+    //PostAdapter postAdapter;
+    AuthorPostAdapter authorPostAdapter;
 
     ValueEventListener dataListener;
 
     final List<Post> postsList = new ArrayList<>();
 
     boolean isLeaving = false;
-
-    @Override
-    public void onAttachFragment(@NonNull Fragment childFragment) {
-        super.onAttachFragment(childFragment);
-
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -125,10 +114,33 @@ public class ProfileFragment extends Fragment {
             userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         }
 
-        //loadData();
+        dataListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                firstNStr = dataSnapshot.child("firstName").getValue(String.class);
+                lastNStr = dataSnapshot.child("lastName").getValue(String.class);
+                statusStr = dataSnapshot.child("status").getValue(String.class);
+                regDate = dataSnapshot.child("registerDate").getValue(String.class);
+                webStatus = dataSnapshot.child("webStatus").getValue(String.class);
+                profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
+                birthday = dataSnapshot.child("birthday").getValue(String.class);
+                city = dataSnapshot.child("city").getValue(String.class);
+                aboutMe = dataSnapshot.child("aboutMe").getValue(String.class);
+                selectedBackground = dataSnapshot.child("background").getValue(String.class);
+
+                updateUI();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        };
+
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -150,73 +162,64 @@ public class ProfileFragment extends Fragment {
         textViewAboutMe = rootView.findViewById(R.id.textViewAboutMe);
         textViewCity = rootView.findViewById(R.id.textViewCity);
         textViewBirthday = rootView.findViewById(R.id.textViewBirthday);
-        //textViewTestsFullCompleted = rootView.findViewById(R.id.textViewTestFullCompleted);
-        //textViewTestsStarted = rootView.findViewById(R.id.textViewTestStarted);
+
         textViewFullName = rootView.findViewById(R.id.textViewFullName);
         textViewUserStatus = rootView.findViewById(R.id.textViewUserStatus);
         profileImage = rootView.findViewById(R.id.profileImage);
         textViewWebStatus = rootView.findViewById(R.id.textViewWebStatus);
 
         recyclerViewMicroBlog = rootView.findViewById(R.id.recyclerViewMicroBlog);
-        postAdapter = new PostAdapter(postsList);
+        //postAdapter = new PostAdapter(postsList);
+        authorPostAdapter = new AuthorPostAdapter(postsList);
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerViewMicroBlog.setLayoutManager(linearLayoutManager);
-        recyclerViewMicroBlog.setAdapter(postAdapter);
-
-
-        //btnEdit = rootView.findViewById(R.id.btnEdit);
-        //btnSignOut = rootView.findViewById(R.id.btnSingOut);
-
-        //btnSignOut.setOnClickListener(this::onClick);
-        //btnEdit.setOnClickListener(this::onClick);
+        recyclerViewMicroBlog.setAdapter(authorPostAdapter);//postAdapter);
 
         btnCreatePost.setOnClickListener(this::onClickCreatePost);
 
         topAppBar.setOverflowIcon(ResourcesCompat.getDrawable(getResources(),R.drawable.ic_baseline_menu_24,null));
-        topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+        topAppBar.setOnMenuItemClickListener(item -> {
 
-                switch (item.getItemId()) {
+            switch (item.getItemId()) {
 
-                    case R.id.editProfile:
-                        removeDataListeners();
-                        ((MainActivity) Objects.requireNonNull(getActivity()))
-                                .setEditProfileFragment();
-                        break;
+                case R.id.editProfile:
+                    users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).removeEventListener(dataListener);
+                    ((MainActivity) requireActivity())
+                            .setEditProfileFragment();
+                    break;
 
-                    case R.id.settings:
-                        removeDataListeners();
-                        startActivity(new Intent(getContext(),SettingsActivity.class));
-                        break;
+                case R.id.settings:
+                    users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).removeEventListener(dataListener);
+                    startActivity(new Intent(getContext(),SettingsActivity.class));
+                    break;
 
-                    case R.id.aboutTheApp:
-                        removeDataListeners();
-                        startActivity(new Intent(getContext(),AboutTheAppActivity.class));
-                        break;
+                case R.id.aboutTheApp:
+                    users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).removeEventListener(dataListener);
+                    startActivity(new Intent(getContext(),AboutTheAppActivity.class));
+                    break;
 
-                    case R.id.signOut:
+                case R.id.signOut:
 
-                        //<Костыль Technologies>
-                        postAdapter = null;
-                        //</>
-                        isLeaving = true;
+                    //<Костыль Technologies>
+                    //postAdapter = null;
+                    authorPostAdapter = null;
+                    //</>
+                    isLeaving = true;
 
-                        users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).removeEventListener(dataListener);
+                    users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).removeEventListener(dataListener);
 
-                        ((MainActivity)
-                                Objects.requireNonNull(getContext()))
-                                .signOut();
-                        break;
-                }
-
-                return false;
+                    ((MainActivity)
+                            requireContext())
+                            .signOut();
+                    break;
             }
+
+            return false;
         });
 
         loadPosts();
         //updateUI();
+        users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).addValueEventListener(dataListener);
 
         return rootView;
     }
@@ -281,7 +284,10 @@ public class ProfileFragment extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
                 Post post = snapshot.getValue(Post.class);
                 postsList.add(post);
-                postAdapter.notifyDataSetChanged();
+                //postAdapter.notifyDataSetChanged();
+                authorPostAdapter.notifyDataSetChanged();
+
+                Log.d(LOG_TAG, "Post added, key: " + Objects.requireNonNull(post).getKey());
 
             }
 
@@ -314,6 +320,7 @@ public class ProfileFragment extends Fragment {
         if (TextUtils.isEmpty(postText))
         {
             //Nothing do
+            Log.d(LOG_TAG,"Empty text input view");
         }
         else
         {
@@ -336,13 +343,14 @@ public class ProfileFragment extends Fragment {
 
             String date = dateText + " in " + timeText;
 
-            Map postBody = new HashMap();
+            Map<String, String> postBody = new HashMap<>();
             postBody.put("text", postText);
             postBody.put("type", "text");
             postBody.put("author", postAuthorID);
             postBody.put("date", date);
+            postBody.put("key", postsPushID);
 
-            Map postBodyDetails = new HashMap();
+            Map<String, Object> postBodyDetails = new HashMap<>();
             postBodyDetails.put(postAuthorRef + "/" + postsPushID, postBody);
             //postBodyDetails.put(messageReceiverRef + "/" + messagePushID, messageTextBody);
 
@@ -396,43 +404,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        loadData();
         //updateUI();
-    }
-
-    private void loadData() {
-
-        dataListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                firstNStr = dataSnapshot.child("firstName").getValue(String.class);
-                lastNStr = dataSnapshot.child("lastName").getValue(String.class);
-                statusStr = dataSnapshot.child("status").getValue(String.class);
-                regDate = dataSnapshot.child("registerDate").getValue(String.class);
-                webStatus = dataSnapshot.child("webStatus").getValue(String.class);
-                //testsFullCompleted = dataSnapshot.child("testsFullCompleted").getValue(int.class);
-                //testsStarted = dataSnapshot.child("testsStarted").getValue(int.class);
-                profileImageUri = dataSnapshot.child("profileImage").getValue(String.class);
-                birthday = dataSnapshot.child("birthday").getValue(String.class);
-                city = dataSnapshot.child("city").getValue(String.class);
-                aboutMe = dataSnapshot.child("aboutMe").getValue(String.class);
-                selectedBackground = dataSnapshot.child("background").getValue(String.class);
-
-                updateUI();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //Toast.makeText(getContext(),"Error" + error.getMessage(),Toast.LENGTH_SHORT).show();
-                // Failed to read value
-                //Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        };
-
-        users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).addValueEventListener(dataListener);
     }
 
     @Override
@@ -451,7 +423,7 @@ public class ProfileFragment extends Fragment {
         super.onStop();
         if (!isLeaving)
         {
-            removeDataListeners();
+            users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).removeEventListener(dataListener);
         }
         postsList.clear();
     }
@@ -465,10 +437,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-    }
-
-    protected void removeDataListeners() {
         users.child(Objects.requireNonNull(Objects.requireNonNull(mAuth).getCurrentUser()).getUid()).removeEventListener(dataListener);
     }
 

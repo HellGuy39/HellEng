@@ -26,8 +26,6 @@ import com.google.firebase.database.Query;
 import com.hg39.helleng.Models.User;
 import com.squareup.picasso.Picasso;
 
-import java.util.Objects;
-
 public class FindFriendsFragment extends Fragment {
 
     com.google.android.material.appbar.MaterialToolbar toolbar;
@@ -50,7 +48,7 @@ public class FindFriendsFragment extends Fragment {
         mUserRef = FirebaseDatabase.getInstance().getReference().child("Users");
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-        //loadUsers("");
+
     }
 
     @Nullable
@@ -63,16 +61,8 @@ public class FindFriendsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         toolbar = rootView.findViewById(R.id.topAppBar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)getContext()).onBackPressed();
-                //((MainActivity)getContext()).setFragFriends();
-            }
-        });
-
-        //System.out.println(toolbar.getMenu().findItem(R.id.search));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> ((MainActivity) requireContext()).onBackPressed());
 
         return rootView;
     }
@@ -94,7 +84,7 @@ public class FindFriendsFragment extends Fragment {
         adapter = new FirebaseRecyclerAdapter<User, UserViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull UserViewHolder holder, int position, @NonNull User model) {
-                if (!mUser.getUid().equals(getRef(position).getKey().toString()))
+                if (!mUser.getUid().equals(getRef(position).getKey()))
                 {
                     String username = model.getFirstName() + " " + model.getLastName();
 
@@ -112,12 +102,7 @@ public class FindFriendsFragment extends Fragment {
                     holder.itemView.setVisibility(View.GONE);
                     holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0,0));
                 }
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ((MainActivity) Objects.requireNonNull(getContext())).setFragViewOtherProfile(getRef(position).getKey());
-                    }
-                });
+                holder.itemView.setOnClickListener(v -> ((MainActivity) requireContext()).setFragViewOtherProfile(getRef(position).getKey()));
             }
 
             @NonNull
@@ -135,15 +120,13 @@ public class FindFriendsFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        System.out.println(1);
+
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_menu,menu);
-
-        System.out.println(2);
 
         MenuItem menuItem = menu.findItem(R.id.search);
         System.out.println(menuItem);

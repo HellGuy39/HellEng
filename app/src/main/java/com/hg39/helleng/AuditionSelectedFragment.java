@@ -17,14 +17,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.hg39.helleng.AuditionActivity;
-import com.hg39.helleng.MainActivity;
-import com.hg39.helleng.R;
 
 import java.util.Objects;
 
 import static com.hg39.helleng.MainActivity.groupAudition;
-import static com.hg39.helleng.MainActivity.groupGrammar;
 import static com.hg39.helleng.MainActivity.humor;
 import static com.hg39.helleng.MainActivity.superman;
 
@@ -40,6 +36,7 @@ public class AuditionSelectedFragment extends Fragment implements View.OnClickLi
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference usersTestsProgress;
+    ValueEventListener dataListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,11 +49,10 @@ public class AuditionSelectedFragment extends Fragment implements View.OnClickLi
         database = FirebaseDatabase.getInstance();
         usersTestsProgress = database.getReference("Users Tests Progress");
 
-        usersTestsProgress.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(groupAudition).addValueEventListener(new ValueEventListener() {
+        dataListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
+
                 completedHumor = dataSnapshot.child(humor).getValue(String.class);
                 completedSuperman = dataSnapshot.child(superman).getValue(String.class);
 
@@ -68,7 +64,7 @@ public class AuditionSelectedFragment extends Fragment implements View.OnClickLi
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
     }
 
     @Nullable
@@ -79,7 +75,7 @@ public class AuditionSelectedFragment extends Fragment implements View.OnClickLi
                 inflater.inflate(R.layout.fragment_audition_selected,container,false);
 
         toolbar = rootView.findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(v -> ((MainActivity)getContext()).onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> ((MainActivity) requireContext()).onBackPressed());
 
         rootView.findViewById(R.id.cardHumor).setOnClickListener(this);
         rootView.findViewById(R.id.cardSuperman).setOnClickListener(this);
@@ -91,7 +87,15 @@ public class AuditionSelectedFragment extends Fragment implements View.OnClickLi
         tvHumor = rootView.findViewById(R.id.tvHumor);
         tvSuperman = rootView.findViewById(R.id.tvSuperman);
 
+        usersTestsProgress.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(groupAudition).addValueEventListener(dataListener);
+
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        usersTestsProgress.child(Objects.requireNonNull(mAuth.getCurrentUser()).getUid()).child(groupAudition).removeEventListener(dataListener);
     }
 
     @Override
@@ -128,10 +132,13 @@ public class AuditionSelectedFragment extends Fragment implements View.OnClickLi
          *6 - future
          */
 
-        if (v.getId() == R.id.cardHumor) {
+        if (v.getId() == R.id.cardHumor)
+        {
             intent.putExtra("testName", humor);
             startActivity(intent);
-        } else if (v.getId() == R.id.cardSuperman) {
+        }
+        else if (v.getId() == R.id.cardSuperman)
+        {
             intent.putExtra("testName", superman);
             startActivity(intent);
         }

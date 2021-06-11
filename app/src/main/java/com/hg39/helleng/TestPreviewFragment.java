@@ -20,8 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Objects;
-
 import static com.hg39.helleng.TestMakerActivity.ACTION_EDIT_TEST;
 import static com.hg39.helleng.TestMakerActivity.TASK_1;
 import static com.hg39.helleng.TestMakerActivity.TASK_2;
@@ -36,7 +34,6 @@ import static com.hg39.helleng.TestMakerActivity.TASK_QUESTION;
 
 public class TestPreviewFragment extends Fragment {
 
-    androidx.coordinatorlayout.widget.CoordinatorLayout root;
     com.google.android.material.floatingactionbutton.FloatingActionButton fltEdit;
 
     String testID;
@@ -209,16 +206,13 @@ public class TestPreviewFragment extends Fragment {
         btnEnd.setOnClickListener(this::onClickEndTest);
 
         fltEdit = rootView.findViewById(R.id.fltEdit);
-        fltEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(getContext(), "Not avalible in BETA", Toast.LENGTH_SHORT).show();
-                ((TestMakerActivity) Objects.requireNonNull(getContext())).setFragCreateTest(ACTION_EDIT_TEST, testID);
-            }
+        fltEdit.setOnClickListener(v -> {
+            //Toast.makeText(getContext(), "Not avalible in BETA", Toast.LENGTH_SHORT).show();
+            ((TestMakerActivity) requireContext()).setFragCreateTest(ACTION_EDIT_TEST, testID);
         });
 
         toolbar = rootView.findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(v -> ((TestMakerActivity)getContext()).onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> ((TestMakerActivity) requireContext()).onBackPressed());
 
         userTestsStorageRef.child(testID).addValueEventListener(loadData);
 

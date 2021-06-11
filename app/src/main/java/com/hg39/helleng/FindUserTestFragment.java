@@ -1,18 +1,15 @@
 package com.hg39.helleng;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.room.Database;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +23,6 @@ import java.util.Objects;
 
 public class FindUserTestFragment extends Fragment {
 
-    //androidx.constraintlayout.widget.ConstraintLayout root;
     androidx.coordinatorlayout.widget.CoordinatorLayout root;
 
     com.google.android.material.textfield.TextInputEditText etTestId;
@@ -69,7 +65,7 @@ public class FindUserTestFragment extends Fragment {
         btnSearch.setOnClickListener(this::onClickSearch);
 
         toolbar = rootView.findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(v -> ((TestMakerActivity)getContext()).onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> ((TestMakerActivity) requireContext()).onBackPressed());
 
         return rootView;
     }
@@ -96,27 +92,24 @@ public class FindUserTestFragment extends Fragment {
                     String testName = snapshot.child(etTestId.getText().toString()).child("testName").getValue(String.class);
                     String creatorId = snapshot.child(etTestId.getText().toString()).child("creatorID").getValue(String.class);
 
-                    if (creatorId.equals(mAuth.getCurrentUser().getUid())) {
+                    assert creatorId != null;
+                    if (creatorId.equals(Objects.requireNonNull(mAuth.getCurrentUser()).getUid())) {
                         Snackbar.make(root,"Nice try, we know this is your test", Snackbar.LENGTH_LONG).show();
                         return;
                     }
 
-                    assert creatorId != null;
                     usersRef.child(creatorId).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                             String creatorName = snapshot.child("fullName").getValue(String.class);
 
-                            new AlertDialog.Builder(Objects.requireNonNull(getContext()))
+                            new AlertDialog.Builder(requireContext())
                                     .setTitle("Search result")
                                     .setMessage("Test Name: " + testName +  "\nBy " + creatorName)
                                     .setNegativeButton(android.R.string.no, null)
-                                    .setPositiveButton(cont, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface arg0, int arg1) {
-                                            ((TestMakerActivity)getContext()).setFragCompleteOtherTest(etTestId.getText().toString());
-                                        }
-                                    }).create().show();
+                                    .setPositiveButton(cont, (arg0, arg1) ->
+                                            ((TestMakerActivity) requireContext()).setFragCompleteOtherTest(etTestId.getText().toString())).create().show();
 
                         }
 

@@ -16,8 +16,6 @@ import static com.hg39.helleng.SettingsActivity.CONFIG_LANGUAGE;
 
 public class AuditionActivity extends AppCompatActivity {
 
-    WebStatusControl webStatusControl = new WebStatusControl();
-
     Fragment fragAuditionTest,fragResult;
 
     String testName;
@@ -29,8 +27,6 @@ public class AuditionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setLanguage();
         setContentView(R.layout.activity_audition);
-
-        //fragAuditionTest = new
 
         args = getIntent().getExtras();
         testName = args.getString("testName");

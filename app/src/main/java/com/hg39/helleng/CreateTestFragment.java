@@ -2,26 +2,19 @@ package com.hg39.helleng;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -49,12 +42,10 @@ import static com.hg39.helleng.TestMakerActivity.TASK_ANSWER;
 import static com.hg39.helleng.TestMakerActivity.TASK_DESCRIPTION;
 import static com.hg39.helleng.TestMakerActivity.TASK_QUESTION;
 import static com.hg39.helleng.TestMakerActivity.TASK_TYPE;
-import static com.hg39.helleng.TestMakerActivity.TYPE_RADIO_GROUP;
 import static com.hg39.helleng.TestMakerActivity.TYPE_TEXT_FIELD;
 
 public class CreateTestFragment extends Fragment {
 
-    //Step 1
     com.google.android.material.textfield.TextInputEditText etTestId, etTestName;
     AutoCompleteTextView timeDropdown,tasksDropdown;
     Button btnStep1ExpandMore;
@@ -62,14 +53,6 @@ public class CreateTestFragment extends Fragment {
     LinearLayout containerStep1;
 
     com.google.android.material.textfield.TextInputLayout layoutTestId;
-
-    //Step 2
-    //Button btnStep2ExpandMore;
-    //boolean isVisibleStep2;
-    //LinearLayout containerStep2;
-
-    //Step 3
-    //Button btnStep3ExpandMore;
 
     LinearLayout containerTextFieldTask1,containerTextFieldTask2,containerTextFieldTask3,containerTextFieldTask4,
             containerTextFieldTask5,containerTextFieldTask6,containerTextFieldTask7;
@@ -91,8 +74,6 @@ public class CreateTestFragment extends Fragment {
 
     LinearLayout containerTask1, containerTask2, containerTask3, containerTask4, containerTask5,
             containerTask6, containerTask7;
-
-    //View viewStroke1,viewStroke2,viewStroke3,viewStroke4,viewStroke5,viewStroke6,viewStroke7,viewStroke8;
 
     //General
     com.google.android.material.appbar.MaterialToolbar toolbar;
@@ -192,15 +173,15 @@ public class CreateTestFragment extends Fragment {
         btnStep1ExpandMore.setOnClickListener(this::onClickExpand);
         btnStep1ExpandMore.setRotation(180);
 
-        adapterTasks = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, countOfTasks);
+        adapterTasks = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, countOfTasks);
         adapterTasks.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tasksDropdown.setAdapter(adapterTasks);
 
-        adapterTime = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, time);
+        adapterTime = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, time);
         adapterTime.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeDropdown.setAdapter(adapterTime);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, tasksType);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, tasksType);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         etTask1Description = rootView.findViewById(R.id.etTask1Description);
@@ -239,7 +220,7 @@ public class CreateTestFragment extends Fragment {
         containerTask7 = rootView.findViewById(R.id.container_task7);
 
         toolbar = rootView.findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(v -> ((TestMakerActivity)getContext()).onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> ((TestMakerActivity) requireContext()).onBackPressed());
 
         if (action.equals(ACTION_CREATE_TEST))
             toolbar.setTitle("Create Test");
@@ -256,9 +237,7 @@ public class CreateTestFragment extends Fragment {
             changingTasksCount(countOfTasksRes);
         });
 
-        timeDropdown.setOnItemClickListener((parent, view, position, id) -> {
-            testTimeRes = (String)parent.getItemAtPosition(position);
-        });
+        timeDropdown.setOnItemClickListener((parent, view, position, id) -> testTimeRes = (String)parent.getItemAtPosition(position));
 
         tasksDropdown.setText(adapterTasks.getItem(1), false);
         timeDropdown.setText(adapterTime.getItem(0), false);
@@ -378,42 +357,43 @@ public class CreateTestFragment extends Fragment {
         etTask3Description.setText(task3Description);
         etTask3Question.setText(task3Question);
 
-        if (countOfTasksRes.equals("3"))
-        {
-            tasksDropdown.setText(adapterTasks.getItem(0), false);
-        }
-        else if (countOfTasksRes.equals("5"))
-        {
-            etTask4Answer.setText(task4Answer);
-            etTask4Description.setText(task4Description);
-            etTask4Question.setText(task4Question);
+        switch (countOfTasksRes) {
+            case "3":
+                tasksDropdown.setText(adapterTasks.getItem(0), false);
+                break;
 
-            etTask5Answer.setText(task5Answer);
-            etTask5Description.setText(task5Description);
-            etTask5Question.setText(task5Question);
+            case "5":
+                etTask4Answer.setText(task4Answer);
+                etTask4Description.setText(task4Description);
+                etTask4Question.setText(task4Question);
 
-            tasksDropdown.setText(adapterTasks.getItem(1), false);
+                etTask5Answer.setText(task5Answer);
+                etTask5Description.setText(task5Description);
+                etTask5Question.setText(task5Question);
 
-        }
-        else if (countOfTasksRes.equals("7"))
-        {
-            etTask4Answer.setText(task4Answer);
-            etTask4Description.setText(task4Description);
-            etTask4Question.setText(task4Question);
+                tasksDropdown.setText(adapterTasks.getItem(1), false);
 
-            etTask5Answer.setText(task5Answer);
-            etTask5Description.setText(task5Description);
-            etTask5Question.setText(task5Question);
+                break;
 
-            etTask6Answer.setText(task6Answer);
-            etTask6Description.setText(task6Description);
-            etTask6Question.setText(task6Question);
+            case "7":
+                etTask4Answer.setText(task4Answer);
+                etTask4Description.setText(task4Description);
+                etTask4Question.setText(task4Question);
 
-            etTask7Answer.setText(task7Answer);
-            etTask7Description.setText(task7Description);
-            etTask7Question.setText(task7Question);
+                etTask5Answer.setText(task5Answer);
+                etTask5Description.setText(task5Description);
+                etTask5Question.setText(task5Question);
 
-            tasksDropdown.setText(adapterTasks.getItem(2), false);
+                etTask6Answer.setText(task6Answer);
+                etTask6Description.setText(task6Description);
+                etTask6Question.setText(task6Question);
+
+                etTask7Answer.setText(task7Answer);
+                etTask7Description.setText(task7Description);
+                etTask7Question.setText(task7Question);
+
+                tasksDropdown.setText(adapterTasks.getItem(2), false);
+                break;
         }
 
     }
@@ -437,36 +417,6 @@ public class CreateTestFragment extends Fragment {
             }
 
         }
-        /*else if (view.getId() == R.id.btnStep2ExpandMore)
-        {
-            if (isVisibleStep2)
-            {
-                view.setRotation(0);
-                containerStep2.setVisibility(View.GONE);
-                isVisibleStep2 = false;
-            }
-            else
-            {
-                view.setRotation(180);
-                containerStep2.setVisibility(View.VISIBLE);
-                isVisibleStep2 = true;
-            }
-        }*/
-        /*else if (view.getId() == R.id.btnStep3ExpandMore)
-        {
-            if (isVisibleStep3)
-            {
-                view.setRotation(0);
-                containerStep3.setVisibility(View.GONE);
-                isVisibleStep3 = false;
-            }
-            else
-            {
-                view.setRotation(180);
-                containerStep3.setVisibility(View.VISIBLE);
-                isVisibleStep3 = true;
-            }
-        }*/
     }
 
     private void changingTasksCount(String countOfTasks) {
@@ -849,8 +799,6 @@ public class CreateTestFragment extends Fragment {
             }
         }
 
-
-
         if (!TextUtils.isDigitsOnly(etTestId.getText().toString())) {
             loadingBar.setTitle("Saving...");
             loadingBar.setMessage("Saving your test, please wait...");
@@ -862,7 +810,6 @@ public class CreateTestFragment extends Fragment {
         else
         {
             Snackbar.make(root, "ID must contain characters",Snackbar.LENGTH_LONG).show();
-            return;
         }
 
     }
@@ -1036,7 +983,7 @@ public class CreateTestFragment extends Fragment {
                             loadingBar.dismiss();
 
                             //Toast.makeText(getContext(), "Test Succsefull created!", Toast.LENGTH_SHORT).show();
-                            ((TestMakerActivity)getContext()).finish();
+                            ((TestMakerActivity) requireContext()).finish();
 
                         }
                         else

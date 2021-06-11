@@ -1,5 +1,6 @@
 package com.hg39.helleng;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -10,24 +11,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Message;
 import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -51,6 +46,7 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.hg39.helleng.MainActivity.LOG_TAG;
 import static com.hg39.helleng.SettingsActivity.CONFIG_FILE;
 import static com.hg39.helleng.SettingsActivity.CONFIG_LANGUAGE;
 
@@ -127,12 +123,7 @@ public class DialogActivity extends AppCompatActivity {
 
         //chatToolBar = findViewById(R.id.topAppBar);
 
-        chatToolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        chatToolBar.setNavigationOnClickListener(v -> onBackPressed());
 
         btnSendMessage.setOnClickListener(v -> sendMessage());
 
@@ -144,7 +135,7 @@ public class DialogActivity extends AppCompatActivity {
                         messagesList.add(messages);
                         messageAdapter.notifyDataSetChanged();
 
-                        userMessagesList.smoothScrollToPosition(userMessagesList.getAdapter().getItemCount());
+                        userMessagesList.smoothScrollToPosition(Objects.requireNonNull(userMessagesList.getAdapter()).getItemCount());
 
                     }
 
@@ -182,7 +173,7 @@ public class DialogActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(messageText))
         {
-            //
+            Log.d(LOG_TAG,"Message Input is Empty");
         }
         else
         {
@@ -195,27 +186,23 @@ public class DialogActivity extends AppCompatActivity {
             String messagePushID = userMessageKeyRef.getKey();
 
             Date currentDate = new Date();
-            // Форматирование времени как "день.месяц.год"
-            //DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-            //String dateText = dateFormat.format(currentDate);
-            // Форматирование времени как "часы:минуты:секунды"
             DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
             String timeText = timeFormat.format(currentDate);
 
-            Map messageTextBody = new HashMap();
+            Map<String, String> messageTextBody = new HashMap<>();
             messageTextBody.put("message", messageText);
             messageTextBody.put("type", "text");
             messageTextBody.put("from", messageSenderID);
             messageTextBody.put("time", timeText);
 
-            Map messageBodyDetails = new HashMap();
+            Map<String, Object> messageBodyDetails = new HashMap<>();
             messageBodyDetails.put(messageSenderRef + "/" + messagePushID, messageTextBody);
             messageBodyDetails.put(messageReceiverRef + "/" + messagePushID, messageTextBody);
 
             rootRef.updateChildren(messageBodyDetails).addOnCompleteListener(task -> {
                 if (task.isSuccessful())
                 {
-                    //Toast.makeText(DialogActivity.this, "Yep!", Toast.LENGTH_SHORT).show();
+                    Log.d(LOG_TAG,"Message successful send");
                 }
                 else
                 {
@@ -235,16 +222,18 @@ public class DialogActivity extends AppCompatActivity {
     private void initializationActionBar() {
 
         LayoutInflater layoutInflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View actionBarView = layoutInflater.inflate(R.layout.custom_top_chat_bar, null);
+        @SuppressLint("InflateParams") View actionBarView = layoutInflater.inflate(R.layout.custom_top_chat_bar, null);
 
         chatToolBar = findViewById(R.id.chat_bar);
         setSupportActionBar(chatToolBar);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowCustomEnabled(true);
 
-        actionBar.setCustomView(actionBarView);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setCustomView(actionBarView);
+        }
 
         userImage = findViewById(R.id.custom_profileImage);
         tvUsername = findViewById(R.id.custom_username);

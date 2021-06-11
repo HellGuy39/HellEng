@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,25 +48,15 @@ public class ViewOtherProfileFragment extends Fragment {
 
     Button btnPerform,btnDecline;
 
-    //FirebaseUser mUser;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
-    //DatabaseReference mUserRef;
-    //DatabaseReference mThisUserRef;
-    //DatabaseReference notificationRef;
     StorageReference storageReference;
     StorageReference profileRef;
-    //DatabaseReference requestRef,friendRef;
+
 
     DatabaseReference userRef, requestRef, friendRef, notificationRef,  postsRef;
 
-    //String firstNStr,lastNStr,statusStr,regDate;
-    //String profileImageUri;
     String currentState;
-
-    //String thisFirstNStr,thisLastNStr,thisStatusStr,thisRegDate;
-    //String thisProfileImageUri;
-    //String webStatus;
 
     String userID;
     String receiverUserID, senderUserID;
@@ -87,8 +76,6 @@ public class ViewOtherProfileFragment extends Fragment {
 
     ImageView imageBackground;
 
-    Button btnCreatePost,btnAttachments;
-    EditText editTextNewPost;
     RecyclerView recyclerViewMicroBlog;
     LinearLayoutManager linearLayoutManager;
     PostAdapter postAdapter;
@@ -104,6 +91,7 @@ public class ViewOtherProfileFragment extends Fragment {
 
         currentState = "new";
 
+        assert getArguments() != null;
         userID = getArguments().getString("userKey","Nope");
 
         //Muhamed Ali power
@@ -115,7 +103,7 @@ public class ViewOtherProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         //mUser = mAuth.getCurrentUser();
 
-        senderUserID = mAuth.getCurrentUser().getUid();
+        senderUserID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -222,6 +210,7 @@ public class ViewOtherProfileFragment extends Fragment {
                 {
                     String requestType = snapshot.child(receiverUserID).child("requestType").getValue(String.class);
 
+                    assert requestType != null;
                     if (requestType.equals("sent"))
                     {
                         btnPerform.setText("Cancel Friend Request");

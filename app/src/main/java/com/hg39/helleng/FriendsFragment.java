@@ -19,7 +19,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.hg39.helleng.Models.User;
 import com.squareup.picasso.Picasso;
@@ -30,7 +29,6 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
 
     RecyclerView recyclerView;
 
-    //com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton extendedFloatingActionButtonFind;
     com.google.android.material.appbar.MaterialToolbar toolbar;
 
     FirebaseRecyclerOptions<User>options;
@@ -47,7 +45,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-        currentUserID = mAuth.getCurrentUser().getUid();
+        currentUserID = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         friendsRef = FirebaseDatabase.getInstance().getReference().child("Friends").child(currentUserID);
         mUser = mAuth.getCurrentUser();
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -68,13 +66,9 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getContext()).onBackPressed();
-                //((MainActivity)getContext()).setFragChat();
+                ((MainActivity) requireContext()).onBackPressed();
             }
         });
-
-        //extendedFloatingActionButtonFind = rootView.findViewById(R.id.floatingButtonFind);
-        //extendedFloatingActionButtonFind.setOnClickListener(this);
 
         loadFriend();
 
@@ -90,6 +84,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
 
                 String userIDs = getRef(position).getKey();
 
+                assert userIDs != null;
                 usersRef.child(userIDs).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -127,7 +122,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ((MainActivity) Objects.requireNonNull(getContext())).setFragViewOtherProfile(getRef(position).getKey());
+                        ((MainActivity) requireContext()).setFragViewOtherProfile(getRef(position).getKey());
                     }
                 });
 

@@ -1,6 +1,5 @@
 package com.hg39.helleng;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +17,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Objects;
-
 public class VocabularyRuleFragment extends Fragment {
 
     private TextView word1,word2,word3,word4,word5,word6,word7,word8,word9,word10;
@@ -32,6 +29,8 @@ public class VocabularyRuleFragment extends Fragment {
 
     String testName;
 
+    ValueEventListener loadData;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,76 +39,12 @@ public class VocabularyRuleFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         tests = database.getReference("Tests");
 
+        assert getArguments() != null;
         testName = getArguments().getString("testName","null");
 
-        setWordsArr(testName);
-
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
-
-        View rootView =
-                inflater.inflate(R.layout.fragment_vocabulary_rule,container,false);
-
-        word1 = rootView.findViewById(R.id.word1);
-        word2 = rootView.findViewById(R.id.word2);
-        word3 = rootView.findViewById(R.id.word3);
-        word4 = rootView.findViewById(R.id.word4);
-        word5 = rootView.findViewById(R.id.word5);
-        word6 = rootView.findViewById(R.id.word6);
-        word7 = rootView.findViewById(R.id.word7);
-        word8 = rootView.findViewById(R.id.word8);
-        word9 = rootView.findViewById(R.id.word9);
-        word10 = rootView.findViewById(R.id.word10);
-
-        fltStartTest = rootView.findViewById(R.id.fltStartTest);
-        fltStartTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(Objects.requireNonNull(getContext()))
-                        .setTitle("Continuation confirmation")
-                        .setMessage("Are you sure want to continue?")
-                        .setNegativeButton(android.R.string.no,null)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ((VocabularyActivity)getContext()).setFragVocabularyTest();
-                            }
-                        }).create().show();
-            }
-        });
-
-        return rootView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        //updateUI();
-    }
-
-    private void updateUI() {
-        word1.setText(wordsArr[0]);
-        word2.setText(wordsArr[1]);
-        word3.setText(wordsArr[2]);
-        word4.setText(wordsArr[3]);
-        word5.setText(wordsArr[4]);
-        word6.setText(wordsArr[5]);
-        word7.setText(wordsArr[6]);
-        word8.setText(wordsArr[7]);
-        word9.setText(wordsArr[8]);
-        word10.setText(wordsArr[9]);
-    }
-
-    private void setWordsArr(String testName) {
-
-        tests.addValueEventListener(new ValueEventListener() {
+        loadData = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 wordsArr[0] = snapshot.child("Words").child(testName).child("Transcription").child("0").getValue(String.class);
                 wordsArr[1] = snapshot.child("Words").child(testName).child("Transcription").child("1").getValue(String.class);
                 wordsArr[2] = snapshot.child("Words").child(testName).child("Transcription").child("2").getValue(String.class);
@@ -128,6 +63,62 @@ public class VocabularyRuleFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View rootView =
+                inflater.inflate(R.layout.fragment_vocabulary_rule,container,false);
+
+        word1 = rootView.findViewById(R.id.word1);
+        word2 = rootView.findViewById(R.id.word2);
+        word3 = rootView.findViewById(R.id.word3);
+        word4 = rootView.findViewById(R.id.word4);
+        word5 = rootView.findViewById(R.id.word5);
+        word6 = rootView.findViewById(R.id.word6);
+        word7 = rootView.findViewById(R.id.word7);
+        word8 = rootView.findViewById(R.id.word8);
+        word9 = rootView.findViewById(R.id.word9);
+        word10 = rootView.findViewById(R.id.word10);
+
+        fltStartTest = rootView.findViewById(R.id.fltStartTest);
+        fltStartTest.setOnClickListener(v -> new AlertDialog.Builder(requireContext())
+                .setTitle("Continuation confirmation")
+                .setMessage("Are you sure want to continue?")
+                .setNegativeButton(android.R.string.no,null)
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> ((VocabularyActivity) requireContext()).setFragVocabularyTest()).create().show());
+
+        tests.addValueEventListener(loadData);
+
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        tests.removeEventListener(loadData);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    private void updateUI() {
+        word1.setText(wordsArr[0]);
+        word2.setText(wordsArr[1]);
+        word3.setText(wordsArr[2]);
+        word4.setText(wordsArr[3]);
+        word5.setText(wordsArr[4]);
+        word6.setText(wordsArr[5]);
+        word7.setText(wordsArr[6]);
+        word8.setText(wordsArr[7]);
+        word9.setText(wordsArr[8]);
+        word10.setText(wordsArr[9]);
     }
 }

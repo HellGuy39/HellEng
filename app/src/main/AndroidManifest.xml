@@ -17,23 +17,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HellEng">
-        <activity android:name=".TestMakerActivity"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
-        <activity android:name=".ChillZoneActivty"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".ResetPasswordActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".AuditionActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".RegisterActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".AboutTheAppActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".SettingsActivity"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".DialogActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".TestMakerActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".AuditionActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".RegisterActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".AboutTheAppActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".SettingsActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".DialogActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/SplashTheme">
@@ -58,31 +62,33 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" /> <!-- optional (needed if default theme has no action bar) -->
-
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-        See README(https://goo.gl/l4GJaQ) for more. -->
+        <!--
+ Set custom default icon. This is used when no icon is set for incoming notification messages.
+        See README(https://goo.gl/l4GJaQ) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_baseline_chat_24" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/blue" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id"/>
+            android:value="@string/default_notification_channel_id" />
 
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
     </application>

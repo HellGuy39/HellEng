@@ -1,19 +1,17 @@
 package com.hg39.helleng;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -210,7 +208,7 @@ public class CompleteOtherTestFragment extends Fragment {
         btnEnd.setOnClickListener(this::onClickEndTest);
 
         toolbar = rootView.findViewById(R.id.topAppBar);
-        toolbar.setNavigationOnClickListener(v -> ((TestMakerActivity)getContext()).onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> ((TestMakerActivity) requireContext()).onBackPressed());
 
         return rootView;
     }
@@ -307,28 +305,26 @@ public class CompleteOtherTestFragment extends Fragment {
         }
 
 
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(requireContext())
                 .setTitle("End confirmation")
                 .setMessage("Are you sure you want to finish the test?")
                 .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
+                .setPositiveButton(android.R.string.yes, (arg0, arg1) -> {
 
-                        loadingBar.setTitle("Saving...");
-                        loadingBar.setMessage("Just wait...");
-                        loadingBar.setCanceledOnTouchOutside(false);
-                        loadingBar.show();
+                    loadingBar.setTitle("Saving...");
+                    loadingBar.setMessage("Just wait...");
+                    loadingBar.setCanceledOnTouchOutside(false);
+                    loadingBar.show();
 
-                        captureUserAnswer();
-                        saveUserResults();
+                    captureUserAnswer();
+                    saveUserResults();
 
-                        loadingBar.dismiss();
+                    loadingBar.dismiss();
 
-                        ((TestMakerActivity)getContext()).setFragResult(userAnswer1,userAnswer2,userAnswer3,userAnswer4,userAnswer5,userAnswer6,userAnswer7,
-                                correctAnswer1,correctAnswer2,correctAnswer3,correctAnswer4,correctAnswer5,correctAnswer6,correctAnswer7,
-                                completed,countOfTasks,testName);
+                    ((TestMakerActivity) requireContext()).setFragResult(userAnswer1,userAnswer2,userAnswer3,userAnswer4,userAnswer5,userAnswer6,userAnswer7,
+                            correctAnswer1,correctAnswer2,correctAnswer3,correctAnswer4,correctAnswer5,correctAnswer6,correctAnswer7,
+                            completed,countOfTasks,testName);
 
-                    }
                 }).create().show();
 
     }

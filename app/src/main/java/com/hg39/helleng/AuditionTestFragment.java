@@ -104,11 +104,14 @@ public class AuditionTestFragment extends Fragment {
         humourSound = MediaPlayer.create(getContext(), R.raw.humour);
         supermanSound = MediaPlayer.create(getContext(), R.raw.superman);
 
-        testName = Objects.requireNonNull(getArguments()).getString("testName", "null");
+        testName = requireArguments().getString("testName", "null");
 
-        if (testName.equals(humor)) {
+        if (testName.equals(humor))
+        {
             actualSound = humourSound;
-        } else if (testName.equals(superman)) {
+        }
+        else if (testName.equals(superman))
+        {
             actualSound = supermanSound;
         }
 
@@ -163,7 +166,6 @@ public class AuditionTestFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
 
         View rootView =
                 inflater.inflate(R.layout.fragment_audition_test,container,false);
@@ -187,15 +189,6 @@ public class AuditionTestFragment extends Fragment {
         taskView2 = rootView.findViewById(R.id.tvTask2);
         taskView3 = rootView.findViewById(R.id.tvTask3);
 
-        //task1Before = rootView.findViewById(R.id.tvTask1Before);
-        //task1After = rootView.findViewById(R.id.tvTask1After);
-
-        //task2Before = rootView.findViewById(R.id.tvTask2Before);
-        //task2After = rootView.findViewById(R.id.tvTask2After);
-
-        //task3Before = rootView.findViewById(R.id.tvTask3Before);
-        //task3After = rootView.findViewById(R.id.tvTask3After);
-
         etAnswer1 = rootView.findViewById(R.id.etAnswer1);
         etAnswer2 = rootView.findViewById(R.id.etAnswer2);
         etAnswer3 = rootView.findViewById(R.id.etAnswer3);
@@ -208,7 +201,8 @@ public class AuditionTestFragment extends Fragment {
         cardInputText2 = rootView.findViewById(R.id.cardInputText2);
         cardInputText3 = rootView.findViewById(R.id.cardInputText3);
 
-        if (testName.equals(humor)) {
+        if (testName.equals(humor))
+        {
 
             cardRadioButtons1.setVisibility(View.VISIBLE);
             cardRadioButtons2.setVisibility(View.VISIBLE);
@@ -219,8 +213,9 @@ public class AuditionTestFragment extends Fragment {
             cardInputText3.setVisibility(View.GONE);
 
             radioButtonsSetListeners();
-        } else if (testName.equals(superman)) {
-
+        }
+        else if (testName.equals(superman))
+        {
             cardRadioButtons1.setVisibility(View.GONE);
             cardRadioButtons2.setVisibility(View.GONE);
             cardRadioButtons3.setVisibility(View.GONE);
@@ -330,7 +325,7 @@ public class AuditionTestFragment extends Fragment {
         super.onStop();
         soundPlay(actualSound, "pause");
         isPlay = false;
-        btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));//getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+        btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));
     }
 
     @Override
@@ -338,7 +333,7 @@ public class AuditionTestFragment extends Fragment {
         super.onDestroy();
         soundPlay(actualSound, "pause");
         isPlay = false;
-        btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));//getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+        btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));
     }
 
     @Override
@@ -346,7 +341,7 @@ public class AuditionTestFragment extends Fragment {
         super.onPause();
         soundPlay(actualSound, "pause");
         isPlay = false;
-        btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));//getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+        btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));
     }
 
     private void soundPlay(MediaPlayer sound, String ToDo) {
@@ -354,19 +349,24 @@ public class AuditionTestFragment extends Fragment {
             case "play":
                 sound.start();
                 break;
+
             case "pause":
                 sound.pause();
                 break;
+
             case "replay":
                 //sound.reset();
                 sound.seekTo(0);
                 break;
+
             case "volumeOff":
                 sound.setVolume(0f, 0f);
                 break;
+
             case "volumeOn":
                 sound.setVolume(1f, 1f);
                 break;
+
             case "change track pos":
                 sound.seekTo(seekBar.getProgress());
                 break;
@@ -381,12 +381,12 @@ public class AuditionTestFragment extends Fragment {
             {
                 soundPlay(actualSound, "pause");
                 isPlay = false;
-                btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));//getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+                btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_arrow_24, null));
             }
             else {
                 soundPlay(actualSound, "play");
                 isPlay = true;
-                btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_pause_24, null));//getResources().getDrawable(R.drawable.ic_baseline_pause_24));
+                btnPlayOrPause.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_pause_24, null));
             }
         }
         else if (view.getId() == R.id.btnReplay)
@@ -399,12 +399,13 @@ public class AuditionTestFragment extends Fragment {
             {
                 soundPlay(actualSound, "volumeOff");
                 isVolumeOn = false;
-                btnVolumeOnOrOff.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_volume_off_24, null));//getResources().getDrawable(R.drawable.ic_baseline_volume_off_24));
+                btnVolumeOnOrOff.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_volume_off_24, null));
             }
-            else {
+            else
+            {
                 soundPlay(actualSound, "volumeOn");
                 isVolumeOn = true;
-                btnVolumeOnOrOff.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_volume_up_24, null));//getResources().getDrawable(R.drawable.ic_baseline_volume_up_24));
+                btnVolumeOnOrOff.setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_volume_up_24, null));
             }
         }
 
@@ -412,9 +413,12 @@ public class AuditionTestFragment extends Fragment {
 
     private void updateUI() {
 
-        if (actualSound == humourSound) {
+        if (actualSound == humourSound)
+        {
             radioButtonsSetText();
-        } else if (actualSound == supermanSound) {
+        }
+        else if (actualSound == supermanSound)
+        {
             textViewsSetText();
         }
 
@@ -432,58 +436,56 @@ public class AuditionTestFragment extends Fragment {
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void radioButtonsSetListeners() {
-        group1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.task1RdBtn1:
-                        userAnswer1 = task1RdBtn1.getText().toString();
-                        break;
-                    case R.id.task1RdBtn2:
-                        userAnswer1 = task1RdBtn2.getText().toString();
-                        break;
-                    case R.id.task1RdBtn3:
-                        userAnswer1 = task1RdBtn3.getText().toString();
-                        break;
-                }
+        group1.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId)
+            {
+                case R.id.task1RdBtn1:
+                    userAnswer1 = task1RdBtn1.getText().toString();
+                    break;
+
+                case R.id.task1RdBtn2:
+                    userAnswer1 = task1RdBtn2.getText().toString();
+                    break;
+
+                case R.id.task1RdBtn3:
+                    userAnswer1 = task1RdBtn3.getText().toString();
+                    break;
             }
         });
 
-        group2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.task2RdBtn1:
-                        userAnswer2 = task2RdBtn1.getText().toString();
-                        break;
-                    case R.id.task2RdBtn2:
-                        userAnswer2 = task2RdBtn2.getText().toString();
-                        break;
-                    case R.id.task2RdBtn3:
-                        userAnswer2 = task2RdBtn3.getText().toString();
-                        break;
-                }
+        group2.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId)
+            {
+                case R.id.task2RdBtn1:
+                    userAnswer2 = task2RdBtn1.getText().toString();
+                    break;
+
+                case R.id.task2RdBtn2:
+                    userAnswer2 = task2RdBtn2.getText().toString();
+                    break;
+
+                case R.id.task2RdBtn3:
+                    userAnswer2 = task2RdBtn3.getText().toString();
+                    break;
             }
         });
 
-        group3.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.task3RdBtn1:
-                        userAnswer3 = task3RdBtn1.getText().toString();
-                        break;
-                    case R.id.task3RdBtn2:
-                        userAnswer3 = task3RdBtn2.getText().toString();
-                        break;
-                    case R.id.task3RdBtn3:
-                        userAnswer3 = task3RdBtn3.getText().toString();
-                        break;
-                }
+        group3.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId)
+            {
+                case R.id.task3RdBtn1:
+                    userAnswer3 = task3RdBtn1.getText().toString();
+                    break;
+
+                case R.id.task3RdBtn2:
+                    userAnswer3 = task3RdBtn2.getText().toString();
+                    break;
+
+                case R.id.task3RdBtn3:
+                    userAnswer3 = task3RdBtn3.getText().toString();
+                    break;
             }
         });
     }
@@ -540,7 +542,7 @@ public class AuditionTestFragment extends Fragment {
 
         testProgressControl.SaveTestProgress(groupAudition,testName,completedString);
 
-        ((AuditionActivity) Objects.requireNonNull(getContext())).setFragResult(userAnswer1,userAnswer2,userAnswer3,
+        ((AuditionActivity) requireContext()).setFragResult(userAnswer1,userAnswer2,userAnswer3,
                                                                                 answers1,answers2,answers3,
                                                                                 completed, 3,testName);
 

@@ -1,6 +1,5 @@
 package com.hg39.helleng;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import static com.hg39.helleng.MainActivity.food;
@@ -88,7 +88,6 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
         View rootView
                 = inflater.inflate(R.layout.fragment_test_result,container,false);
 
@@ -210,12 +209,16 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
         tvTrueAnswer11.setText(trueAnswer11);
         tvTrueAnswer12.setText(trueAnswer12);
 
-        if (testName.equals(humor) || testName.equals(superman)) {
+        if (testName.equals(humor) || testName.equals(superman))
+        {
             tvCompleted.setText(completed + "/" + countOfTasks);
-        } else if (testName.equals(presentSimple) || testName.equals(pastSimple) || testName.equals(futureSimple) ||
+        }
+        else if (testName.equals(presentSimple) || testName.equals(pastSimple) || testName.equals(futureSimple) ||
                 testName.equals(schoolSupplies) || testName.equals(furniture) || testName.equals(food)){
             tvCompleted.setText(completed + "%");
-        } else{
+        }
+        else
+        {
             tvCompleted.setText(completed + "/" + countOfTasks);
         }
 
@@ -223,118 +226,116 @@ public class TestResultFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnOk) {
-
+        if (v.getId() == R.id.btnOk)
+        {
             if (testName.equals("null"))
             {
                 Toast.makeText(getContext(),"Something wrong!",Toast.LENGTH_SHORT).show();
             }
             else if (testName.equals(furniture) || testName.equals(food) ||testName.equals(schoolSupplies))
             {
-                //startActivity(new Intent(getContext(), MainActivity.class));
-                    ((VocabularyActivity)getContext()).finishActivity();
+                ((VocabularyActivity) requireContext()).finishActivity();
             }
             else if (testName.equals(presentSimple) || testName.equals(pastSimple) || testName.equals(futureSimple))
             {
-               // startActivity(new Intent(getContext(), MainActivity.class));
-                    ((GrammarActivity)getContext()).finishActivity();
+                ((GrammarActivity) requireContext()).finishActivity();
             }
             else if (testName.equals(humor) || testName.equals(superman))
             {
-                //startActivity(new Intent(getContext(), MainActivity.class));
-                    ((AuditionActivity)getContext()).finishActivity();
-            } else {
-                //startActivity(new Intent(getContext(), MainActivity.class));
-                ((TestMakerActivity)getContext()).finish();
+                ((AuditionActivity) requireContext()).finishActivity();
+            }
+            else
+            {
+                ((TestMakerActivity) requireContext()).finish();
             }
         }
     }
 
     private void colorSetter() {
 
-        tvTrueAnswer1.setBackgroundColor(getResources().getColor(R.color.light_green));
-        tvTrueAnswer2.setBackgroundColor(getResources().getColor(R.color.light_green));
-        tvTrueAnswer3.setBackgroundColor(getResources().getColor(R.color.light_green));
-        tvTrueAnswer4.setBackgroundColor(getResources().getColor(R.color.light_green));
-        tvTrueAnswer5.setBackgroundColor(getResources().getColor(R.color.light_green));
-        tvTrueAnswer6.setBackgroundColor(getResources().getColor(R.color.light_green));
-        tvTrueAnswer7.setBackgroundColor(getResources().getColor(R.color.light_green));
-        tvTrueAnswer8.setBackgroundColor(getResources().getColor(R.color.light_green));
-        tvTrueAnswer9.setBackgroundColor(getResources().getColor(R.color.light_green));
-        tvTrueAnswer10.setBackgroundColor(getResources().getColor(R.color.light_green));
-        tvTrueAnswer11.setBackgroundColor(getResources().getColor(R.color.light_green));
-        tvTrueAnswer12.setBackgroundColor(getResources().getColor(R.color.light_green));
+        tvTrueAnswer1.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
+        tvTrueAnswer2.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
+        tvTrueAnswer3.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
+        tvTrueAnswer4.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
+        tvTrueAnswer5.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
+        tvTrueAnswer6.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
+        tvTrueAnswer7.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
+        tvTrueAnswer8.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
+        tvTrueAnswer9.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
+        tvTrueAnswer10.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
+        tvTrueAnswer11.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
+        tvTrueAnswer12.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
 
         if (userAnswer1.equalsIgnoreCase(trueAnswer1)) {
-            tvUserAnswer1.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer1.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer1.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer1.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
 
         if (userAnswer2.equalsIgnoreCase(trueAnswer2)) {
-            tvUserAnswer2.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer2.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer2.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer2.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
 
         if (userAnswer3.equalsIgnoreCase(trueAnswer3)) {
-            tvUserAnswer3.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer3.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer3.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer3.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
 
         if (userAnswer4.equalsIgnoreCase(trueAnswer4)) {
-            tvUserAnswer4.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer4.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer4.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer4.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
 
         if (userAnswer5.equalsIgnoreCase(trueAnswer5)) {
-            tvUserAnswer5.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer5.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer5.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer5.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
 
         if (userAnswer6.equalsIgnoreCase(trueAnswer6)) {
-            tvUserAnswer6.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer6.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer6.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer6.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
 
         if (userAnswer7.equalsIgnoreCase(trueAnswer7)) {
-            tvUserAnswer7.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer7.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer7.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer7.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
 
         if (userAnswer8.equalsIgnoreCase(trueAnswer8)) {
-            tvUserAnswer8.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer8.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer8.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer8.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
 
         if (userAnswer9.equalsIgnoreCase(trueAnswer9)) {
-            tvUserAnswer9.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer9.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer9.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer9.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
 
         if (userAnswer10.equalsIgnoreCase(trueAnswer10)) {
-            tvUserAnswer10.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer10.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer10.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer10.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
 
         if (userAnswer11.equalsIgnoreCase(trueAnswer11)) {
-            tvUserAnswer11.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer11.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer11.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer11.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
 
         if (userAnswer12.equalsIgnoreCase(trueAnswer12)) {
-            tvUserAnswer12.setBackgroundColor(getResources().getColor(R.color.light_green));
+            tvUserAnswer12.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_green, null));
         } else {
-            tvUserAnswer12.setBackgroundColor(getResources().getColor(R.color.light_red));
+            tvUserAnswer12.setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.light_red, null));
         }
     }
 }

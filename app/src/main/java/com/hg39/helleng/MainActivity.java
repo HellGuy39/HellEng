@@ -1,15 +1,6 @@
 package com.hg39.helleng;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -20,14 +11,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.transition.AutoTransition;
-import android.transition.ChangeBounds;
 import android.transition.Fade;
-import android.transition.Slide;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,13 +26,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.hg39.helleng.Helpers.DetailsTransition;
-import com.zeugmasolutions.localehelper.LocaleAwareCompatActivity;
 
 import java.util.Locale;
-import java.util.Objects;
 
-import static com.hg39.helleng.App.CHANNEL_1_ID;
-import static com.hg39.helleng.App.CHANNEL_2_ID;
 import static com.hg39.helleng.SettingsActivity.CONFIG_FILE;
 import static com.hg39.helleng.SettingsActivity.CONFIG_LANGUAGE;
 import static com.hg39.helleng.SettingsActivity.CONFIG_STARTING_FRAGMENT;
@@ -69,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String CHANNEL_NAME = "msg_channel";
     public static final String CHANNEL_DESC = "Messages";
 
-    public static final String version = "0.2.2";
+    public static final String version = "0.3.0 | Final update";
+    public static final String LOG_TAG = "Logs";
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;

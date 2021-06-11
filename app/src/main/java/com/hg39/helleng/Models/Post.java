@@ -2,16 +2,25 @@ package com.hg39.helleng.Models;
 
 public class Post {
 
-    private String username, date, type, author, text;
+    private String username, date, type, author, text, key;
 
     public Post() {}
 
-    public Post(String username, String date, String type, String author, String text) {
+    public Post(String username, String date, String type, String author, String text, String key) {
         this.username = username;
         this.date = date;
         this.type = type;
         this.author = author;
         this.text = text;
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getText() {

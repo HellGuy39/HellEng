@@ -50,5 +50,4 @@
     <string name="language">Language</string>
     <string name="starting_fragment">Starting Fragment</string>
     <string name="default_notification_channel_id" translatable="false">Channel ID</string>
-
 </resources>
